@@ -1,0 +1,260 @@
+﻿@using BetCR.Repository.Entity
+@using Newtonsoft.Json
+@using BetCR.Repository
+@using BetCR.Repository.ValueObject
+@model BetCR.Repository.Entity.Match
+
+@{
+
+    var validEvents = new Dictionary<string, string>() { { "R_CARD", "RED CARD" }, { "PEN_SCORED", "PENALTY" }, { "GOAL", "GOAL" }, { "OWN_GOAL", "OWN GOAL" }, { "Y_CARD", "YELLOW CARD" }, { "SUBST", "SUBSTITUTION" } };
+    var allEvents = new List<Tuple<int, Event>>();
+    allEvents.AddRange(Model.MatchEvent?.Events?.HomeTeamEvents?.Select(s => Tuple.Create(-1, s)) ?? Array.Empty<Tuple<int, Event>>());
+    allEvents.AddRange(Model.MatchEvent?.Events?.AwayTeamEvents?.Select(s => Tuple.Create(1, s)) ?? Array.Empty<Tuple<int, Event>>());
+    var orderedEvents = allEvents.Where(w => validEvents.ContainsKey(w.Item2.EventType)).OrderBy(o => o.Item2.Elapsed).ToList();
+    var homeLineupGroup = Model.MatchEvent.MatchLineup.HomeTeamLineup.Where(w => w.StartingXI).GroupBy(g => g.Position).ToDictionary(g => g.Key);
+    var awayLineupGroup = Model.MatchEvent.MatchLineup.AwayTeamLineup.Where(w => w.StartingXI).GroupBy(g => g.Position).ToDictionary(g => g.Key);
+
+
+}
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css"
+          rel="stylesheet" />
+    <link href="/static/css/site.css"
+          rel="stylesheet" />
+    <link href="/static/css/timeline.css"
+          rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&amp;display=swap" rel="stylesheet">
+</head>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="row mt-4 mx-4">
+                <div class="col-sm-2 ">
+                    <div class="bg-image hover-overlay ripple " data-mdb-ripple-color="light">
+                        <img src='@(Model?.HomeTeam?.TeamLogo)'
+                             class="img-fluid"
+                             data-team-name="@Model?.HomeTeam?.Name" data-toggle="tooltip" data-placement="bottom"
+                             title="@Model?.HomeTeam?.Name" />
+                        <a href="#!" data-toggle="tooltip" data-placement="bottom"
+                           title="@Model?.HomeTeam?.Name">
+                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-sm-10 text-left ">
+                    <p class="text-muted text-uppercase mb-0">
+                        <strong>@Model.HomeTeam.Name</strong>
+                    </p>
+                    <h6><small class="text">@(homeLineupGroup.GetValueOrDefault("DEFENDER")?.Count()??0) - @(homeLineupGroup.GetValueOrDefault("MIDFIELDER")?.Count()??0) - @(homeLineupGroup.GetValueOrDefault("FORWARD")?.Count()??0) </small></h6>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+
+
+            <div class="row" style="display: flex;align-items: center;justify-content: center;text-align: center;margin-top: 10px;">
+
+                <div class="col-sm-6 text-right" style="
+
+                                                                                                                                                                                                                                                                            border: solid 1px;
+                                                                                                                                                                                                                                                                            border-width: 0px 1px 0px 0px;
+                                                                                                                                                                                                                                                                            border-color: #ddd;
+                                                                                                                                                                                                                                                                            padding:10px;
+                                                                                                                                                                                                                                                                        ">
+                    <label style="font-size: 12px">@Model.MatchDate.Local.ToShortDateString()</label>
+                </div>
+
+
+                <div class="col-sm-6 text-left">
+                    <label style="font-size: 12px">@Model.MatchDate.Local.ToString("HH:mm")</label>
+                </div>
+
+            </div>
+
+
+
+
+            <div class="row">
+
+                <div class="col-sm-5"><h1> @Model.MatchEvent.HomeTeamScore </h1> </div>
+                <div class="col-sm-2" style="
+                                                                                                                                                               display: flex;
+                                                                                                                                                               align-items: center;
+                                                                                                                                                               justify-content: center;
+                                                                                                                                                               text-align: center;
+                                                                                                                                                           "><h5> : </h5> </div>
+                <div class="col-sm-5"><h1> @Model.MatchEvent.AwayTeamScore </h1> </div>
+
+            </div>
+
+
+
+
+        </div>
+        <div class="col-sm-4">
+            <div class="row mt-4 mx-4" style="margin: 2%">
+
+                <div class="col-sm-10 text-right">
+                    <p class="text-muted text-uppercase mb-0">
+                        <strong>@Model.AwayTeam.Name</strong>
+                    </p>
+                    <h6><small class="text">@(awayLineupGroup.GetValueOrDefault("DEFENDER")?.Count()??0) - @(awayLineupGroup.GetValueOrDefault("MIDFIELDER")?.Count()??0) - @(awayLineupGroup.GetValueOrDefault("FORWARD")?.Count()??0) </small></h6>
+                </div>
+                <div class="col-sm-2 ">
+                    <div class="bg-image hover-overlay ripple " data-mdb-ripple-color="light">
+                        <img src='@(Model?.AwayTeam?.TeamLogo)'
+                             class="img-fluid"
+                             data-team-name="@Model?.AwayTeam?.Name" data-toggle="tooltip" data-placement="bottom"
+                             title="@Model?.AwayTeam?.Name" />
+                        <a href="#!" data-toggle="tooltip" data-placement="bottom"
+                           title="@Model?.AwayTeam?.Name">
+                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-2">
+            @{
+                var colorPaletteHome = Model.HomeTeam.DominantColors?.Split(";").ToList();
+                var homeDomColor1 = colorPaletteHome?.FirstOrDefault() ?? "#fff";
+                var homeDomColor2 = colorPaletteHome?.Skip(1).FirstOrDefault() ?? "#000";
+                var colorPaletteAway = Model.AwayTeam.DominantColors?.Split(";").ToList();
+                var awayDomColor1 = colorPaletteAway?.FirstOrDefault() ?? "#fff";
+                var awayDomColor2 = colorPaletteAway?.Skip(1).FirstOrDefault() ?? "#000";
+            }
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <h5 class="card-header text-center" style="background-color: @homeDomColor2; color: @homeDomColor1">
+                            SUBS
+                        </h5>
+                        <div class="card-body">
+                            @{ await Html.RenderPartialAsync("Match/_TeamLineup", Model.MatchEvent.MatchLineup.HomeTeamLineup.Where(w => !w.StartingXI), new ViewDataDictionary(ViewData) { { "background-color", homeDomColor2 }, { "color", homeDomColor1 } });}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="row">
+                <div class="col-sm-2">
+                </div>
+            </div>
+            <div class="row">
+                @{ await Html.RenderPartialAsync("Match/_MatchPitch", Model, new ViewDataDictionary(ViewData) { { "events", allEvents } });}
+            </div>
+            <div class="row" style="margin-top: 50px;">
+                <section class="timeline">
+                    <figure class="timeline--inner">
+                        <div class="timeline--inner-pin is-featured" data-title="Featured Pin" style="left: 0%; background-color: #495057;color: #EEEEEE;display: flex;align-items: center;justify-content: center;text-align: center;">
+                            <div style="color: #EEEEEE; font-size: 16px;">MS</div>
+                        </div>
+                        <div class="timeline--inner-pin is-featured" data-title="Featured Pin" style="left: 50%;background-color: #495057;color: #EEEEEE; display: flex;align-items: center;justify-content: center;text-align: center;">
+                            <div style="color: #EEEEEE;font-size: 16px;">HT</div>
+                        </div>
+                        <div class="timeline--inner-pin is-featured" data-title="Featured Pin" style="left: 99%;background-color: #495057;color: #EEEEEE;display: flex;align-items: center;justify-content: center;text-align: center;">
+                            <div style="color: #EEEEEE;font-size: 16px;">FT</div>
+                        </div>
+
+                        @{
+
+
+                            foreach (var (item1, item2) in orderedEvents)
+                            {
+
+
+                                var elapsed = Math.Max(item2.Elapsed - 45, 0) > 0 ? item2.Elapsed - 45 : item2.Elapsed;
+                                var baseStep = Math.Max(item2.Elapsed - 45, 0) > 0 ? 53 : 3;
+                                var currentStep = $"{baseStep + (int)((double)elapsed / (double)45 * 40)}%";
+                                var currentEventTop = $"{item1 * 30}px";
+                                var minute = item2.Elapsed + item2.ElapsedPlus;
+                                <div class="timeline--inner-pin is-normal" style="top: @currentEventTop; left: @currentStep; background-color: @(item1 < 0 ? homeDomColor1 : awayDomColor1); color: @(item1 < 0 ? homeDomColor2 : awayDomColor2)" data-title="@minute">
+                                    <div class="tooltip text-center" style="color: @(item1 < 0 ? homeDomColor2 : awayDomColor2); font-size: 12px;">
+                                        @minute
+                                        <div class="bottom">
+                                            <div class="row" style="margin-bottom: 5px">
+                                                <div class="col-sm-6" style=" display: flex;align-items: center;justify-content: center;text-align: center;border: solid 1px;border-width: 0px 1px 1px 0px; border-color: #ddd;padding:10px">
+                                                    <label class="mb-0">@minute'</label>
+                                                </div>
+                                                <div class="col-sm-6" style="border: solid 1px; border-width: 0px 0 1px 0px; border-color: #ddd;padding:10px"> <img class="event-team-badge" src="@(item1 < 0 ? Model.HomeTeam.TeamLogo : Model.AwayTeam.TeamLogo)"></div>
+                                            </div>
+                                            <div class="row " style="margin-bottom: 5px">
+                                                <div class="col-sm-4">
+                                                    <img class="img-@item2.EventType.ToLowerInvariant()" />
+                                                </div>
+                                                <div class="col-sm-8" style="display: flex;align-items: center;justify-content: center;text-align: center;">
+                                                    <label class="mb-0" style="font-size: 10px;">@validEvents[item2.EventType]</label>
+                                                </div>
+                                            </div>
+                                            @{
+                                                if (item2.Player1 != null)
+                                                {
+                                                    <div class="row" style="margin-bottom: 5px">
+
+                                                        @{
+                                                            if (item2.Player2 != null)
+                                                            {
+                                                                <div class="col-sm-6" style="display: flex; align-items: center; justify-content: center; text-align: center; border: solid 1px; border-width: 1px 1px 1px 0px; border-color: #ddd">
+                                                                    <label class="mb-0" style="font-size: 10px;"><strong>@item2.Player1.FullName</strong></label>
+                                                                </div>
+                                                                <div class="col-sm-6" style="border: solid 1px; border-width: 1px 0px 1px 0px; border-color: #ddd">
+                                                                    <label class="mb-0" style="font-size: 10px;"><strong>@item2.Player2.FullName</strong></label>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="col-sm-12" style="display: flex; align-items: center; justify-content: center; text-align: center; border: solid 1px; border-width: 1px 0px 1px 0px; border-color: #ddd">
+                                                                    <label class="mb-0" style="font-size: 10px;"><strong>@item2.Player1.FullName</strong></label>
+                                                                </div>
+                                                            }
+                                                        }
+                                                    </div>
+                                                }
+                                            }
+
+                                            <i></i>
+                                        </div>
+                                        <div class="timeline-inner-event-type">
+                                            <img class="img-@item2.EventType.ToLowerInvariant()">
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        }
+
+                    </figure>
+                </section>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            @{
+            }
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <h5 class="card-header text-center" style="background-color: @awayDomColor2; color: @awayDomColor1">
+                            SUBS
+                        </h5>
+                        <div class="card-body">
+                            @{ await Html.RenderPartialAsync("Match/_TeamLineup", Model.MatchEvent.MatchLineup.AwayTeamLineup.Where(w => !w.StartingXI), new ViewDataDictionary(ViewData) { { "background-color", awayDomColor2 }, { "color", awayDomColor1 } }); }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+</script>

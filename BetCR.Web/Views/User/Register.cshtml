@@ -1,0 +1,213 @@
+﻿@{
+    ViewData["Title"] = "Register";
+}
+
+
+@section Head
+{
+
+    <link rel="stylesheet" href="/static/css/modal.css" />
+}
+
+<div id="dRegister" class="container">
+    <form id="fRegister"
+          action=""
+          method="post"
+          class="needs-validation request-form fadeInUp d"
+          novalidate>
+        <h2>Register your account</h2>
+
+        <div class="d-flex">
+            <div class="form-group has-feedback-left has-error mr-2">
+                <label for="iFirstName" class="label">First Name</label>
+                <input id="iFirstName" type="text" data-toggle="tooltip" data-placement="top" name="Firstname" class="form-control" required />
+            </div>
+            <div class="form-group  has-feedback-left has-error ml-2">
+                <label for="iSurname" class="label">Surname</label>
+                <input id="iSurname" type="text" class="form-control" name="Surname" data-toggle="tooltip" data-placement="top" required />
+            </div>
+        </div>
+
+        <div class="d-flex">
+            <div class="form-group has-feedback-left has-error mr-2">
+                <label for="iDateOfBirth" class="label">Date Of Birth</label>
+                <input type="date"
+                       class="form-control"
+                       id="iDateOfBirth"
+                       name="DateOfBirth"
+                       placeholder="Date"
+                       data-toggle="tooltip"
+                       data-placement="top"
+                       required />
+            </div>
+            <div class="form-group has-feedback-left ml-2 has-error">
+                <label for="iEmail" class="label">Email address</label>
+                <input type="email"
+                       class="form-control"
+                       id="iEmail"
+                       name="Email"
+                       placeholder="name@example.com"
+                       data-toggle="tooltip"
+                       data-placement="top"
+                       required />
+            </div>
+        </div>
+
+        <div class="d-flex">
+            <div class="form-group has-error has-feedback-left mr-2">
+                <label for="iPassword" class="label">Password</label>
+                <input type="password"
+                       class="form-control"
+                       id="iPassword"
+                       name="Password"
+                       data-toggle="tooltip"
+                       data-placement="top"
+                       data-v-min-length="8"
+                       data-v-max-length="10"
+                       required />
+            </div>
+            <div class="form-group has-error has-feedback-left ml-2">
+                <label for="iRePassword" class="label">Retype Password</label>
+                <input type="password"
+                       class="form-control"
+                       id="iRePassword"
+                       data-toggle="tooltip"
+                       data-placement="top"
+                       name="RePassword"
+                       data-v-equal="#iPassword"
+                       required />
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit"
+                   value="Register"
+                   id="sRegisterForm"
+                   class="mt-4 btn btn-primary py-3 px-4" disabled />
+        </div>
+    </form>
+
+    <div class="modal fade" id="${id}" role="dialog">
+        <div class="modal-dialog">
+            <div class="card">
+                <div class="card-img">
+                    <img class="img-fluid">
+                </div>
+                <div class="card-title">
+                </div>
+                <div class="card-text">
+                    <p> ${options.modalContent}</p>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                        <span class="sr-only"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script src="~/static/js/modal.js"></script>
+    <script src="~/static/js/vendor/jbvalidator.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            const validator = $("#fRegister").jbvalidator({
+                errorMessage: true,
+                successClass: true,
+                errorMessageHandler: function (el, message) {
+                    $(el).addClass("error");
+                    $(el).parent().removeClass("has-success");
+                    $(el).parent().addClass("has-error");
+                    $(el).attr('title', message)
+                        .attr('data-original-title', message)
+                        .attr('data-bs-original-title', message)
+                        .tooltip('update')
+                        .tooltip('show');
+
+                    $("#fRegister input[type = submit]").prop('disabled', true);
+                },
+                successMessageHandler: function (el, event) {
+                    $(el).addClass("success");
+                    $(el).parent().removeClass("has-error");
+                    $(el).parent().addClass("has-success");
+                    $(el).attr('title', "")
+                        .attr('data-original-title', "")
+                        .attr('data-bs-original-title', "")
+                        .tooltip('update')
+                        .tooltip('hide');
+
+                    if ($(".has-error").length === 0) {
+                        $("#fRegister input[type=submit]").prop('disabled', false);
+                    }
+
+                }
+            });
+
+            validator.validator.custom = function (el, event) {
+                if ($(el).is("[name=DateOfBirth]")) {
+                    const val = $(el).val();
+                    const date = Date.parse(val);
+                    const d = new Date(date);
+                    if (
+                        new Date(d.getFullYear() + 18, d.getMonth() - 1, d.getDay()) >
+                        new Date()
+                    ) {
+                        return "You must be over 18 years old.";
+                    }
+                }
+            };
+
+            $("#sRegisterForm").click(function (e) {
+
+                e.preventDefault();
+                e.stopPropagation();
+                const valdata = $("#fRegister").serialize();
+                $.ajax({
+                    url: "/api/User/Register",
+                    type: "POST",
+                    dataType: 'json',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    data: valdata,
+                    success: function (data) {
+                        const modalFadeSeconds = 2;
+                        let modalData = `<br>${data.result}</br>`;
+                        if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
+
+                        const modal = $("#dRegister").addModal({
+                            id: "successModal",
+                            modalContent: modalData,
+                            closeTimer: modalFadeSeconds,
+                            modalState: "success",
+                            afterCloseAction: data.returnUrl
+                                ? function () {
+                                    window.location.href = data.returnUrl;
+                                }
+                                : function () { }
+
+                        });
+                        modal.modalElement.show();
+                    },
+                    error: function (err) {
+                        const data = err.responseJSON;
+                        const modalFadeSeconds = 2;
+                        let modalData = `<br>${data.result}</br>`;
+                        if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
+
+                        const modal = $("#dRegister").addModal({
+                            id: "errorModal",
+                            modalContent: modalData,
+                            closeTimer: modalFadeSeconds,
+                            modalState: "error"
+                        });
+                        modal.modalElement.show();
+                    }
+                });
+            });
+
+        });
+    </script>
+}

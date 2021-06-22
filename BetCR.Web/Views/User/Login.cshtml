@@ -1,0 +1,129 @@
+﻿@model BetCR.Web.Controllers.API.Model.LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+@section Head
+{
+    
+    <link rel="stylesheet" href="/static/css/modal.css"/>
+}
+
+<section>
+    <div id="dLogin" class="container">
+        <form id="fLoginForm" method="POST" class="request-form">
+
+            <h2>Login to your Account</h2>
+            <div class="form-group has-error">
+
+                <label for="iUserEmail" class="label">Email</label>
+                <input type="email"
+                       name="Email"
+                       class="form-control"
+                       id="iUserEmail"
+                       placeholder="example@example.com"
+                       required
+                       autofocus />
+            </div>
+            <div class="form-group  has-error ">
+                <label for="iPassword" class="label">Password</label>
+                <input type="password"
+                       id="iPassword"
+                       name="Password"
+                       class="form-control"
+                       placeholder="Password"
+                       required />
+            </div>
+            <div class="form-group">
+                <div class="checkbox mb-3">
+                    <label>
+                        <input name="IsRememberMe" type="checkbox" />Remember me
+                    </label>
+                </div>
+            </div>
+            <div class="d-flex">
+                <div class="form-group mr-2">
+                    <input type="submit"
+                           id="sLogin"
+                           value="Sign in"
+                           class="btn btn-primary py-3 px-4" disabled />
+                </div>
+                <div class="form-group ml-2">
+                    <a href="/User/Register" class="btn btn-success  py-3 px-4" role="button" aria-pressed="true">Register</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+
+@section Scripts {
+
+    <script src="~/static/js/modal.js"></script>
+    <script src="~/static/js/vendor/jbvalidator.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $('form').on('change', ':checkbox', function () {
+                if (this.checked) {
+                    $(this).val(true);
+                }
+                else {
+                    $(this).val(false);
+                }
+            });
+
+            $("#sLogin").click(function (e) {
+
+                e.preventDefault();
+                e.stopPropagation();
+                const valdata = $("#fLoginForm").serialize();
+                $.ajax({
+                    url: "/api/User/Login",
+                    type: "POST",
+                    dataType: 'json',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    data: valdata,
+                    success: function (data) {
+                        location.reload();
+                    },
+                    error: function (err) {
+                        const data = err.responseJSON;
+                        const modalFadeSeconds = 2;
+                        let modalData = `<br>${data.result}</br>`;
+                        if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
+
+                        const modal = $("#dLogin").addModal({
+                            id: "errorModal",
+                            modalContent: modalData,
+                            closeTimer: modalFadeSeconds,
+                            modalState: "error"
+                        });
+                        modal.modalElement.show();
+                    }
+                });
+            });
+
+            $("#fLoginForm").jbvalidator({
+                errorMessage: true,
+                successClass: true,
+                errorMessageHandler: function (el, event) {
+                    $(el).addClass("error");
+                    $(el).parent().removeClass("has-success");
+                    $(el).parent().addClass("has-error");
+                    $("#fLoginForm input[type = submit]").prop('disabled', true);
+                },
+                successMessageHandler: function (el, event) {
+                    $(el).addClass("success");
+                    $(el).parent().removeClass("has-error");
+                    $(el).parent().addClass("has-success");
+                    if ($(".has-error").length === 0) {
+                        $("#fLoginForm input[type=submit]").prop('disabled', false);
+                    }
+                }
+            });
+
+        });
+    </script>
+}

@@ -1,0 +1,208 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+
+@using BetCR.Repository.Entity
+@using Newtonsoft.Json
+@model BetCR.Repository.Entity.Match
+
+
+
+
+<form class="match-form" data-match-id="@Model.Id" data-home-team="@Model.HomeTeam.Id" data-away-team="@Model.HomeTeam.Id" data-bet-leverage="1" data-action-url="@Url.RouteUrl("id", new { controller="Match",  id = Model.Id })">
+    @{
+        var userBet = ViewData["UserBet"] as UserMatchBet;
+
+        var matchExpire = DateTimeOffset.UtcNow.ToUnixTimeSeconds() > Model.MatchDateEpoch;
+    }
+
+    <div class="card border shadow-0  match-row">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-sm-4">
+
+                    <div class="rounded-button" style="
+                                      border: 2px solid!important;
+                                      border-color: #EEEEEE!important; background-color: transparent; width: 100px;height: 100px;
+                                  ">
+                        <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                            <img src='@(Model.HomeTeam.TeamLogo)'
+                                 class="team-logo pred-home-team-logo img-fluid"
+                                 data-logo-type="HOME_TEAM_LOGO"
+                                 data-team-name="@Model.HomeTeam.Name" data-toggle="tooltip" data-placement="bottom"
+                                 title="@Model.HomeTeam.Name" />
+                            <a href="#!" data-toggle="tooltip" data-placement="bottom"
+                               title="@Model.HomeTeam.Name">
+                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="row">
+                        <label style="text-align: center">@Model.MatchDate.Local.ToShortDateString()</label>
+                    </div>
+
+                    <div class="row">
+                        <label style="text-align: center">@Model.MatchDate.Local.ToString("HH:mm")</label>
+                    </div>
+                    <div class="row">
+                        @{
+                            if (Model.MatchEvent != null)
+                            {
+                                <label data-fancybox data-options='{"type" : "iframe", "iframe" : {"preload" : false, "css" : {"min-width" : "1280px",  "max-width"  : "80%", "min-height":"960px", "max-height":"80%"}}}' data-src="/match/details/@Model.Id" href="javascript:;" class="btn-link  btn-outline-primary  text-center match_result" style="padding: 0px;">
+                                    @Model.MatchEvent.HomeTeamScore - @Model.MatchEvent.AwayTeamScore
+                                </label>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="rounded-button" style=" border: 2px solid !important; border-color: #EEEEEE !important; background-color: transparent; width: 100px; height: 100px;">
+                        <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                            <img src='@Model.AwayTeam.TeamLogo'
+                                 class="team-logo pred-home-team-logo img-fluid"
+                                 data-logo-type="AWAY_TEAM_LOGO"
+                                 data-team-name="@Model.AwayTeam.Name" data-toggle="tooltip" data-placement="bottom"
+                                 title="@Model.AwayTeam.Name" />
+
+                            <a href="#!" data-toggle="tooltip" data-placement="bottom"
+                               title="@Model.AwayTeam.Name">
+                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body mh-200">
+            <div class="row margin-bottom-20">
+
+                @{if (userBet != null)
+                    {
+                        <p class="card-text text-center">Your prediction for this match</p>
+                        <p class="card-text text-center">Score : <span><b>@(userBet.HomeTeamScore.ToString())</b></span> - <span><b>@(userBet.AwayTeamScore.ToString())</b>  </span></p>
+                        <p class="card-text text-center">Leverage : <span><b>@userBet.Leverage</b></span></p>
+                        @if ((userBet.UserBetPoint ?? 0) == 0)
+                        {
+                            <p class="card-text text-center">(Your point(s) will be multiplied by <span><b>@userBet.Leverage</b></span>)</p>
+                        }
+                    }
+                    else
+                    {
+
+                        <div class="col-sm-5 text-right">
+                            @{
+                                if (!matchExpire)
+                                {
+                                    <input type="number" class="form-control  match-bet-home text-right"
+                                           data-match-id="@Model.Id"
+                                           data-score-type="HOME"
+                                           data-team="@Model.HomeTeam.Id"
+                                           data-v-min="0"
+                                           id='@($"{Model.Id}_0")' value="0" />
+                                }
+                                else
+                                {
+                                    <label>MATCH</label>
+                                }
+                            }
+                        </div>
+                        <div class="col-sm-2 text-center">
+                            <label></label>
+                        </div>
+                        <div class="col-sm-5 text-left">
+                            @{
+                                if (!matchExpire)
+                                {
+                                    <input type="number" class="match-bet-away form-control text-right"
+                                           data-match-id="@Model.Id"
+                                           data-score-type="AWAY"
+                                           data-team="@Model.AwayTeam.Id"
+                                           data-v-min="0" value="0"
+                                           id='@($"{Model.Id}_1")' />
+                                }
+                                else
+                                {
+                                    <label>EXPIRED</label>
+                                }
+                            }
+                        </div>
+                    }
+                }
+            </div>
+
+            @{
+                if (!matchExpire && userBet == null)
+                {
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="text-center margin-bottom-20"><b>LEVERAGE</b></div>
+                            <div class="text-center">
+                                <div class="btn-group shadow-0" role="group">
+                                    <button type="button" class="btn btn-link rounded-button mr-50 primary" data-mdb-color="dark" data-bet-leverage="2">2x</button>
+                                    <button type="button" class="btn btn-link rounded-button mr-50 primary" data-mdb-color="dark" data-bet-leverage="3">3x</button>
+                                    <button type="button" class="btn btn-link rounded-button  mr-50 primary" data-mdb-color="dark" data-bet-leverage="5">5x</button>
+                                    <button type="button" class="btn btn-link rounded-button primary mr-50" data-mdb-color="dark" data-bet-leverage="10">10x</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                }
+            }
+        </div>
+
+        @if (!matchExpire && userBet == null)
+        {
+            <div class="card-footer text-right h-75">
+                <div class="col-sm-12">
+                    <input type="submit" class="btn btn-primary" value="Make Prediction" />
+                </div>
+            </div>
+        }
+
+        @{
+            if (userBet != null)
+            {
+                var point = userBet.UserBetPoint ?? 0;
+                var betClass = "";
+                @switch (point)
+                {
+                    case < 0:
+                        betClass = "btn-danger";
+                        break;
+                    case 0:
+                        betClass = "btn-warning";
+                        break;
+
+                    default:
+                        betClass = "btn-success";
+                        break;
+                }
+                <div class="card-footer">
+                    @if (point != 0)
+                    {
+                        <button class="btn @betClass btn-100 no-radius" disabled>@userBet.UserBetPoint Points</button>
+                    }
+                    else
+                    {
+                        <button class="btn @betClass btn-100 no-radius" disabled>Result Waiting</button>
+                    }
+                </div>
+
+            }
+        }
+    </div>
+
+</form>
+
+
+
+
+

@@ -1,0 +1,29 @@
+﻿@using BetCR.Repository.Entity
+@using Newtonsoft.Json
+@model IEnumerable<BetCR.Repository.ValueObject.Lineup>
+
+
+
+<div class="table-responsive " style="overflow:hidden">
+    <table class="table table-borderless no-cellpadding" style="word-wrap: break-word;table-layout: fixed">
+        <tbody>
+            @{
+
+                var numbers = Model.OrderBy(o => o.Number);
+                foreach (var item in numbers)
+                {
+                    <tr>
+                        <td style="vertical-align: middle" scope="row">
+                            <button type="button" class="rounded-button" data-mdb-color="dark" style="background-color : @ViewData["background-color"].ToString(); color: @ViewData["color"].ToString()">@item.Number</button>
+                        </td>
+
+                        <td style="vertical-align: middle">
+                            <small> @item.Player.FullName</small>
+                        </td>
+                    </tr>
+                }
+
+            }
+        </tbody>
+    </table>
+</div>

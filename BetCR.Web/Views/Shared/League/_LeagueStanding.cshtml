@@ -1,0 +1,107 @@
+﻿
+
+@using BetCR.Repository.ValueObject
+@model BetCR.Repository.Entity.StageStanding
+
+<head>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css"
+          rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&amp;display=swap" rel="stylesheet">
+    <link href="/static/css/site.css" rel="stylesheet">
+</head>
+
+<div class="container">
+    <div class="table-responsive " style="overflow:hidden">
+        <table class="table " style="word-wrap: break-word; table-layout: fixed">
+            <thead>
+                <tr>
+                    <th scope="row">#</th>
+                    <th scope="row" colspan="2">Team</th>
+                    <th scope="row">P</th>
+                    <th scope="row">W</th>
+                    <th scope="row">D</th>
+                    <th scope="row">L</th>
+                    <th scope="row">GF</th>
+                    <th scope="row">GA</th>
+                    <th scope="row">GD</th>
+                    <th scope="row">P</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+
+                    var standings = Model.Standings.OrderBy(o => o.TeamStanding.Position);
+                    foreach (var item in standings)
+                    {
+                        <tr>
+
+
+                            <td style="vertical-align: middle">
+                                <label> @item.TeamStanding.Position</label>
+                            </td>
+
+
+                            <td style="vertical-align: middle" scope="row">
+                                <button type="button" class="rounded-button" data-mdb-color="dark" style="border: 5.1px solid!important;
+                                                                                                                                                                     border-color: #EEEEEE!important;
+                                                                                                                                                                     background-color: transparent">
+                                    <img src=@item.TeamStanding.BadgeURL style="max-width: 100%">
+                                </button>
+                            </td>
+
+                            <td style="vertical-align: middle">
+                                <label> <strong>@item.TeamStanding.TeamName.ToUpperInvariant()</strong> </label>
+                            </td>
+
+
+                            <td style="vertical-align: middle">
+                                <label> @item.Played</label>
+                            </td>
+
+                            <td style="vertical-align: middle">
+                                <label> @item.Win</label>
+                            </td>
+
+                            <td style="vertical-align: middle">
+                                <label> @item.Draw</label>
+                            </td>
+
+                            <td style="vertical-align: middle">
+                                <label> @item.Lost</label>
+                            </td>
+
+                            <td style="vertical-align: middle">
+                                <label> @item.GoalFor</label>
+                            </td>
+
+                            <td style="vertical-align: middle">
+                                <label> @item.GoalAgainst</label>
+                            </td>
+
+                            <td style="vertical-align: middle">
+                                <label> @item.GoalDifference</label>
+                            </td>
+
+                            <td style="vertical-align: middle">
+                                <label><strong> @item.Point</strong> </label>
+                            </td>
+
+                        </tr>
+                    }
+
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+</script>
+

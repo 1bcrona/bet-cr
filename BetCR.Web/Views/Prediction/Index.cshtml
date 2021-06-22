@@ -1,0 +1,200 @@
+﻿@{
+    ViewData["Title"] = "Prediction";
+}
+@using BetCR.Repository.Entity
+@using Newtonsoft.Json
+@using System.Security.Claims
+@model List<BetCR.Repository.Entity.Match>
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@section Head
+{
+    <link rel="stylesheet" href="/static/css/flip-card.css" />
+}
+
+<div id="prediction">
+    <div id="league-panel">
+        @{
+
+            var groupedMatches = Model.GroupBy(g => String.Join(" - ", g.Stage.League.LeagueName, g.Stage.StageName));
+
+            foreach (var gm in groupedMatches)
+            {
+                var matches = gm.ToList();
+
+                <div class="card " data-stage-id="@matches.FirstOrDefault()?.Stage.ExternalId">
+                    <h5 class="card-header bg-success">
+                        <a class="league-table text-white" data-fancybox data-options='{"type" : "iframe", "iframe" : {"preload" : false, "css" : {"min-width" : "1280px",  "max-width"  : "80%", "min-height":"960px", "max-height":"80%"}}}' data-src="/league/stages/@matches.First().Stage.Id/standings" href="javascript:;">
+                            @gm.Key
+                        </a>
+                    </h5>
+                    <div class="card-body">
+                        <div class="row">
+                            @{
+                                foreach (var match in matches)
+                                {
+
+                                    var colorPaletteHome = match.HomeTeam.DominantColors?.Split(";").ToList();
+                                    var homeDomColor1 = colorPaletteHome?.FirstOrDefault() ?? "#fff";
+                                    var colorPaletteAway = match.AwayTeam.DominantColors?.Split(";").ToList();
+                                    var awayDomColor1 = colorPaletteAway?.FirstOrDefault() ?? "#fff";
+
+                                    <div class="col-sm-4" data-match-id="@match.Id" data-home-team="@match.HomeTeam.Id" data-away-team="@match.HomeTeam.Id" data-bet-leverage="1">
+
+                                        @{
+                                            var userBet = match.UserMatchBets.FirstOrDefault(w => w.User.Id == HttpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value);
+                                            if (@userBet == null)
+                                            {
+                                                await Html.RenderPartialAsync("Match/_MatchCard", match, new ViewDataDictionary(ViewData) { { "UserBet", userBet } });
+
+                                            }
+                                            else
+                                            {
+
+                                                var totalBets = match.UserMatchBets.Count();
+                                                <div class="flip-card flip" data-current=".flip-card-front" data-other=".flip-card-back">
+
+                                                    <div class="flip-card-inner">
+                                                        <img class="flip-card-change-view" />
+                                                        <div class="flip-card-front">
+
+                                                            @{ await Html.RenderPartialAsync("Match/_MatchCard", match, new ViewDataDictionary(ViewData) { { "UserBet", userBet } }); }
+                                                        </div>
+                                                        <div class="flip-card-back">
+                                                            <img class="flip-card-change-view" />
+                                                            <div class="card border shadow-0  match-row">
+                                                                <div class="card-header">
+                                                                    <h2>What were the user bets?</h2>
+                                                                </div>
+                                                                <div class="card-body mh-200">
+                                                                    <div class="row margin-bottom-20">
+                                                                        <div class="col-sm-12">
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar progress-bar-striped" role="progressbar" data-toggle="tooltip" style='background-color: @homeDomColor1; width: @($"{match.UserMatchBets.Count(w => w.HomeTeamScore > w.AwayTeamScore) / totalBets * 100}%")'>
+                                                                                </div>
+                                                                                <div class="progress-bar progress-bar-striped" role="progressbar" data-toggle="tooltip" style='background-color: #FFA900; width: @($"{match.UserMatchBets.Count(w => w.HomeTeamScore == w.AwayTeamScore) / totalBets * 100}%")'>
+                                                                                </div>
+                                                                                <div class="progress-bar progress-bar-striped" role="progressbar" data-toggle="tooltip" style='background-color: @awayDomColor1; width: @($"{match.UserMatchBets.Count(w => w.HomeTeamScore > w.AwayTeamScore) / totalBets * 100}%")'>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            }
+                                        }
+                                    </div>
+
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="/static/js/vendor/jbvalidator.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".team-logo").tooltip({ placement: 'bottom' });
+            $(".hover-overlay a").tooltip({ placement: 'bottom' });
+        });
+
+        $(".flip-card-change-view").on("click",
+            function (e) {
+                const element = $(".flip-card");
+                const current = $(element).attr("data-current");
+                const other = $(element).attr("data-other");
+                $(element).find(".flip-card-inner").toggleClass("flip");
+                $(element).find(current).css("visibility", "hidden");
+                $(element).find(other).css("visibility", "visible");
+                $(element).attr("data-current", other);
+                $(element).attr("data-other", current);
+            });
+
+        $(".match-form").jbvalidator({
+            errorMessage: true,
+            successClass: true,
+            errorMessageHandler: function (el, event) {
+                $(el).removeClass("success");
+                $(el).addClass("error");
+
+            },
+            successMessageHandler: function (el, event) {
+                $(el).removeClass("error");
+                $(el).addClass("success");
+            }
+        });
+
+        $(".match-form").on("submit",
+            function (e) {
+                e.preventDefault();
+                var element = e.target;
+
+                const homeTeamScore = $(element).find(".match-bet-home").val();
+                const awayTeamScore = $(element).find(".match-bet-away").val();
+                const leverage = $(element).attr("data-bet-leverage");
+                const matchId = $(element).attr("data-match-id");
+
+                const model = {
+                    MatchId: matchId,
+                    AwayTeamScore: awayTeamScore,
+                    HomeTeamScore: homeTeamScore,
+                    Leverage: leverage
+                };
+
+                var actionUrl = $(element).attr("data-action-url");
+
+                $.ajax({
+                    url: 'api/UserMatchBet',
+                    type: 'POST',
+                    data: JSON.stringify(model),
+                    contentType: "application/json; charset=utf-8",
+                    beforeSend: function (data) {
+
+                    },
+                    success: function (data) {
+                        $.get(actionUrl, function (data) {
+                            $(element.parentElement).html(data);
+                        });
+                    },
+                    error: function (err) {
+                    }
+                });
+
+            });
+
+        $(".btn-group .btn").click(function (e) {
+
+            const parentElement = e.target.parentElement;
+            $(parentElement).find(".btn").removeClass("primary-inverse");
+            $(parentElement).find(".btn").addClass("primary");
+            const element = e.target;
+            const matchCard = e.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+
+            const currentLeverage = $(matchCard).attr("data-bet-leverage");
+
+            if (currentLeverage === "1") {
+                $(matchCard).attr("data-bet-leverage", $(element).attr('data-bet-leverage'));
+                $(element).removeClass("primary");
+                $(element).addClass("primary-inverse");
+            }
+            else {
+                $(matchCard).attr("data-bet-leverage", "1");
+            }
+
+
+
+        });
+    </script>
+}
