@@ -39,7 +39,7 @@
 
                     @{
                         var claims = HttpContextAccessor.HttpContext?.User.Claims.ToList();
-                        if (claims.Count == 0)
+                        if (claims?.Count == 0)
                         {
                             <li>
                                 <a class="nav-link" href="/User/Login">Login</a>
