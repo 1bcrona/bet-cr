@@ -52,31 +52,40 @@
                                             {
 
                                                 var totalBets = match.UserMatchBets.Count();
-                                                <div class="flip-card flip" data-current=".flip-card-front" data-other=".flip-card-back">
+                                                <div class="flip-card" data-current=".flip-card-front" data-other=".flip-card-back">
 
                                                     <div class="flip-card-inner">
-                                                        <img class="flip-card-change-view" />
-                                                        <div class="flip-card-front">
 
+                                                        <div class="flip-card-front">
+                                                            <img class="flip-card-change-view" />
                                                             @{ await Html.RenderPartialAsync("Match/_MatchCard", match, new ViewDataDictionary(ViewData) { { "UserBet", userBet } }); }
                                                         </div>
                                                         <div class="flip-card-back">
                                                             <img class="flip-card-change-view" />
                                                             <div class="card border shadow-0  match-row">
                                                                 <div class="card-header">
-                                                                    <h2>What were the user bets?</h2>
+                                                                    <h3>What were the users' predictions?</h3>
                                                                 </div>
                                                                 <div class="card-body mh-200">
                                                                     <div class="row margin-bottom-20">
                                                                         <div class="col-sm-12">
-                                                                            <div class="progress">
-                                                                                <div class="progress-bar progress-bar-striped" role="progressbar" data-toggle="tooltip" style='background-color: @homeDomColor1; width: @($"{match.UserMatchBets.Count(w => w.HomeTeamScore > w.AwayTeamScore) / totalBets * 100}%")'>
-                                                                                </div>
-                                                                                <div class="progress-bar progress-bar-striped" role="progressbar" data-toggle="tooltip" style='background-color: #FFA900; width: @($"{match.UserMatchBets.Count(w => w.HomeTeamScore == w.AwayTeamScore) / totalBets * 100}%")'>
-                                                                                </div>
-                                                                                <div class="progress-bar progress-bar-striped" role="progressbar" data-toggle="tooltip" style='background-color: @awayDomColor1; width: @($"{match.UserMatchBets.Count(w => w.HomeTeamScore > w.AwayTeamScore) / totalBets * 100}%")'>
-                                                                                </div>
-                                                                            </div>
+                                                                            @{
+                                                                                var homeWin = match.UserMatchBets.Count(w => w.HomeTeamScore > w.AwayTeamScore);
+                                                                                var draw = match.UserMatchBets.Count(w => w.HomeTeamScore == w.AwayTeamScore);
+                                                                                var awayWin = match.UserMatchBets.Count(w => w.HomeTeamScore < w.AwayTeamScore);
+
+
+                                                                            }
+                                                                            <canvas id='@($"{match.Id}_chart")' class="bet-chart" data-labels='@match.HomeTeam.Name,Draw,@match.AwayTeam.Name' data-values='[@homeWin,@draw,@awayWin]' , data-colors='@homeDomColor1,#EEEEEE,@awayDomColor1' style="width: 200px; height: 200px;"></canvas>
+                                                                            @*<canvas id="chart-data-mdb-labels-example"></canvas>*@
+                                                                            @*<div class="progress" style="height: 40px">
+                                                                                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" data-toggle="tooltip" style='background-color: @homeDomColor1; width: @($"{match.UserMatchBets.Count(w => w.HomeTeamScore > w.AwayTeamScore) / totalBets * 100}%")'>
+                                                                                    </div>
+                                                                                    <div class="progress-bar progress-bar-striped  progress-bar-animated" role="progressbar" data-toggle="tooltip" style='background-color: #FFA900; width: @($"{match.UserMatchBets.Count(w => w.HomeTeamScore == w.AwayTeamScore) / totalBets * 100}%")'>
+                                                                                    </div>
+                                                                                    <div class="progress-bar progress-bar-striped  progress-bar-animated" role="progressbar" data-toggle="tooltip" style='background-color: @awayDomColor1; width: @($"{match.UserMatchBets.Count(w => w.AwayTeamScore > w.HomeTeamScore) / totalBets * 100}%")'>
+                                                                                    </div>
+                                                                                </div>*@
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -104,15 +113,58 @@
 @section Scripts
 {
     <script src="/static/js/vendor/jbvalidator.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+
+
     <script>
         $(document).ready(function () {
             $(".team-logo").tooltip({ placement: 'bottom' });
             $(".hover-overlay a").tooltip({ placement: 'bottom' });
+
+
+            $(".bet-chart").each((index, element) => {
+
+                var labels = $(element).data("labels").split(",");
+                var values = $(element).data("values");
+                var colors = $(element).data("colors").split(",");
+                new Chart(element, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                data: values,
+                                backgroundColor: colors
+                            }]
+                    },
+                    options: {
+                        title: {
+                            display: true,
+                            text: 'Pie Chart'
+                        },
+                        hoverOffset: 4,
+                        responsive: true,
+                        maintainAspectRatio: false,
+                    }
+                });
+            }
+            );
         });
+
+
+
+
+
+
+
+
+
 
         $(".flip-card-change-view").on("click",
             function (e) {
-                const element = $(".flip-card");
+                const element = e.target.parentElement.parentElement.parentElement;
                 const current = $(element).attr("data-current");
                 const other = $(element).attr("data-other");
                 $(element).find(".flip-card-inner").toggleClass("flip");
@@ -120,6 +172,8 @@
                 $(element).find(other).css("visibility", "visible");
                 $(element).attr("data-current", other);
                 $(element).attr("data-other", current);
+
+
             });
 
         $(".match-form").jbvalidator({

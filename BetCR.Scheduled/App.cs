@@ -53,6 +53,8 @@ namespace BetCR.Scheduled
                 .UseEnvironment(environment)
                 .Build();
 
+            Console.WriteLine(Configuration.GetConnectionString("DefaultConnection"));
+
             await host.RunAsync();
 
 

@@ -22,9 +22,17 @@ namespace BetCR.Web.Handlers.Command
         {
 
             var userMatchBetRepository = _unitOfWork.GetRepository<UserMatchBet, string>();
+
+            var isBetExist = await userMatchBetRepository.FindAsync(w =>
+                w.User.Id == request.UserId && w.Match.Id == request.MatchId && w.Active == 1);
+
+            if (isBetExist.Any())
+            {
+                throw new Exception("USER_ALREADY_BET");
+            }
+
             var userRepository = _unitOfWork.GetRepository<User, string>();
             var matchRepository = _unitOfWork.GetRepository<Match, string>();
-
             var user = await userRepository.GetAsync(request.UserId);
             var match = await matchRepository.GetAsync(request.MatchId);
 

@@ -7,18 +7,22 @@
 
 
 @using BetCR.Repository.Entity
+@using Microsoft.AspNetCore.Http
 @using Newtonsoft.Json
+@using System.Security.Claims
 @model BetCR.Repository.Entity.Match
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
+
+
+@{
+    var userBet = ViewData["UserBet"] as UserMatchBet ?? Model.UserMatchBets.FirstOrDefault(w => w.User.Id == HttpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value);
+    var matchExpire = DateTimeOffset.UtcNow.ToUnixTimeSeconds() > Model.MatchDateEpoch;
+}
 
 
 
 <form class="match-form" data-match-id="@Model.Id" data-home-team="@Model.HomeTeam.Id" data-away-team="@Model.HomeTeam.Id" data-bet-leverage="1" data-action-url="@Url.RouteUrl("id", new { controller="Match",  id = Model.Id })">
-    @{
-        var userBet = ViewData["UserBet"] as UserMatchBet;
-
-        var matchExpire = DateTimeOffset.UtcNow.ToUnixTimeSeconds() > Model.MatchDateEpoch;
-    }
 
     <div class="card border shadow-0  match-row">
         <div class="card-header">
