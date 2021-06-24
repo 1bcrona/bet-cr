@@ -24,7 +24,14 @@ namespace BetCR.Repository.Entity.Base
         public static DateTime MaxDateTime => DateTime.MaxValue;
         public DateTime Inner => _inner;
 
-        public DateTime Local => _inner.ToLocalTime();
+        public DateTime Local
+        {
+            get
+            {
+                return _inner.ToLocalTime();
+            }
+        }
+
         #endregion Public Properties
 
         #region Public Methods

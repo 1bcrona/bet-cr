@@ -19,10 +19,10 @@ namespace BetCR.Web.Controllers
             _logger = logger;
             _elenaFetcherService = elenaFetcherService;
         }
-        [Authorize]
         public async Task<IActionResult> Index()
         {
             ViewBag.Title = "home";
+            await Task.CompletedTask;
             return View();
         }
 

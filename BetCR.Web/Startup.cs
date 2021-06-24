@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Reflection;
 using BetCR.Caching.Impl;
@@ -76,7 +77,12 @@ namespace BetCR.Web
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+      
             app.UseHttpsRedirection();
+
+            Console.WriteLine(env.EnvironmentName);
+            Console.WriteLine(Configuration.GetConnectionString("DefaultConnection"));
             var path = Path.Combine(env.ContentRootPath, "wwwroot");
             app.UseStaticFiles(new StaticFileOptions
             {

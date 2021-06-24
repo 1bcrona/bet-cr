@@ -5,6 +5,8 @@
 @using Newtonsoft.Json
 @using System.Security.Claims
 @model List<BetCR.Repository.Entity.Match>
+
+
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @section Head
@@ -16,17 +18,31 @@
     <div id="league-panel">
         @{
 
-            var groupedMatches = Model.GroupBy(g => String.Join(" - ", g.Stage.League.LeagueName, g.Stage.StageName));
+            var orderedMatches = Model.OrderBy(o => DateTimeOffset.UtcNow.ToUnixTimeSeconds() > o.MatchDateEpoch).ThenBy(o => o.MatchDateEpoch);
+
+            var groupedMatches = orderedMatches.GroupBy(g => String.Join(" - ", g.Stage.League.LeagueName, g.Stage.StageName));
 
             foreach (var gm in groupedMatches)
             {
                 var matches = gm.ToList();
-
-                <div class="card " data-stage-id="@matches.FirstOrDefault()?.Stage.ExternalId">
+                var stage = @matches.FirstOrDefault()?.Stage;
+                <div class="card " data-stage-id="@stage.ExternalId">
                     <h5 class="card-header bg-success">
-                        <a class="league-table text-white" data-fancybox data-options='{"type" : "iframe", "fitToView":false, "iframe" : {"preload" : false, "css" : {}}}' data-src="/league/stages/@matches.First().Stage.Id/standings" href="javascript:;">
-                            @gm.Key
-                        </a>
+                        @{
+                            if (stage.HasStanding)
+                            {
+                                <a class="league-table text-white" data-fancybox data-options='{"type" : "iframe", "fitToView":false, "iframe" : {"preload" : false, "css" : {}}}' data-src="/league/stages/@matches.First().Stage.Id/standings" href="javascript:;">
+                                    @gm.Key
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="league-table text-white">
+                                    @gm.Key
+                                </a>
+                            }
+                        }
+
                     </h5>
                     <div class="card-body">
                         <div class="row">
@@ -51,11 +67,8 @@
                                             else
                                             {
 
-                                                var totalBets = match.UserMatchBets.Count();
                                                 <div class="flip-card" data-current=".flip-card-front" data-other=".flip-card-back">
-
                                                     <div class="flip-card-inner">
-
                                                         <div class="flip-card-front">
                                                             <img class="flip-card-change-view" />
                                                             @{ await Html.RenderPartialAsync("Match/_MatchCard", match, new ViewDataDictionary(ViewData) { { "UserBet", userBet } }); }

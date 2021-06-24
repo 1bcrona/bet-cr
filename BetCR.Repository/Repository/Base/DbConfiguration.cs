@@ -1,13 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace BetCR.Repository.Repository.Base
 {
     public class DataContext : DbContext
     {
+        private readonly IConfiguration _configuration;
+
         #region Private Fields
 
-        private static IConfigurationRoot _configuration;
 
         private string _connectionString;
 
@@ -15,8 +17,12 @@ namespace BetCR.Repository.Repository.Base
 
         #region Public Constructors
 
-        public DataContext() : this(Configuration.GetConnectionString("DefaultConnection"))
+
+
+        public DataContext(IConfiguration configuration)
         {
+            _configuration = configuration;
+            _connectionString = _configuration.GetConnectionString("DefaultConnection");
         }
 
         public DataContext(string connectionString)
@@ -28,19 +34,6 @@ namespace BetCR.Repository.Repository.Base
 
         #region Public Properties
 
-        public static IConfigurationRoot Configuration
-        {
-            get
-            {
-                if (_configuration == null)
-                {
-                    var builder = new ConfigurationBuilder()
-                  .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                    _configuration = builder.Build();
-                }
-                return _configuration;
-            }
-        }
 
         public string ConnectionString { get { return _connectionString; } }
 

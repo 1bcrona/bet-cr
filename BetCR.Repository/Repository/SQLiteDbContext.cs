@@ -4,6 +4,7 @@ using BetCR.Repository.Entity;
 using BetCR.Repository.Repository.Base;
 using BetCR.Repository.ValueObject;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -19,7 +20,7 @@ namespace BetCR.Repository.Repository
 
         #region Public Constructors
 
-        public SQLiteDbContext()
+        public SQLiteDbContext(IConfiguration configuration) : base(configuration)
         {
             ChangeTracker.LazyLoadingEnabled = true;
         }

@@ -13,9 +13,7 @@ namespace BetCR.Web
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder
-                        .UseUrls("https://0.0.0.0:5000") // <!-- this
                         .UseContentRoot(Directory.GetCurrentDirectory())
-                        .UseIISIntegration()
                         .UseStartup<Startup>();
                 });
 

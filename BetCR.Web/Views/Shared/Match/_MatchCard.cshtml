@@ -4,8 +4,6 @@
 @{
 }
 
-
-
 @using BetCR.Repository.Entity
 @using Microsoft.AspNetCore.Http
 @using Newtonsoft.Json
@@ -13,14 +11,10 @@
 @model BetCR.Repository.Entity.Match
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
-
-
 @{
     var userBet = ViewData["UserBet"] as UserMatchBet ?? Model.UserMatchBets.FirstOrDefault(w => w.User.Id == HttpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value);
     var matchExpire = DateTimeOffset.UtcNow.ToUnixTimeSeconds() > Model.MatchDateEpoch;
 }
-
-
 
 <form class="match-form" data-match-id="@Model.Id" data-home-team="@Model.HomeTeam.Id" data-away-team="@Model.HomeTeam.Id" data-bet-leverage="1" data-action-url="@Url.RouteUrl("id", new { controller="Match",  id = Model.Id })">
 
@@ -45,17 +39,16 @@
                     <div class="d-md-none text-muted text-uppercase mb-0 text-center">
                         <h7><strong>@Model.HomeTeam.Name</strong></h7>
                     </div>
-
                 </div>
                 <div class="col-lg-4">
-                    <div class="row">
+                    <div class="row justify-content-center">
                         <label style="text-align: center">@Model.MatchDate.Local.ToShortDateString()</label>
                     </div>
 
-                    <div class="row">
+                    <div class="row justify-content-center">
                         <label style="text-align: center">@Model.MatchDate.Local.ToString("HH:mm")</label>
                     </div>
-                    <div class="row">
+                    <div class="row justify-content-center">
                         @{
                             if (Model.MatchEvent != null)
                             {
@@ -161,7 +154,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
                 }
@@ -209,10 +201,4 @@
             }
         }
     </div>
-
 </form>
-
-
-
-
-
