@@ -16,16 +16,16 @@
         <table class="table " style="word-wrap: break-word; table-layout: fixed">
             <thead>
                 <tr>
-                    <th scope="row">#</th>
-                    <th scope="row" colspan="2">Team</th>
-                    <th scope="row">P</th>
-                    <th scope="row">W</th>
-                    <th scope="row">D</th>
-                    <th scope="row">L</th>
-                    <th scope="row">GF</th>
-                    <th scope="row">GA</th>
-                    <th scope="row">GD</th>
-                    <th scope="row">P</th>
+                    <th class="d-none d-lg-table-cell">#</th>
+                    <th colspan="2">Team</th>
+                    <th class="d-none d-lg-table-cell">P</th>
+                    <th class="d-none d-lg-table-cell">W</th>
+                    <th class="d-none d-lg-table-cell">D</th>
+                    <th class="d-none d-lg-table-cell">L</th>
+                    <th class="d-none d-lg-table-cell">GF</th>
+                    <th class="d-none d-lg-table-cell">GA</th>
+                    <th class="d-none d-lg-table-cell">GD</th>
+                    <th>P</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,13 +37,13 @@
                         <tr>
 
 
-                            <td style="vertical-align: middle">
+                            <td style="vertical-align: middle" class="d-none d-lg-table-cell">
                                 <label> @item.TeamStanding.Position</label>
                             </td>
 
 
-                            <td style="vertical-align: middle" scope="row">
-                                <button type="button" class="rounded-button" data-mdb-color="dark" style="border: 5.1px solid!important;
+                            <td style="vertical-align: middle">
+                                <button type="button" class="  rounded-button" data-mdb-color="dark" style="border: 5.1px solid!important;
                                                                                                                                                                      border-color: #EEEEEE!important;
                                                                                                                                                                      background-color: transparent">
                                     <img src=@item.TeamStanding.BadgeURL style="max-width: 100%">
@@ -55,31 +55,31 @@
                             </td>
 
 
-                            <td style="vertical-align: middle">
+                            <td style="vertical-align: middle" class="d-none d-lg-table-cell">
                                 <label> @item.Played</label>
                             </td>
 
-                            <td style="vertical-align: middle">
+                            <td style="vertical-align: middle" class="d-none d-lg-table-cell">
                                 <label> @item.Win</label>
                             </td>
 
-                            <td style="vertical-align: middle">
+                            <td style="vertical-align: middle" class="d-none d-lg-table-cell">
                                 <label> @item.Draw</label>
                             </td>
 
-                            <td style="vertical-align: middle">
+                            <td style="vertical-align: middle" class="d-none d-lg-table-cell">
                                 <label> @item.Lost</label>
                             </td>
 
-                            <td style="vertical-align: middle">
+                            <td style="vertical-align: middle" class="d-none d-lg-table-cell">
                                 <label> @item.GoalFor</label>
                             </td>
 
-                            <td style="vertical-align: middle">
+                            <td style="vertical-align: middle" class="d-none d-lg-table-cell">
                                 <label> @item.GoalAgainst</label>
                             </td>
 
-                            <td style="vertical-align: middle">
+                            <td style="vertical-align: middle" class="d-none d-lg-table-cell">
                                 <label> @item.GoalDifference</label>
                             </td>
 

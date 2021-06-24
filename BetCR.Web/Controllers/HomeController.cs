@@ -22,9 +22,7 @@ namespace BetCR.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            //await _elenaFetcherService.GetFixtures();
-            //await _elenaFetcherService.GetFixtureResults();
-            //await _elenaFetcherService.GetStandings();
+            ViewBag.Title = "home";
             return View();
         }
 

@@ -27,12 +27,9 @@
     <div class="card border shadow-0  match-row">
         <div class="card-header">
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-lg-4">
 
-                    <div class="rounded-button" style="
-                                      border: 2px solid!important;
-                                      border-color: #EEEEEE!important; background-color: transparent; width: 100px;height: 100px;
-                                  ">
+                    <div class="d-none d-md-block rounded-button" style=" border: 2px solid!important; border-color: #EEEEEE!important; background-color: transparent">
                         <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
                             <img src='@(Model.HomeTeam.TeamLogo)'
                                  class="team-logo pred-home-team-logo img-fluid"
@@ -45,8 +42,12 @@
                             </a>
                         </div>
                     </div>
+                    <div class="d-md-none text-muted text-uppercase mb-0 text-center">
+                        <h7><strong>@Model.HomeTeam.Name</strong></h7>
+                    </div>
+
                 </div>
-                <div class="col-sm-4">
+                <div class="col-lg-4">
                     <div class="row">
                         <label style="text-align: center">@Model.MatchDate.Local.ToShortDateString()</label>
                     </div>
@@ -58,15 +59,15 @@
                         @{
                             if (Model.MatchEvent != null)
                             {
-                                <label data-fancybox data-options='{"type" : "iframe", "iframe" : {"preload" : false, "css" : {"min-width" : "1280px",  "max-width"  : "80%", "min-height":"960px", "max-height":"80%"}}}' data-src="/match/details/@Model.Id" href="javascript:;" class="btn-link  btn-outline-primary  text-center match_result" style="padding: 0px;">
+                                <label data-fancybox data-options='{"type" : "iframe", "iframe" : {"preload" : false, "css" : {}}}' data-src="/match/details/@Model.Id" href="javascript:;" class="btn-link  btn-outline-primary  text-center match_result" style="padding: 0px;">
                                     @Model.MatchEvent.HomeTeamScore - @Model.MatchEvent.AwayTeamScore
                                 </label>
                             }
                         }
                     </div>
                 </div>
-                <div class="col-sm-4">
-                    <div class="rounded-button" style=" border: 2px solid !important; border-color: #EEEEEE !important; background-color: transparent; width: 100px; height: 100px;">
+                <div class="col-lg-4">
+                        <div class="d-none d-md-block rounded-button" style=" border: 2px solid!important; border-color: #EEEEEE!important; background-color: transparent">
                         <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
                             <img src='@Model.AwayTeam.TeamLogo'
                                  class="team-logo pred-home-team-logo img-fluid"
@@ -79,6 +80,9 @@
                                 <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
                             </a>
                         </div>
+                    </div>
+                    <div class="d-md-none text-muted text-uppercase mb-0 text-center">
+                        <h7><strong>@Model.AwayTeam.Name</strong></h7>
                     </div>
                 </div>
             </div>
@@ -99,7 +103,7 @@
                     else
                     {
 
-                        <div class="col-sm-5 text-right">
+                        <div class="col-lg-5 text-center">
                             @{
                                 if (!matchExpire)
                                 {
@@ -116,14 +120,14 @@
                                 }
                             }
                         </div>
-                        <div class="col-sm-2 text-center">
+                        <div class="col-lg-2 text-center">
                             <label></label>
                         </div>
-                        <div class="col-sm-5 text-left">
+                        <div class="col-lg-5 text-center">
                             @{
                                 if (!matchExpire)
                                 {
-                                    <input type="number" class="match-bet-away form-control text-right"
+                                    <input type="number" class="match-bet-away form-control text-left"
                                            data-match-id="@Model.Id"
                                            data-score-type="AWAY"
                                            data-team="@Model.AwayTeam.Id"
@@ -144,14 +148,14 @@
                 if (!matchExpire && userBet == null)
                 {
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-lg-12">
                             <div class="text-center margin-bottom-20"><b>LEVERAGE</b></div>
                             <div class="text-center">
                                 <div class="btn-group shadow-0" role="group">
-                                    <button type="button" class="btn btn-link rounded-button mr-50 primary" data-mdb-color="dark" data-bet-leverage="2">2x</button>
-                                    <button type="button" class="btn btn-link rounded-button mr-50 primary" data-mdb-color="dark" data-bet-leverage="3">3x</button>
-                                    <button type="button" class="btn btn-link rounded-button  mr-50 primary" data-mdb-color="dark" data-bet-leverage="5">5x</button>
-                                    <button type="button" class="btn btn-link rounded-button primary mr-50" data-mdb-color="dark" data-bet-leverage="10">10x</button>
+                                    <button type="button" class="btn btn-link rounded-button w-50 h-50 mr-50 primary" data-mdb-color="dark" data-bet-leverage="2">2x</button>
+                                    <button type="button" class="btn btn-link rounded-button w-50 h-50 mr-50 primary" data-mdb-color="dark" data-bet-leverage="3">3x</button>
+                                    <button type="button" class="btn btn-link rounded-button w-50 h-50 mr-50 primary" data-mdb-color="dark" data-bet-leverage="5">5x</button>
+                                    <button type="button" class="btn btn-link rounded-button w-50 h-50 primary mr-50" data-mdb-color="dark" data-bet-leverage="10">10x</button>
                                 </div>
                             </div>
                         </div>
@@ -165,7 +169,7 @@
         @if (!matchExpire && userBet == null)
         {
             <div class="card-footer text-right h-75">
-                <div class="col-sm-12">
+                <div class="col-lg-12">
                     <input type="submit" class="btn btn-primary" value="Make Prediction" />
                 </div>
             </div>

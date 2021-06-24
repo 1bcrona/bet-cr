@@ -1,4 +1,5 @@
 ﻿@using System.Security.Claims
+@using Newtonsoft.Json
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 <!DOCTYPE html>
 <html lang="en">
@@ -12,8 +13,6 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&amp;display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
-          rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           rel="stylesheet" />
 
     <link href='https://cdn.jsdelivr.net/npm/@@fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.css'
@@ -32,10 +31,10 @@
         <div class="navbar navbar-fixed-top navbar-inverse tabs paper-shadow-bottom-z-2">
             <div class="container-fluid">
                 <ul class="navbar-body list-inline">
-                    <li id="liTables"><a href="/">Tables</a></li>
-                    <li id="liPrediction"><a href="@Url.Action("Index", "Prediction")">Make Prediction</a></li>
-                    <li id="liUserPredictions"><a href="/">User Predictions</a></li>
-                    <li id="liAdmin"><a href="/">Admin</a></li>
+                    <li id="liTables" class="@(ViewBag.Title=="Home Page"? "active" : "")" data-title="home"><a href="/">Tables</a></li>
+                    <li id="liPrediction" data-title="prediction" class="@(ViewBag.Title=="Prediction"? "active" : "")"><a href="@Url.Action("Index", "Prediction")">Make Prediction</a></li>
+                    @*<li id="liUserPredictions" data-title="home"><a href="/">User Predictions</a></li>
+                        <li id="liAdmin" data-title="home"><a href="/">Admin</a></li>*@
 
                     @{
                         var claims = HttpContextAccessor.HttpContext?.User.Claims.ToList();
@@ -65,7 +64,7 @@
                         }
                     }
                 </ul>
-                <div class="tab-highlighter"></div>
+                <div class="tab-highlighter" style="display: none"></div>
             </div>
         </div>
     </navbar>
@@ -98,6 +97,7 @@
         var TabHighlighter = {
             set: function ($this) {
                 $('.tab-highlighter').css({
+
                     'left': $this.closest('li').offset().left,
                     'width': $this.closest('li').outerWidth()
                 });
@@ -105,15 +105,26 @@
             refresh: function () {
                 const $this = $('.tabs ul.navbar-body li.active a');
                 $('.tab-highlighter').css({
+                    'display': 'block',
                     'left': $this.closest('li').offset().left,
                     'width': $this.closest('li').outerWidth()
                 });
+
+
+            },
+            hide: function () {
+                $('.tab-highlighter').css({
+                    'display': 'none',
+                });
             }
+
         };
         $(window).resize(function () {
+            TabHighlighter.hide();
             TabHighlighter.refresh();
         });
         $(document).ready(function () {
+            TabHighlighter.hide();
             TabHighlighter.refresh();
         });
     </script>

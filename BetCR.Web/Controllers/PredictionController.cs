@@ -35,6 +35,7 @@ namespace BetCR.Web.Controllers
 
             week = string.IsNullOrEmpty(week) ? FixtureHelper.GetWeek(DateTime.Now) : week;
             var result = await _mediator.Send(new PredictionDetailQuery() { Week = week });
+            ViewBag.Title = "prediction";
             return View(result.ToList());
         }
 

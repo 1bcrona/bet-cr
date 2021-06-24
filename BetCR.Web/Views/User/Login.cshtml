@@ -6,8 +6,8 @@
 
 @section Head
 {
-    
-    <link rel="stylesheet" href="/static/css/modal.css"/>
+
+    <link rel="stylesheet" href="/static/css/modal.css" />
 }
 
 <section>
@@ -108,17 +108,33 @@
             $("#fLoginForm").jbvalidator({
                 errorMessage: true,
                 successClass: true,
-                errorMessageHandler: function (el, event) {
+                errorMessageHandler: function (el, message) {
                     $(el).addClass("error");
-                    $(el).parent().removeClass("has-success");
-                    $(el).parent().addClass("has-error");
+                    $(el).removeClass("success");
+
+                    $(el).attr('title', message)
+                        .attr('data-original-title', message)
+                        .attr('data-bs-original-title', message)
+                        .attr('data-mdb-original-title', message)
+                        .tooltip('update')
+                        .tooltip('show');
+
                     $("#fLoginForm input[type = submit]").prop('disabled', true);
                 },
                 successMessageHandler: function (el, event) {
                     $(el).addClass("success");
-                    $(el).parent().removeClass("has-error");
-                    $(el).parent().addClass("has-success");
-                    if ($(".has-error").length === 0) {
+                    $(el).removeClass("error");
+
+                    $(el).attr('title', "")
+                        .attr('data-original-title', "")
+                        .attr('data-bs-original-title', "")
+                        .attr('data-mdb-original-title', "")
+                        .tooltip('update')
+                        .tooltip('hide');
+
+
+
+                    if ($(".error").length === 0) {
                         $("#fLoginForm input[type=submit]").prop('disabled', false);
                     }
                 }

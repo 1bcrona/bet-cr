@@ -24,7 +24,7 @@
 
                 <div class="card " data-stage-id="@matches.FirstOrDefault()?.Stage.ExternalId">
                     <h5 class="card-header bg-success">
-                        <a class="league-table text-white" data-fancybox data-options='{"type" : "iframe", "iframe" : {"preload" : false, "css" : {"min-width" : "1280px",  "max-width"  : "80%", "min-height":"960px", "max-height":"80%"}}}' data-src="/league/stages/@matches.First().Stage.Id/standings" href="javascript:;">
+                        <a class="league-table text-white" data-fancybox data-options='{"type" : "iframe", "fitToView":false, "iframe" : {"preload" : false, "css" : {}}}' data-src="/league/stages/@matches.First().Stage.Id/standings" href="javascript:;">
                             @gm.Key
                         </a>
                     </h5>

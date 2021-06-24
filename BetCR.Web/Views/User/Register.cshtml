@@ -18,18 +18,18 @@
         <h2>Register your account</h2>
 
         <div class="d-flex">
-            <div class="form-group has-feedback-left has-error mr-2">
+            <div class="form-group  has-error mr-2">
                 <label for="iFirstName" class="label">First Name</label>
                 <input id="iFirstName" type="text" data-toggle="tooltip" data-placement="top" name="Firstname" class="form-control" required />
             </div>
-            <div class="form-group  has-feedback-left has-error ml-2">
+            <div class="form-group   has-error ml-2">
                 <label for="iSurname" class="label">Surname</label>
                 <input id="iSurname" type="text" class="form-control" name="Surname" data-toggle="tooltip" data-placement="top" required />
             </div>
         </div>
 
         <div class="d-flex">
-            <div class="form-group has-feedback-left has-error mr-2">
+            <div class="form-group  has-error mr-2">
                 <label for="iDateOfBirth" class="label">Date Of Birth</label>
                 <input type="date"
                        class="form-control"
@@ -40,7 +40,7 @@
                        data-placement="top"
                        required />
             </div>
-            <div class="form-group has-feedback-left ml-2 has-error">
+            <div class="form-group  ml-2 has-error">
                 <label for="iEmail" class="label">Email address</label>
                 <input type="email"
                        class="form-control"
@@ -54,7 +54,7 @@
         </div>
 
         <div class="d-flex">
-            <div class="form-group has-error has-feedback-left mr-2">
+            <div class="form-group has-feedback-left mr-2">
                 <label for="iPassword" class="label">Password</label>
                 <input type="password"
                        class="form-control"
@@ -66,7 +66,7 @@
                        data-v-max-length="10"
                        required />
             </div>
-            <div class="form-group has-error has-feedback-left ml-2">
+            <div class="form-group  has-feedback-left ml-2">
                 <label for="iRePassword" class="label">Retype Password</label>
                 <input type="password"
                        class="form-control"
@@ -116,31 +116,29 @@
         $(document).ready(function () {
 
             const validator = $("#fRegister").jbvalidator({
-                errorMessage: true,
-                successClass: true,
                 errorMessageHandler: function (el, message) {
                     $(el).addClass("error");
-                    $(el).parent().removeClass("has-success");
-                    $(el).parent().addClass("has-error");
+                    $(el).removeClass("success");
                     $(el).attr('title', message)
                         .attr('data-original-title', message)
                         .attr('data-bs-original-title', message)
+                        .attr('data-mdb-original-title', message)
                         .tooltip('update')
                         .tooltip('show');
 
                     $("#fRegister input[type = submit]").prop('disabled', true);
                 },
                 successMessageHandler: function (el, event) {
+                    $(el).removeClass("error");
                     $(el).addClass("success");
-                    $(el).parent().removeClass("has-error");
-                    $(el).parent().addClass("has-success");
                     $(el).attr('title', "")
                         .attr('data-original-title', "")
                         .attr('data-bs-original-title', "")
+                        .attr('data-mdb-original-title', "")
                         .tooltip('update')
                         .tooltip('hide');
 
-                    if ($(".has-error").length === 0) {
+                    if ($(".error").length === 0) {
                         $("#fRegister input[type=submit]").prop('disabled', false);
                     }
 

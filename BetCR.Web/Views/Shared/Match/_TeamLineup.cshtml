@@ -13,11 +13,11 @@
                 foreach (var item in numbers)
                 {
                     <tr>
-                        <td style="vertical-align: middle" scope="row">
+                        <td>
                             <button type="button" class="rounded-button" data-mdb-color="dark" style="background-color : @ViewData["background-color"].ToString(); color: @ViewData["color"].ToString()">@item.Number</button>
                         </td>
 
-                        <td style="vertical-align: middle">
+                        <td class="d-md-none d-lg-table-cell">
                             <small> @item.Player.FullName</small>
                         </td>
                     </tr>

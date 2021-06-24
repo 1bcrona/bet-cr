@@ -8,6 +8,7 @@
     <Folder Include="wwwroot\css\football\img\" />
     <Folder Include="wwwroot\css\vendor\soccerfield\" />
     <Folder Include="wwwroot\lib\" />
+    <Folder Include="wwwroot\fonts\" />
   </ItemGroup>
 
   <ItemGroup>

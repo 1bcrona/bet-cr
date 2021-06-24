@@ -22,8 +22,8 @@
     @{
         var goalKeeper = Model.FirstOrDefault(w => w.Position == "GOALKEEPER");
         <div class="player-view">
-            
-            
+
+
             @{
                 if ((events ?? Array.Empty<Tuple<int, Event>>().ToList()).Any(w => w.Item2.Player1.FullName == goalKeeper.Player.FullName && w.Item2.EventType == "GOAL"))
                 {
@@ -46,12 +46,12 @@
 
                 }
             }
-            
+
 
 
             <div class="player" style="background-color: @ViewData["background-color"].ToString(); border-color: @ViewData["color"].ToString();">
                 <div class="number" style="color: @ViewData["color"].ToString();">@goalKeeper.Number</div>
-                <div class="name">@goalKeeper.Player.Name</div>
+                <div class="name  d-none d-lg-block">@goalKeeper.Player.Name</div>
             </div>
         </div>
     }
@@ -95,7 +95,7 @@
 
                     <div class="player" style="background-color:  @ViewData["background-color"].ToString(); border-color: @ViewData["color"].ToString(); ">
                         <div class="number" style="color: @ViewData["color"].ToString();">@player.Number</div>
-                        <div class="name">@player.Player.Name</div>
+                        <div class="name  d-none d-lg-block">@player.Player.Name</div>
                     </div>
                 </div>
             }
@@ -134,7 +134,7 @@
                     }
                     <div class="player" style="background-color: @ViewData["background-color"].ToString(); border-color: @ViewData["color"].ToString();">
                         <div class="number" style="color: @ViewData["color"].ToString();">@player.Number</div>
-                        <div class="name">@player.Player.Name</div>
+                        <div class="name  d-none d-lg-block">@player.Player.Name</div>
                     </div>
                 </div>
             }
@@ -175,7 +175,7 @@
                     }
                     <div class="player" style="background-color: @ViewData["background-color"].ToString(); border-color: @ViewData["color"].ToString();">
                         <div class="number" style="color: @ViewData["color"].ToString();">@player.Number</div>
-                        <div class="name">@player.Player.Name</div>
+                        <div class="name  d-none d-lg-block">@player.Player.Name</div>
                     </div>
                 </div>
             }
