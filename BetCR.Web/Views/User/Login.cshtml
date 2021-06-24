@@ -112,12 +112,16 @@
                     $(el).addClass("error");
                     $(el).removeClass("success");
 
+
+
                     $(el).attr('title', message)
                         .attr('data-original-title', message)
                         .attr('data-bs-original-title', message)
                         .attr('data-mdb-original-title', message)
                         .tooltip('update')
-                        .tooltip('show');
+                    if ($(el).val() !== "") {
+                        $(el).tooltip('show');
+                    }
 
                     $("#fLoginForm input[type = submit]").prop('disabled', true);
                 },

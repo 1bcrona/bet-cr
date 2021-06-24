@@ -2,7 +2,65 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
+
+    <p>
+        <h1>BetCR is an online match prediction platform.</h1>
+        <hr />
+        <h5>How does it work?</h5>
+        <ul>
+            <li>Matches that can be predicted are presented on a weekly basis.</li>
+            <li>
+                These matches appear at the <strong>Make Predictions</strong> page.
+            </li>
+            <li> Matches are presented by league and, if available, by groups.</li>
+            <li>It is possible to make individual predictions for matches.</li>
+        </ul>
+        <hr />
+
+        <h5>Scoring</h5>
+
+        Users receive different points based on their prediction and match results *.
+        Users will get:
+        <ul>
+            <li>
+                <strong>-1 point</strong>
+                <span>If they could not predict the match result correctly.</span>
+            </li>
+            <li>
+                <strong>1 point </strong>
+                <span>If they could predicted correctly winner and loser of the match</span>
+            </li>
+            <li>
+                <strong>2 points</strong>
+                <span>If they could predict the match will end in a draw or by how many margins the winning team will win</span>
+            </li>
+            <li>
+                <strong>5 points</strong>
+                <span>If they could correctly predict the outcome of the match, the goals of the winning and losing team</span>
+            </li>
+        </ul>
+
+        <small>
+            <i>* The score of the match in regular and extra time.</i>
+        </small>
+        <hr />
+
+        <h5>Leverage</h5>
+
+        <ul>
+            <li>
+                <span>Match predictions can be made with <strong>2x</strong>, <strong>3x</strong>,<strong>5x</strong>,<strong>10x</strong> leverage. *</span>
+            </li>
+            <li>
+                <span> In this case, the final score will be found by multiplying the scores obtained as a result of the prediction with the selected leverage value.</span>
+            </li>
+        </ul>
+        <small>
+            <i>* If no selection is made, the leverage will always be 1x.</i>
+        </small>
+        <hr />
+
+        <strong>Only</strong> registered users have the right to make predictions.
+    </p>
 </div>

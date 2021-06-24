@@ -124,7 +124,10 @@
                         .attr('data-bs-original-title', message)
                         .attr('data-mdb-original-title', message)
                         .tooltip('update')
-                        .tooltip('show');
+                    if ($(el).val() !== "") {
+                        $(el).tooltip('show');
+                    }
+
 
                     $("#fRegister input[type = submit]").prop('disabled', true);
                 },
