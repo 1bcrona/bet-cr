@@ -24,12 +24,12 @@
           rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&amp;display=swap" rel="stylesheet">
 </head>
-<div class="container-fluid">
+<div class="container">
     <div class="row">
-        <div class="col-md-4">
-            <div class="row mt-4 mx-4">
-                <div class="col-md-6 ">
-                    <div class="bg-image hover-overlay ripple d-md-none d-lg-block" data-mdb-ripple-color="light">
+        <div class="col-md-4 align-self-center">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="bg-image hover-overlay ripple d-md-none d-lg-block align-items-center" data-mdb-ripple-color="light">
                         <img src='@(Model?.HomeTeam?.TeamLogo)'
                              class="img-fluid"
                              data-team-name="@Model?.HomeTeam?.Name" data-toggle="tooltip" data-placement="bottom"
@@ -41,7 +41,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-6 text-left d-none d-md-block">
+                <div class="col-md-6 text-left d-none d-md-block align-self-center">
                     <p class="text-muted text-uppercase mb-0">
                         <strong>@Model.HomeTeam.Name</strong>
                     </p>
@@ -50,37 +50,42 @@
             </div>
         </div>
 
-        <div class="col-md-4">
 
-            <div class="row" style="display: flex;align-items: center;justify-content: center;text-align: center;margin-top: 10px;">
 
-                <div class="col-md-6 text-right d-none d-md-block" style="border: solid 1px;border-width: 0px 1px 0px 0px;border-color: #ddd;padding:10px;">
+        <div class="col-md-4 align-self-center">
+
+            <div class="row align-items-top">
+
+                <div class="col-md-6 text-right d-none d-md-block" style="border: solid 1px;border-width: 0px 1px 0px 0px;border-color: #ddd">
                     <label style="font-size: 12px">@Model.MatchDate.Local.ToShortDateString()</label>
                 </div>
 
                 <div class="col-md-6 text-left d-none d-md-block">
-                    <label style="font-size: 12px">@Model.MatchDate.Local.ToString("HH:mm")</label>
+                    <label style="font-size: 12px">@Model.MatchDate.Local.ToShortTimeString()</label>
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row  align-items-center">
 
-                <div class="col-md-5"><h1> @Model.MatchEvent.HomeTeamScore </h1> </div>
-                <div class="col-md-2" style="display: flex; align-items: center;justify-content: center;text-align: center;"><h5> : </h5> </div>
-                <div class="col-md-5"><h1> @Model.MatchEvent.AwayTeamScore </h1> </div>
+                <div class="col-md-5"><h1>@Model.MatchEvent.HomeTeamScore</h1> </div>
+                <div class="col-md-2"><h5>:</h5> </div>
+                <div class="col-md-5"><h1>@Model.MatchEvent.AwayTeamScore</h1> </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="row mt-4 mx-4" style="margin: 2%">
 
-                <div class="col-md-6 text-right d-none d-md-block">
+
+
+        <div class="col-md-4 align-self-center">
+            <div class="row">
+
+                <div class="col-md-6 text-right d-none d-md-block align-self-center">
                     <p class="text-muted text-uppercase mb-0">
                         <strong>@Model.AwayTeam.Name</strong>
                     </p>
                     <h6><small class="text">@(awayLineupGroup.GetValueOrDefault("DEFENDER")?.Count()??0) - @(awayLineupGroup.GetValueOrDefault("MIDFIELDER")?.Count()??0) - @(awayLineupGroup.GetValueOrDefault("FORWARD")?.Count()??0) </small></h6>
                 </div>
                 <div class="col-md-6 ">
-                    <div class="bg-image hover-overlay ripple d-md-none d-lg-block" data-mdb-ripple-color="light">
+                    <div class="bg-image hover-overlay ripple d-md-none d-lg-block align-items-center" data-mdb-ripple-color="light">
                         <img src='@(Model?.AwayTeam?.TeamLogo)'
                              class="img-fluid"
                              data-team-name="@Model?.AwayTeam?.Name" data-toggle="tooltip" data-placement="bottom"
@@ -126,17 +131,17 @@
             <div class="row">
                 @{ await Html.RenderPartialAsync("Match/_MatchPitch", Model, new ViewDataDictionary(ViewData) { { "events", allEvents } });}
             </div>
-            <div class="row" style="margin-top: 50px;">
-                <section class="timeline">
-                    <figure class="timeline--inner">
-                        <div class="timeline--inner-pin is-featured" data-title="Featured Pin" style="left: 0%; background-color: #495057;color: #EEEEEE;display: flex;align-items: center;justify-content: center;text-align: center;">
-                            <div style="color: #EEEEEE; font-size: 16px;">MS</div>
+            <div class="row mt-4 mx-4">
+                <div class="timeline">
+                    <div class="timeline--inner">
+                        <div class="timeline--inner-pin is-featured text-center d-flex align-items-center justify-content-center" data-title="Featured Pin" style="left: 0%; background-color: #495057;color: #EEEEEE">
+                            <label>MS</label>
                         </div>
-                        <div class="timeline--inner-pin is-featured" data-title="Featured Pin" style="left: 50%;background-color: #495057;color: #EEEEEE; display: flex;align-items: center;justify-content: center;text-align: center;">
-                            <div style="color: #EEEEEE;font-size: 16px;">HT</div>
+                        <div class="timeline--inner-pin is-featured text-center d-flex align-items-center justify-content-center" data-title="Featured Pin" style="left: 50%;background-color: #495057;color: #EEEEEE">
+                            <label>HT</label>
                         </div>
-                        <div class="timeline--inner-pin is-featured" data-title="Featured Pin" style="left: 99%;background-color: #495057;color: #EEEEEE;display: flex;align-items: center;justify-content: center;text-align: center;">
-                            <div style="color: #EEEEEE;font-size: 16px;">FT</div>
+                        <div class="timeline--inner-pin is-featured text-center d-flex align-items-center justify-content-center" data-title="Featured Pin" style="left: 99%;background-color: #495057;color: #EEEEEE">
+                            <label>FT</label>
                         </div>
 
                         @{
@@ -207,8 +212,8 @@
                             }
 
                         }
-                    </figure>
-                </section>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-md-2">

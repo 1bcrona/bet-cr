@@ -38,7 +38,6 @@
 }
 
 .flip-card .flip-card-change-view {
-    width: 5%;
     margin-left: 100%;
     z-index: 1;
     position: absolute;

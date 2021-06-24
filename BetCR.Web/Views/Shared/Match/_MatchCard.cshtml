@@ -26,8 +26,8 @@
 
     <div class="card border shadow-0  match-row">
         <div class="card-header">
-            <div class="row">
-                <div class="col-lg-4">
+            <div class="row justify-content-center">
+                <div class="col-md-4">
 
                     <div class="d-none d-md-block rounded-button" style=" border: 2px solid!important; border-color: #EEEEEE!important; background-color: transparent">
                         <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
@@ -66,8 +66,8 @@
                         }
                     </div>
                 </div>
-                <div class="col-lg-4">
-                        <div class="d-none d-md-block rounded-button" style=" border: 2px solid!important; border-color: #EEEEEE!important; background-color: transparent">
+                <div class="col-md-4">
+                    <div class="d-none d-md-block rounded-button" style=" border: 2px solid!important; border-color: #EEEEEE!important; background-color: transparent">
                         <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
                             <img src='@Model.AwayTeam.TeamLogo'
                                  class="team-logo pred-home-team-logo img-fluid"
@@ -112,6 +112,7 @@
                                            data-score-type="HOME"
                                            data-team="@Model.HomeTeam.Id"
                                            data-v-min="0"
+                                           placeholder="Home Team Score"
                                            id='@($"{Model.Id}_0")' value="0" />
                                 }
                                 else
@@ -131,6 +132,7 @@
                                            data-match-id="@Model.Id"
                                            data-score-type="AWAY"
                                            data-team="@Model.AwayTeam.Id"
+                                           placeholder="Away Team Score"
                                            data-v-min="0" value="0"
                                            id='@($"{Model.Id}_1")' />
                                 }
@@ -152,10 +154,10 @@
                             <div class="text-center margin-bottom-20"><b>LEVERAGE</b></div>
                             <div class="text-center">
                                 <div class="btn-group shadow-0" role="group">
-                                    <button type="button" class="btn btn-link rounded-button w-50 h-50 mr-50 primary" data-mdb-color="dark" data-bet-leverage="2">2x</button>
-                                    <button type="button" class="btn btn-link rounded-button w-50 h-50 mr-50 primary" data-mdb-color="dark" data-bet-leverage="3">3x</button>
-                                    <button type="button" class="btn btn-link rounded-button w-50 h-50 mr-50 primary" data-mdb-color="dark" data-bet-leverage="5">5x</button>
-                                    <button type="button" class="btn btn-link rounded-button w-50 h-50 primary mr-50" data-mdb-color="dark" data-bet-leverage="10">10x</button>
+                                    <button type="button" class="btn btn-link rounded-button w-50px h-50px  primary" data-mdb-color="dark" data-bet-leverage="2">2x</button>
+                                    <button type="button" class="btn btn-link rounded-button w-50px h-50px  primary" data-mdb-color="dark" data-bet-leverage="3">3x</button>
+                                    <button type="button" class="btn btn-link rounded-button w-50px h-50px  primary" data-mdb-color="dark" data-bet-leverage="5">5x</button>
+                                    <button type="button" class="btn btn-link rounded-button w-50px h-50px primary " data-mdb-color="dark" data-bet-leverage="10">10x</button>
                                 </div>
                             </div>
                         </div>
@@ -168,9 +170,9 @@
 
         @if (!matchExpire && userBet == null)
         {
-            <div class="card-footer text-right h-75">
+            <div class="card-footer h-75">
                 <div class="col-lg-12">
-                    <input type="submit" class="btn btn-primary" value="Make Prediction" />
+                    <input type="submit" class="btn  btn-primary btn-100" value="Make Prediction" />
                 </div>
             </div>
         }

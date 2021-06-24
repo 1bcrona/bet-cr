@@ -14,11 +14,12 @@
                 {
                     <tr>
                         <td>
-                            <button type="button" class="rounded-button" data-mdb-color="dark" style="background-color : @ViewData["background-color"].ToString(); color: @ViewData["color"].ToString()">@item.Number</button>
+                            <button type="button" class="rounded-button" data-mdb-color="dark" style="background-color : @ViewData["background-color"].ToString(); color: @ViewData["color"].ToString(); width: 50px;height: 50px">@item.Number</button>
                         </td>
 
-                        <td class="d-md-none d-lg-table-cell">
-                            <small> @item.Player.FullName</small>
+
+                        <td class="d-md-none d-lg-table-cell align-middle">
+                            <small class="align-self-center"> @item.Player.FullName</small>
                         </td>
                     </tr>
                 }
