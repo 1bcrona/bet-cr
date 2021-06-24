@@ -74,9 +74,11 @@ namespace BetCR.Web.Controllers.API
                 List<Claim> userClaims = new List<Claim>
                 {
                     new(ClaimTypes.NameIdentifier, isUser.Id),
+                    new(ClaimTypes.Name, String.Join(" ", isUser.Firstname, isUser.Surname)),
                     new(ClaimTypes.GivenName, isUser.Firstname),
+                    new(ClaimTypes.Surname, isUser.Surname),
                     new(ClaimTypes.Email, isUser.Email),
-                    new(ClaimTypes.Surname, isUser.Surname)
+
                 };
 
                 var claimsIdentity = new ClaimsIdentity(userClaims, CookieAuthenticationDefaults.AuthenticationScheme);

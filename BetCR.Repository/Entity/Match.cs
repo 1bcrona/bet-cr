@@ -3,6 +3,7 @@ using BetCR.Repository.Entity.Base;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using BetCR.Repository.ValueObject;
 
 namespace BetCR.Repository.Entity
 {

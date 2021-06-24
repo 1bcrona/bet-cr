@@ -2,7 +2,7 @@
 using BetCR.Repository.Entity;
 using MediatR;
 
-namespace BetCR.Web.Handlers.Query.Match
+namespace BetCR.Web.Handlers.Query.League
 {
     public class LeagueStageQuery : IRequest<List<Stage>>
     {

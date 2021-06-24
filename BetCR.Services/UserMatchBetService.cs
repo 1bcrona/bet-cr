@@ -8,11 +8,6 @@ using BetCR.Repository.Repository.Base.Interfaces;
 
 namespace BetCR.Services
 {
-    public interface IUserMatchBetService
-    {
-        public Task CalculateUserPointsAsync();
-        public Task CalculateUserPointsAsync(string id);
-    }
     public class UserMatchBetService : IUserMatchBetService
     {
         private readonly IUnitOfWork _unitOfWork;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BetCR.Repository.Entity.Base
+namespace BetCR.Repository.ValueObject
 {
     public class CustomDateTime
     {

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace BetCR.Web.Handlers.Query.Match
+namespace BetCR.Web.Handlers.Query.League
 {
     public class StageStandingQuery : IRequest<Repository.Entity.StageStanding>
     {

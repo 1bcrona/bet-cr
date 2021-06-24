@@ -31,7 +31,9 @@
         <div class="navbar navbar-fixed-top navbar-inverse tabs paper-shadow-bottom-z-2">
             <div class="container-fluid">
                 <ul class="navbar-body list-inline">
-                    <li id="liLogo" class="@(ViewBag.Title=="Home Page"? "active" : "")" data-title="home"><a href="/">BetCR</a></li>
+                    <li id="liLogo" class="@(ViewBag.Title == "Home Page" ? "active" : "")" data-title="home">
+                        <a class="navbar-brand" href="/">Bet<span>CR</span></a>
+                    </li>
                     <li id="liPrediction" data-title="prediction" class="@(ViewBag.Title=="Prediction"? "active" : "")"><a href="@Url.Action("Index", "Prediction")">Make Prediction</a></li>
                     @*<li id="liUserPredictions" data-title="home"><a href="/">User Predictions</a></li>
                         <li id="liAdmin" data-title="home"><a href="/">Admin</a></li>*@
@@ -46,15 +48,17 @@
                         }
                         else
                         {
+
+
+
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle"
                                    href="#"
                                    id="navbarDropdownMenuLink"
                                    role="button"
                                    data-mdb-toggle="dropdown"
-                                   aria-expanded="false"
-                                   data-logged-in="@HttpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value">
-                                    @claims.FirstOrDefault(f => f.Type == ClaimTypes.Name || f.Type == ClaimTypes.Email)?.Value
+                                   aria-expanded="false">
+                                    @((claims ?? new List<Claim>()).FirstOrDefault(f => f.Type == ClaimTypes.Name || f.Type == ClaimTypes.Email)?.Value)
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="/User/Logout">Logout</a></li>

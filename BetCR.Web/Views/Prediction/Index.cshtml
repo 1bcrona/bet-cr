@@ -70,11 +70,11 @@
                                                 <div class="flip-card" data-current=".flip-card-front" data-other=".flip-card-back">
                                                     <div class="flip-card-inner">
                                                         <div class="flip-card-front">
-                                                            <img class="flip-card-change-view" />
+                                                            <img class="flip-card-change-view"  data-mdb-toggle="tooltip" data-title="Change View" data-mdb-title="Change View" title="Change View"/>
                                                             @{ await Html.RenderPartialAsync("Match/_MatchCard", match, new ViewDataDictionary(ViewData) { { "UserBet", userBet } }); }
                                                         </div>
                                                         <div class="flip-card-back">
-                                                            <img class="flip-card-change-view" />
+                                                            <img class="flip-card-change-view" data-mdb-toggle="tooltip" data-title="Change View" data-mdb-title="Change View" title="Change View"/>
                                                             <div class="card border shadow-0  match-row">
                                                                 <div class="card-header">
                                                                     <h3>What were the users' predictions?</h3>
@@ -90,15 +90,7 @@
 
                                                                             }
                                                                             <canvas id='@($"{match.Id}_chart")' class="bet-chart" data-labels='@match.HomeTeam.Name,Draw,@match.AwayTeam.Name' data-values='[@homeWin,@draw,@awayWin]' , data-colors='@homeDomColor1,#EEEEEE,@awayDomColor1' style="width: 200px; height: 200px;"></canvas>
-                                                                            @*<canvas id="chart-data-mdb-labels-example"></canvas>*@
-                                                                            @*<div class="progress" style="height: 40px">
-                                                                                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" data-toggle="tooltip" style='background-color: @homeDomColor1; width: @($"{match.UserMatchBets.Count(w => w.HomeTeamScore > w.AwayTeamScore) / totalBets * 100}%")'>
-                                                                                    </div>
-                                                                                    <div class="progress-bar progress-bar-striped  progress-bar-animated" role="progressbar" data-toggle="tooltip" style='background-color: #FFA900; width: @($"{match.UserMatchBets.Count(w => w.HomeTeamScore == w.AwayTeamScore) / totalBets * 100}%")'>
-                                                                                    </div>
-                                                                                    <div class="progress-bar progress-bar-striped  progress-bar-animated" role="progressbar" data-toggle="tooltip" style='background-color: @awayDomColor1; width: @($"{match.UserMatchBets.Count(w => w.AwayTeamScore > w.HomeTeamScore) / totalBets * 100}%")'>
-                                                                                    </div>
-                                                                                </div>*@
+                                                                         
                                                                         </div>
                                                                     </div>
                                                                 </div>

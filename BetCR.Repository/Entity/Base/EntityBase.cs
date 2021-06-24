@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
+using BetCR.Repository.ValueObject;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace BetCR.Repository.Entity.Base

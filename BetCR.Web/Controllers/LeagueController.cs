@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BetCR.Library;
 using BetCR.Web.Handlers;
+using BetCR.Web.Handlers.Query.League;
 using BetCR.Web.Handlers.Query.Match;
 using BetCR.Web.Handlers.Query.Prediction;
 using BetCR.Web.Models;

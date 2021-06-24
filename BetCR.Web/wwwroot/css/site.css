@@ -567,3 +567,17 @@ img.center {
 .ml-2 {
     margin-left: 0.5rem !important;
 }
+
+.navbar-brand {
+    font-weight: 800;
+    font-size: 20px;
+    text-transform: uppercase;
+}
+
+a.navbar-brand {
+    color: #1266f1 !important
+}
+
+.navbar-brand span {
+    color: #4f4f4f !important
+}
