@@ -24,7 +24,7 @@
                 <div class="col-md-4">
 
                     <div class="d-none d-md-block rounded-button" style=" border: 2px solid!important; border-color: #EEEEEE!important; background-color: transparent">
-                        <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                        <div class="bg-image hover-overlay ripple" data-bs-ripple-color="light">
                             <img src='@(Model.HomeTeam.TeamLogo)'
                                  class="team-logo pred-home-team-logo img-fluid"
                                  data-logo-type="HOME_TEAM_LOGO"
@@ -61,7 +61,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="d-none d-md-block rounded-button" style=" border: 2px solid!important; border-color: #EEEEEE!important; background-color: transparent">
-                        <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                        <div class="bg-image hover-overlay ripple" data-bs-ripple-color="light">
                             <img src='@Model.AwayTeam.TeamLogo'
                                  class="team-logo pred-home-team-logo img-fluid"
                                  data-logo-type="AWAY_TEAM_LOGO"
@@ -81,21 +81,22 @@
             </div>
         </div>
         <div class="card-body mh-200">
-            <div class="row margin-bottom-20">
 
-                @{if (userBet != null)
-                    {
-                        <p class="card-text text-center">Your prediction for this match</p>
+            @{if (userBet != null)
+                {
+                    <div class="align-items-center">
+                        <p class="card-text text-center"><span>Your prediction for this match</span></p>
                         <p class="card-text text-center">Score : <span><b>@(userBet.HomeTeamScore.ToString())</b></span> - <span><b>@(userBet.AwayTeamScore.ToString())</b>  </span></p>
                         <p class="card-text text-center">Leverage : <span><b>@userBet.Leverage</b></span></p>
                         @if ((userBet.UserBetPoint ?? 0) == 0)
                         {
-                            <p class="card-text text-center">(Your point(s) will be multiplied by <span><b>@userBet.Leverage</b></span>)</p>
+                            <p class="card-text text-center">(Your point(s) will be multiplied by <strong>@userBet.Leverage</strong>)</p>
                         }
-                    }
-                    else
-                    {
-
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
                         <div class="col-lg-5 text-center">
                             @{
                                 if (!matchExpire)
@@ -110,7 +111,7 @@
                                 }
                                 else
                                 {
-                                    <label>MATCH</label>
+                                    <p>MATCH</p>
                                 }
                             }
                         </div>
@@ -131,26 +132,26 @@
                                 }
                                 else
                                 {
-                                    <label>EXPIRED</label>
+                                    <p>FINISHED</p>
                                 }
                             }
                         </div>
-                    }
+                    </div>
                 }
-            </div>
+            }
 
             @{
                 if (!matchExpire && userBet == null)
                 {
-                    <div class="row">
+                    <div class="row mt-3">
                         <div class="col-lg-12">
                             <div class="text-center margin-bottom-20"><b>LEVERAGE</b></div>
                             <div class="text-center">
                                 <div class="btn-group shadow-0" role="group">
-                                    <button type="button" class="btn btn-link rounded-button w-50px h-50px  primary" data-mdb-color="dark" data-bet-leverage="2">2x</button>
-                                    <button type="button" class="btn btn-link rounded-button w-50px h-50px  primary" data-mdb-color="dark" data-bet-leverage="3">3x</button>
-                                    <button type="button" class="btn btn-link rounded-button w-50px h-50px  primary" data-mdb-color="dark" data-bet-leverage="5">5x</button>
-                                    <button type="button" class="btn btn-link rounded-button w-50px h-50px primary " data-mdb-color="dark" data-bet-leverage="10">10x</button>
+                                    <button type="button" class="btn btn-link rounded-button w-50px h-50px  primary" data-bs-color="dark" data-bet-leverage="2">2x</button>
+                                    <button type="button" class="btn btn-link rounded-button w-50px h-50px  primary" data-bs-color="dark" data-bet-leverage="3">3x</button>
+                                    <button type="button" class="btn btn-link rounded-button w-50px h-50px  primary" data-bs-color="dark" data-bet-leverage="5">5x</button>
+                                    <button type="button" class="btn btn-link rounded-button w-50px h-50px primary " data-bs-color="dark" data-bet-leverage="10">10x</button>
                                 </div>
                             </div>
                         </div>

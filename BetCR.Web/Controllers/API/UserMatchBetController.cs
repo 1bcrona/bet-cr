@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BetCR.Repository.Entity;
 using BetCR.Web.Controllers.API.Model;
 using BetCR.Web.Handlers.Command;
+using BetCR.Web.Handlers.Command.UserMatchBet;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -44,7 +45,7 @@ namespace BetCR.Web.Controllers.API
             }
 
             var userId = _accessor.HttpContext?.User.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
-            var result = await _mediator.Send(new CreateUserMatchBetCommand()
+            var result = await _mediator.Send(new CreateUserMatchBetCommand
             {
                 AwayTeamScore = mode.AwayTeamScore,
                 HomeTeamScore = mode.HomeTeamScore,

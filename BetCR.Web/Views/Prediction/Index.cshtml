@@ -59,6 +59,7 @@
 
                                         @{
                                             var userBet = match.UserMatchBets.FirstOrDefault(w => w.User.Id == HttpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value);
+                                            var userTournament = ViewBag.CurrentTournamentId;
                                             if (@userBet == null)
                                             {
                                                 await Html.RenderPartialAsync("Match/_MatchCard", match, new ViewDataDictionary(ViewData) { { "UserBet", userBet } });
@@ -70,11 +71,11 @@
                                                 <div class="flip-card" data-current=".flip-card-front" data-other=".flip-card-back">
                                                     <div class="flip-card-inner">
                                                         <div class="flip-card-front">
-                                                            <img class="flip-card-change-view"  data-mdb-toggle="tooltip" data-title="Change View" data-mdb-title="Change View" title="Change View"/>
+                                                            <img class="flip-card-change-view"  data-bs-toggle="tooltip" data-title="Change View" data-bs-title="Change View"  title="Change View" />
                                                             @{ await Html.RenderPartialAsync("Match/_MatchCard", match, new ViewDataDictionary(ViewData) { { "UserBet", userBet } }); }
                                                         </div>
                                                         <div class="flip-card-back">
-                                                            <img class="flip-card-change-view" data-mdb-toggle="tooltip" data-title="Change View" data-mdb-title="Change View" title="Change View"/>
+                                                            <img class="flip-card-change-view"  data-bs-toggle="tooltip" data-title="Change View" data-bs-title="Change View"  title="Change View" />
                                                             <div class="card border shadow-0  match-row">
                                                                 <div class="card-header">
                                                                     <h3>What were the users' predictions?</h3>
@@ -90,7 +91,7 @@
 
                                                                             }
                                                                             <canvas id='@($"{match.Id}_chart")' class="bet-chart" data-labels='@match.HomeTeam.Name,Draw,@match.AwayTeam.Name' data-values='[@homeWin,@draw,@awayWin]' , data-colors='@homeDomColor1,#EEEEEE,@awayDomColor1' style="width: 200px; height: 200px;"></canvas>
-                                                                         
+
                                                                         </div>
                                                                     </div>
                                                                 </div>

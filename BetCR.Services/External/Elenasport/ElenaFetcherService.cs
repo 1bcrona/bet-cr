@@ -66,7 +66,7 @@ namespace BetCR.Services.External.Elenasport
                             using var sr = new System.IO.StreamReader(s);
                             var jsonResponse = await sr.ReadToEndAsync();
                             var jsonResponseObject = JObject.Parse(jsonResponse);
-                            return new HttpJsonResult() { Data = jsonResponseObject, StatusCode = HttpStatusCode.OK };
+                            return new HttpJsonResult { Data = jsonResponseObject, StatusCode = HttpStatusCode.OK };
                         }
                     default:
                         currentCount++;
@@ -74,7 +74,7 @@ namespace BetCR.Services.External.Elenasport
                 }
             }
 
-            return new HttpJsonResult() { Data = null, StatusCode = HttpStatusCode.InternalServerError };
+            return new HttpJsonResult { Data = null, StatusCode = HttpStatusCode.InternalServerError };
         }
 
         public async Task GetFixtureResultsAsync()
@@ -110,69 +110,69 @@ namespace BetCR.Services.External.Elenasport
                     matchEvent.AwayTeamScore = elenaFixtureResult?.AwayTeamRegularGoals + elenaFixtureResult?.AwayTeamExtraTimeGoals;
                     matchEvent.CurrentElapsed = elenaFixtureResult?.Elapsed.ToString();
 
-                    matchEvent.MatchStat = new MatchStats()
+                    matchEvent.MatchStat = new MatchStats
                     {
                         HomeTeamStats = elenaFixtureResult?.StatResults?.Where(w => w.TeamId.ToString() == match.HomeTeam.ExternalId)
-                            .Select(s => new Stat() { Key = s.Type, TeamId = match.HomeTeam.Id, Value = s.Value })
+                            .Select(s => new Stat { Key = s.Type, TeamId = match.HomeTeam.Id, Value = s.Value })
                             .ToList(),
                         AwayTeamStats = elenaFixtureResult?.StatResults?.Where(w => w.TeamId.ToString() == match.AwayTeam.ExternalId)
-                            .Select(s => new Stat() { Key = s.Type, TeamId = match.AwayTeam.Id, Value = s.Value })
+                            .Select(s => new Stat { Key = s.Type, TeamId = match.AwayTeam.Id, Value = s.Value })
                             .ToList(),
                     };
 
-                    matchEvent.MatchLineup = new MatchLineups()
+                    matchEvent.MatchLineup = new MatchLineups
                     {
                         HomeTeamLineup = elenaFixtureResult?.LineupResults?.Where(w => w.TeamId.ToString() == match.HomeTeam.ExternalId)
-                            .Select(s => new Lineup()
+                            .Select(s => new Lineup
                             {
                                 TeamId = match.HomeTeam.Id,
                                 Number = s.ShirtNumber,
                                 StartingXI = s.StartingXI,
                                 Position = s.Position.ToUpperInvariant(),
-                                Player = new Player() { FullName = s.PlayerResult.FullName, Name = s.PlayerResult.Name }
+                                Player = new Player { FullName = s.PlayerResult.FullName, Name = s.PlayerResult.Name }
                             }).ToList(),
 
                         AwayTeamLineup = elenaFixtureResult?.LineupResults?.Where(w => w.TeamId.ToString() == match.AwayTeam.ExternalId)
-                            .Select(s => new Lineup()
+                            .Select(s => new Lineup
                             {
                                 TeamId = match.AwayTeam.Id,
                                 Number = s.ShirtNumber,
                                 StartingXI = s.StartingXI,
                                 Position = s.Position.ToUpperInvariant(),
-                                Player = new Player() { FullName = s.PlayerResult.FullName, Name = s.PlayerResult.Name }
+                                Player = new Player { FullName = s.PlayerResult.FullName, Name = s.PlayerResult.Name }
                             }).ToList(),
                     };
 
-                    matchEvent.Events = new MatchEvents()
+                    matchEvent.Events = new MatchEvents
                     {
                         HomeTeamEvents = elenaFixtureResult?.EventResults?.Where(w => w.TeamId.ToString() == match.HomeTeam.ExternalId)
-                            .Select(s => new Event()
+                            .Select(s => new Event
                             {
                                 Elapsed = s.Elapsed,
                                 ElapsedPlus = s.ElapsedPlus,
                                 TeamId = match.HomeTeam.Id,
                                 EventType = s.Type.ToUpperInvariant(),
-                                Player1 = new Player()
+                                Player1 = new Player
                                 {
                                     FullName = s.Player1Result.FullName,
                                     Name = s.Player1Result.Name
                                 },
-                                Player2 = s.Player2Result != null ? new Player() { FullName = s.Player2Result.FullName, Name = s.Player2Result.Name } : null
+                                Player2 = s.Player2Result != null ? new Player { FullName = s.Player2Result.FullName, Name = s.Player2Result.Name } : null
                             }).ToList(),
 
                         AwayTeamEvents = elenaFixtureResult?.EventResults?.Where(w => w.TeamId.ToString() == match.AwayTeam.ExternalId)
-                            .Select(s => new Event()
+                            .Select(s => new Event
                             {
                                 Elapsed = s.Elapsed,
                                 ElapsedPlus = s.ElapsedPlus,
                                 TeamId = match.AwayTeam.Id,
                                 EventType = s.Type.ToUpperInvariant(),
-                                Player1 = new Player()
+                                Player1 = new Player
                                 {
                                     FullName = s.Player1Result.FullName,
                                     Name = s.Player1Result.Name
                                 },
-                                Player2 = s.Player2Result != null ? new Player() { FullName = s.Player2Result.FullName, Name = s.Player2Result.Name } : null
+                                Player2 = s.Player2Result != null ? new Player { FullName = s.Player2Result.FullName, Name = s.Player2Result.Name } : null
                             }).ToList()
                     };
 
@@ -282,7 +282,7 @@ namespace BetCR.Services.External.Elenasport
                             await stageRepository.AddAsync(stageObject);
                         }
 
-                        var match = new Match()
+                        var match = new Match
                         {
                             Id = Guid.NewGuid().ToString("D"),
                             ExternalId = elenaFixture.Id,
@@ -318,7 +318,7 @@ namespace BetCR.Services.External.Elenasport
                 if (result.Data["data"] is not JArray data) continue;
 
                 var stageStanding = (await stageStandingRepository.FindAsync(f => f.Stage.Id == stage.Id))
-                    .FirstOrDefault() ?? new StageStanding()
+                    .FirstOrDefault() ?? new StageStanding
                     {
                         Id = Guid.NewGuid().ToString("D"),
                         Stage = stage,
@@ -341,7 +341,7 @@ namespace BetCR.Services.External.Elenasport
                         Played = elenaStandingResult.Played,
                         Point = elenaStandingResult.Point,
                         Win = elenaStandingResult.Win,
-                        TeamStanding = new TeamStanding()
+                        TeamStanding = new TeamStanding
                         {
                             Position = elenaStandingResult.Position,
                             BadgeURL = elenaStandingResult.TeamResult.BadgeURL,

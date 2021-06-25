@@ -1,21 +1,21 @@
 ﻿.flip-card {
     background-color: transparent;
     max-height: 1200px;
-    min-height: 400px;
+    min-height: 450px;
 }
 
-@media screen and (max-width: 992px) {
+/*@media screen and (max-width: 992px) {
     .flip-card {
         min-height: 500px;
     }
-}
+}*/
 
 
-@media screen and (max-width: 576px) {
+/*@media screen and (max-width: 576px) {
     .flip-card {
         min-height: 600px;
     }
-}
+}*/
 
 
 

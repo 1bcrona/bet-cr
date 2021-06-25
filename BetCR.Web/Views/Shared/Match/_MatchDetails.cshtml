@@ -6,7 +6,7 @@
 
 @{
 
-    var validEvents = new Dictionary<string, string>() { { "R_CARD", "RED CARD" }, { "PEN_SCORED", "PENALTY" }, { "GOAL", "GOAL" }, { "OWN_GOAL", "OWN GOAL" }, { "Y_CARD", "YELLOW CARD" }, { "SUBST", "SUBSTITUTION" } };
+    var validEvents = new Dictionary<string, string> { { "R_CARD", "RED CARD" }, { "PEN_SCORED", "PENALTY" }, { "GOAL", "GOAL" }, { "OWN_GOAL", "OWN GOAL" }, { "Y_CARD", "YELLOW CARD" }, { "SUBST", "SUBSTITUTION" } };
     var allEvents = new List<Tuple<int, Event>>();
     allEvents.AddRange(Model.MatchEvent?.Events?.HomeTeamEvents?.Select(s => Tuple.Create(-1, s)) ?? Array.Empty<Tuple<int, Event>>());
     allEvents.AddRange(Model.MatchEvent?.Events?.AwayTeamEvents?.Select(s => Tuple.Create(1, s)) ?? Array.Empty<Tuple<int, Event>>());
@@ -29,7 +29,7 @@
         <div class="col-md-4 align-self-center">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="bg-image hover-overlay ripple d-md-none d-lg-block align-items-center" data-mdb-ripple-color="light">
+                    <div class="bg-image hover-overlay ripple d-md-none d-lg-block align-items-center" data-bs-ripple-color="light">
                         <img src='@(Model?.HomeTeam?.TeamLogo)'
                              class="img-fluid"
                              data-team-name="@Model?.HomeTeam?.Name" data-toggle="tooltip" data-placement="bottom"
@@ -85,7 +85,7 @@
                     <h6><small class="text">@(awayLineupGroup.GetValueOrDefault("DEFENDER")?.Count()??0) - @(awayLineupGroup.GetValueOrDefault("MIDFIELDER")?.Count()??0) - @(awayLineupGroup.GetValueOrDefault("FORWARD")?.Count()??0) </small></h6>
                 </div>
                 <div class="col-md-6 ">
-                    <div class="bg-image hover-overlay ripple d-md-none d-lg-block align-items-center" data-mdb-ripple-color="light">
+                    <div class="bg-image hover-overlay ripple d-md-none d-lg-block align-items-center" data-bs-ripple-color="light">
                         <img src='@(Model?.AwayTeam?.TeamLogo)'
                              class="img-fluid"
                              data-team-name="@Model?.AwayTeam?.Name" data-toggle="tooltip" data-placement="bottom"

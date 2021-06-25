@@ -47,6 +47,7 @@ namespace BetCR.Repository.Repository
             modelBuilder.Entity<UserMatchBet>().HasKey(x => x.Id);
             modelBuilder.Entity<Stage>().HasKey(h => h.Id);
             modelBuilder.Entity<StageStanding>().HasKey(h => h.Id);
+            modelBuilder.Entity<UserTournameRel>().HasKey(h => h.Id);
 
 
             modelBuilder.Entity<User>().HasMany(m => m.UserMatchBets).WithOne(o => o.User);
@@ -55,7 +56,7 @@ namespace BetCR.Repository.Repository
             modelBuilder.Entity<Match>().HasOne(h => h.Stage).WithMany(m => m.Matches);
             modelBuilder.Entity<Match>().HasOne(h => h.HomeTeam).WithMany(m => m.HomeMatches);
             modelBuilder.Entity<Match>().HasOne(h => h.AwayTeam).WithMany(m => m.AwayMatches);
-            modelBuilder.Entity<Match>().HasOne(h => h.Tournament).WithMany(m => m.Matches);
+
 
             modelBuilder.Entity<Match>().HasOne(h => h.MatchEvent).WithOne(m => m.Match);
             modelBuilder.Entity<Match>().HasMany(h => h.UserMatchBets).WithOne(m => m.Match);
@@ -69,6 +70,10 @@ namespace BetCR.Repository.Repository
 
             modelBuilder.Entity<Stage>().HasOne(h => h.StageStanding).WithOne(o => o.Stage);
             modelBuilder.Entity<Stage>().HasOne(h => h.League).WithMany(o => o.Stages);
+
+            modelBuilder.Entity<UserTournameRel>().HasOne(h => h.User).WithMany(o => o.UserTournameRels);
+            modelBuilder.Entity<UserTournameRel>().HasOne(h => h.Tournament).WithMany(o => o.UserTournameRels);
+
 
             modelBuilder.Entity<MatchEvent>().Property(p => p.Events)
                 .HasConversion(

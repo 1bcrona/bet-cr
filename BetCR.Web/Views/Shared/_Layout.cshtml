@@ -1,6 +1,10 @@
 ﻿@using System.Security.Claims
+@using BetCR.Repository.Entity
+@using Microsoft.EntityFrameworkCore.Internal
 @using Newtonsoft.Json
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,70 +15,103 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&amp;display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css" rel="stylesheet">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
           rel="stylesheet" />
 
     <link href='https://cdn.jsdelivr.net/npm/@@fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.css'
           rel="stylesheet" />
 
+    @*<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">*@
+
+
+    @*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">*@
+
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css"
           rel="stylesheet" />
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css" />
     <link rel="stylesheet" href="~/static/css/site.css" />
-    <link rel="stylesheet" href="~/static/css/wizard.css" />
     @RenderSection("Head", false)
 </head>
 <body>
 
-    <navbar>
-        <div class="navbar navbar-fixed-top navbar-inverse tabs paper-shadow-bottom-z-2">
-            <div class="container-fluid">
-                <ul class="navbar-body list-inline">
-                    <li id="liLogo" class="@(ViewBag.Title == "Home Page" ? "active" : "")" data-title="home">
-                        <a class="navbar-brand" href="/">Bet<span>CR</span></a>
-                    </li>
-                    <li id="liPrediction" data-title="prediction" class="@(ViewBag.Title=="Prediction"? "active" : "")"><a href="@Url.Action("Index", "Prediction")">Make Prediction</a></li>
-                    @*<li id="liUserPredictions" data-title="home"><a href="/">User Predictions</a></li>
-                        <li id="liAdmin" data-title="home"><a href="/">Admin</a></li>*@
 
-                    @{
-                        var claims = HttpContextAccessor.HttpContext?.User.Claims.ToList();
-                        if (claims?.Count == 0)
-                        {
-                            <li>
-                                <a class="nav-link" href="/User/Login">Login</a>
-                            </li>
-                        }
-                        else
-                        {
+    <nav class="navbar navbar-expand-sm fixed-top navbar-light bg-light">
+        <a class="navbar-brand" href="/">Bet<span>CR</span></a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-mdb-toggle="collapse" data-target="#navbar1" data-mdb-target="#navbar1" aria-controls="navbar1" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
 
+        <div class="collapse navbar-collapse " data-title="home" id="navbar1">
+            <ul class="navbar-nav">
 
+                <li class="nav-item  @(ViewBag.Title == "Prediction" ? "active" : "")">
+                    <a class="nav-link" href="@Url.Action("Index", "Prediction")">Make Prediction</a>
+                </li>
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle"
-                                   href="#"
-                                   id="navbarDropdownMenuLink"
-                                   role="button"
-                                   data-mdb-toggle="dropdown"
-                                   aria-expanded="false">
-                                    @((claims ?? new List<Claim>()).FirstOrDefault(f => f.Type == ClaimTypes.Name || f.Type == ClaimTypes.Email)?.Value)
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="/User/Logout">Logout</a></li>
-                                </ul>
-                            </li>
-
-                        }
+                @{
+                    if (ViewBag.Claims?.Count == 0)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/User/Login">Login</a>
+                        </li>
                     }
-                </ul>
-                <div class="tab-highlighter" style="display: none"></div>
+                    else
+                    {
+
+                        <li class="nav-item dropdown">
+                            <a href="#" id="menu" 
+                               data-mdb-toggle="dropdown"
+                               @*data-bs-toggle="dropdown"*@
+                               data-toggle="dropdown"
+                               class="nav-link dropdown-toggle"
+                               data-display="static">@((ViewBag.Claims as List<Claim> ?? new List<Claim>()).FirstOrDefault(f => f.Type == ClaimTypes.Name || f.Type == ClaimTypes.Email)?.Value)</a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item">
+                                    <a href="/User/Logout">Logout</a>
+                                </li>
+                                <li class="dropdown-item dropdown-submenu">
+                                    <a href="#" 
+                                       data-mdb-toggle="dropdown" 
+                                       @*data-bs-toggle="dropdown"*@ 
+                                       data-toggle="dropdown" 
+                                       class="dropdown-toggle">Tournaments</a>
+                                    <ul class="dropdown-menu tournament">
+                                        <li class="dropdown-item">
+                                            <a href="/User/Tournament">Tournament Center</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                @*<li class="dropdown-item dropdown-submenu">
+                                        <a href="#" data-mdb-toggle="dropdown" class="dropdown-toggle">Submenu-2</a>
+                                        <ul class="dropdown-menu">
+                                            <li class="dropdown-item">
+                                                <a href="#">Item-1</a>
+                                            </li>
+                                            <li class="dropdown-item">
+                                                <a href="#">Item-2</a>
+                                            </li>
+                                            <li class="dropdown-item">
+                                                <a href="#">Item-3</a>
+                                            </li>
+                                        </ul>
+                                    </li>*@
+                            </ul>
+                        </li>
+                    }
+
+                }
+            </ul>
+            <div class="tab-highlighter" style="display: none">
             </div>
         </div>
-    </navbar>
+    </nav>
 
     <div class="container">
-        <main role="main" style="margin-top: 50px;">
+        <main role="main" style="margin-top: 100px;">
+
             @RenderBody()
         </main>
     </div>
@@ -86,11 +123,29 @@
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@@fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>
+    @*<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>*@
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script>
+
     <script src="~/static/js/site.js" asp-append-version="true"></script>
 
     <script>
+
+        $('.dropdown-submenu > a').on("click", function (e) {
+            var submenu = $(this);
+            $('.dropdown-submenu .dropdown-menu').removeClass('show');
+            submenu.next('.dropdown-menu').addClass('show');
+            e.stopPropagation();
+        });
+
+        $('.dropdown').on("hidden.bs.dropdown", function () {
+            // hide any open menus when parent closes
+            $('.dropdown-menu.show').removeClass('show');
+        });
 
         $(document).on('click', 'navbar .tabs ul.navbar-body li a', function () {
             const $this = $(this);
@@ -107,14 +162,15 @@
                 });
             },
             refresh: function () {
-                const $this = $('.tabs ul.navbar-body li.active a');
-                $('.tab-highlighter').css({
-                    'display': 'block',
-                    'left': $this.closest('li').offset().left,
-                    'width': $this.closest('li').outerWidth()
-                });
+                const $this = $('li.active a');
 
-
+                if ($this) {
+                    $('.tab-highlighter').css({
+                        'display': 'block',
+                        'left': $this.closest('li').offset().left,
+                        'width': $this.closest('li').outerWidth()
+                    });
+                }
             },
             hide: function () {
                 $('.tab-highlighter').css({
@@ -128,8 +184,38 @@
             TabHighlighter.refresh();
         });
         $(document).ready(function () {
+
+            $.ajax({
+                url: "/api/User/Tournament",
+                type: "GET",
+                success: function (result) {
+                    const data = result.data;
+                    let ulTournaments = $("ul.tournament");
+                    if (data.all) {
+
+                        $(ulTournaments).prepend(`<hr />`);
+
+                        $(data.all).each((index, element) => {
+
+                            if (element.id == data.current.id) {
+                                $(ulTournaments).prepend(` <li class="dropdown-item" style="border: 3px solid #EEEEEE"><i class="fas fa-angle-right"></i><span class="text-muted"> ${element.tournamentName} </span></li>`);
+                            }
+                            else {
+                                $(ulTournaments).prepend(` <li class="dropdown-item "><a href="/User/ChangeTournament/${element.id}"> ${element.tournamentName} </a></li>`);
+
+                            }
+                        });
+
+                        ulTournaments.prepend(`<div class="text-center"><span class="text-muted"><strong>Your Tournaments</strong></span></div>`);
+                    }
+                },
+                error: function (err) {
+
+                }
+            });
             TabHighlighter.hide();
             TabHighlighter.refresh();
+
         });
     </script>
 

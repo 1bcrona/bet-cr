@@ -1,15 +1,5 @@
-FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine AS base
-FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS build
-
-ENV TZ=Europe/Istanbul
-
-ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true
-
-RUN apk add --no-cache icu-libs
-
-RUN apk add tzdata \
-        && cp /usr/share/zoneinfo/${TZ} /etc/localtime \
-        && echo "${TZ}" > /etc/timezone
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 
 WORKDIR /src
 

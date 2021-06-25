@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using BetCR.Services.External;
+using BetCR.Web.Controllers.Base;
 using BetCR.Web.Handlers.Query;
 using BetCR.Web.Handlers.Query.Match;
 using BetCR.Web.Models;
@@ -15,13 +16,13 @@ using Microsoft.Extensions.Logging;
 namespace BetCR.Web.Controllers
 {
     [Route("[controller]")]
-    public class MatchController : Controller
+    public class MatchController : BaseController
     {
         private readonly IMediator _mediator;
         private readonly ILogger<MatchController> _logger;
         private readonly IHttpContextAccessor _accessor;
 
-        public MatchController(IMediator mediator, ILogger<MatchController> logger, IHttpContextAccessor accessor)
+        public MatchController(IMediator mediator, ILogger<MatchController> logger, IHttpContextAccessor accessor) : base(accessor)
         {
             _mediator = mediator;
             _logger = logger;
@@ -33,7 +34,7 @@ namespace BetCR.Web.Controllers
         [Route("{id?}")]
         public async Task<IActionResult> Index(string id)
         {
-            var result = await _mediator.Send(new MatchDetailQuery() { MatchId = id });
+            var result = await _mediator.Send(new MatchDetailQuery { MatchId = id });
 
 
             var userId = _accessor.HttpContext?.User.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -49,7 +50,7 @@ namespace BetCR.Web.Controllers
         [Route("Pitch/{id?}")]
         public async Task<IActionResult> Pitch(string id)
         {
-            var result = await _mediator.Send(new MatchDetailQuery() { MatchId = id });
+            var result = await _mediator.Send(new MatchDetailQuery { MatchId = id });
             return PartialView("Match/_MatchPitch", result);
         }
 
@@ -58,7 +59,7 @@ namespace BetCR.Web.Controllers
         [Route("Details/{id?}")]
         public async Task<IActionResult> Details(string id)
         {
-            var result = await _mediator.Send(new MatchDetailQuery() { MatchId = id });
+            var result = await _mediator.Send(new MatchDetailQuery { MatchId = id });
             return PartialView("Match/_MatchDetails", result);
         }
 
