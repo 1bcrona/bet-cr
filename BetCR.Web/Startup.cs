@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using BetCR.Caching.Impl;
 using BetCR.Caching.Interface;
@@ -10,11 +11,13 @@ using BetCR.Services;
 using BetCR.Services.Base;
 using BetCR.Services.External;
 using BetCR.Services.External.Elenasport;
+using BetCR.Web.Controllers.API.Model;
 using BetCR.Web.Controllers.API.Validator;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +25,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 
 namespace BetCR.Web
 {
@@ -63,6 +67,8 @@ namespace BetCR.Web
             );
 
 
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,7 +84,7 @@ namespace BetCR.Web
                 app.UseHsts();
             }
 
-      
+
             app.UseHttpsRedirection();
 
             Console.WriteLine(env.EnvironmentName);
@@ -93,6 +99,34 @@ namespace BetCR.Web
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseExceptionHandler(builder =>
+            {
+                builder.Run(async context =>
+                {
+                    var response = new ResponseModel<object>();
+                    var exception = context.Features.Get<IExceptionHandlerPathFeature>().Error;
+
+                    switch (exception)
+                    {
+                        case ApiException ex:
+                            context.Response.ContentType = "application/json";
+                            response.ErrorMessage = ex.ErrorMessage;
+                            response.Result = ex.ErrorCode;
+                            context.Response.StatusCode = ex.StatusCode;
+                            break;
+
+                        default:
+                            response.Result = "UNKNWN";
+                            response.ErrorMessage = "An error occured";
+                            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                            break;
+                    }
+
+                    await context.Response.WriteAsync(JsonConvert.SerializeObject(response));
+                });
+            });
+
 
             app.UseEndpoints(endpoints =>
             {

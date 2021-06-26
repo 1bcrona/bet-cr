@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BetCR.Repository.Entity;
 using BetCR.Repository.Repository.Base.Interfaces;
+using BetCR.Web.Controllers.API.Model;
 using MediatR;
 
 namespace BetCR.Web.Handlers.Command.UserMatchBet
@@ -27,7 +28,7 @@ namespace BetCR.Web.Handlers.Command.UserMatchBet
 
             if (isBetExist.Any())
             {
-                throw new Exception("USER_ALREADY_BET");
+                throw new ApiException() { ErrorCode = "USER_ALREADY_BET", StatusCode = 500, ErrorMessage = "User has already bet for this match" };
             }
 
             var userRepository = _unitOfWork.GetRepository<User, string>();

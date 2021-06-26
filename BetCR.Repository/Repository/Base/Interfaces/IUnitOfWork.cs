@@ -17,9 +17,9 @@ namespace BetCR.Repository.Repository.Base.Interfaces
 
         IRepository<T, TKey> GetRepository<T, TKey>() where T : EntityBase<TKey>;
 
-        bool SaveChanges();
+        void SaveChanges();
 
-        Task<bool> SaveChangesAsync();
+        Task SaveChangesAsync();
 
         #endregion Public Methods
     }

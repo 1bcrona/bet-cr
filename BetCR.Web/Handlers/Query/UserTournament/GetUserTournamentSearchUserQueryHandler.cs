@@ -24,7 +24,7 @@ namespace BetCR.Web.Handlers.Query.UserTournament
                 new GetUserTournamentSearchUserResponseModel()
                 {
                     User = s,
-                    IsRegisteredToTournament = s.UserTournameRels.Any(s => s.Tournament.Id == request.TournamentId && s.Active == 1),
+                    IsRegisteredToTournament = s.UserTournameRels.Any(a => a.Tournament.Id == request.TournamentId && s.Active == 1),
                     TournamentId = request.TournamentId
                 });
 

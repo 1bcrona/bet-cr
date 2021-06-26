@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using BetCR.Web.Controllers.API.Model;
 
 namespace BetCR.Web.Handlers.Command.UserAction
 {
@@ -43,18 +44,18 @@ namespace BetCR.Web.Handlers.Command.UserAction
 
             if (fromUser == null)
             {
-                throw new Exception("FROM_USER_NOT_FOUND");
+                throw new ApiException() { ErrorCode = "FROM_USER_NOT_FOUND", ErrorMessage = "Specified User Not Found", StatusCode = 500 };
             }
             var toUser = await userRepository.GetAsync(request.ToUserId);
 
             if (toUser == null)
             {
-                throw new Exception("TO_USER_NOT_FOUND");
+                throw new ApiException() { ErrorCode = "FROM_USER_NOT_FOUND", ErrorMessage = "Specified User Not Found", StatusCode = 500 };
             }
 
             if (isExisting.Any())
             {
-                throw new Exception("INVITATION_ALREADY_SENT");
+                throw new ApiException() { ErrorCode = "INVITATION_ALREADY_SENT", ErrorMessage = "Invitation has already been sent", StatusCode = 500 };
             }
 
             var added = await userActionRepository.AddAsync(new Repository.Entity.UserAction()

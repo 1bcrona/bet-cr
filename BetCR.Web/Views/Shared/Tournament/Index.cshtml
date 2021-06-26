@@ -122,8 +122,9 @@
                                                 <div class="card-body">
                                                     <div class="row">
                                                         <div class="@(isOwner ? "col-lg-3" : "col-lg-12")">
-                                                            <form id="fTournament"
-                                                                  class="request-form"
+                                                            <form id="fTournament_@tournament.Id"
+                                                                  class="request-form tournament-form"
+                                                                  data-id="@tournament.Id"
                                                                   novalidate>
                                                                 <div class="d-flex">
                                                                     <div class="form-group has-feedback-left mr-2">
@@ -155,7 +156,7 @@
                                                                     if (!isOwner && !disContinued)
                                                                     {
                                                                         <div class="form-group">
-                                                                            <input type="submit" id="sLeaveTournament" data-id="@tournament.Id" value="Leave" class="btn btn-danger" />
+                                                                            <input type="submit" id="sLeaveTournament" value="Leave" class="btn btn-danger" />
                                                                         </div>
                                                                     }
                                                                 }
@@ -167,7 +168,7 @@
                                                             {
                                                                 <div class="col-lg-9 justify-content-center align-items-center">
 
-                                                                    <form id="fTournamentInvite(@tournament.Id)"
+                                                                    <form id="fTournamentInvite_@tournament.Id"
                                                                           class="request-form invite-form"
                                                                           novalidate>
 
@@ -218,7 +219,7 @@
 
                                 <label for="iCreateTournament" class="label">Tournament Name</label>
                                 <input type="text"
-                                       name="CreateTournament"
+                                       name="TournamentName"
                                        class="form-control"
                                        id="iCreateTournament"
                                        required
@@ -242,7 +243,7 @@
                                            placeholder="Date"
                                            id="dStartDate"
                                            onkeydown="return false"
-                                           name="EndDateString"
+                                           name="StartDateString"
                                            required />
                                 </div>
                                 <div class="form-group ml-2">
@@ -387,12 +388,9 @@
 
         });
 
-        $("#sLeaveTournament").click(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            const target = e.target;
-            const id = $(target).attr("data-id");
-            const url = `/api/User/Tournament/${id}`
+        $(".tournament-form").submit(function (e) {
+            const id = $(this).attr("data-id");
+            const url = `/api/UserTournament/${id}`
 
             $.ajax({
                 url: url,
@@ -501,7 +499,9 @@
                         .attr('data-bs-original-title', message)
                         .attr('data-mdb-original-title', message)
                         .tooltip('update')
-                        .tooltip('show');
+                    if ($(el).val() !== "") {
+                        $(el).tooltip('show');
+                    }
 
                     $("#fCreateTournament input[type = submit]").prop('disabled', true);
                 },
@@ -558,8 +558,48 @@
 
                 let form = this;
 
-                const formString = JSON.stringify($(form).serializeArray());
-                let formObject = JSON.parse(formString);
+                const formString = JSON.stringify($(form).serializeObject());
+                let params = JSON.parse(formString);
+                let url = "/api/UserTournament";
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: JSON.stringify(params),
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (data) {
+                        const modalFadeSeconds = 2;
+                        let modalData = `<br>${data.result}</br>`;
+                        if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
+
+                        const modal = $("#fCreateTournament").addModal({
+                            id: "successModal",
+                            modalContent: modalData,
+                            closeTimer: modalFadeSeconds,
+                            modalState: "success",
+                            afterCloseAction:
+                                function () {
+                                    window.location.reload();
+                                }
+
+                        });
+                        modal.modalElement.show();
+                    },
+                    error: function (err) {
+                        const data = err.responseJSON;
+                        const modalFadeSeconds = 2;
+                        let modalData = `<br>${data.result}</br>`;
+                        if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
+
+                        const modal = $("#fCreateTournament").addModal({
+                            id: "errorModal",
+                            modalContent: modalData,
+                            closeTimer: modalFadeSeconds,
+                            modalState: "error"
+                        });
+                        modal.modalElement.show();
+                    }
+                });
 
 
             })

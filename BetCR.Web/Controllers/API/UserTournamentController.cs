@@ -1,8 +1,11 @@
-﻿using BetCR.Repository.Entity;
+﻿using BetCR.Library;
+using BetCR.Repository.Entity;
+using BetCR.Repository.ValueObject;
 using BetCR.Web.Controllers.API.Model;
 using BetCR.Web.Controllers.API.Validator;
 using BetCR.Web.Handlers.Command.UserAction;
 using BetCR.Web.Handlers.Command.UserTournament;
+using BetCR.Web.Handlers.Command.UserTournamentRel;
 using BetCR.Web.Handlers.Query.UserTournament;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -12,9 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
-using BetCR.Repository.ValueObject;
 
 namespace BetCR.Web.Controllers.API
 {
@@ -39,6 +40,36 @@ namespace BetCR.Web.Controllers.API
         #endregion Public Constructors
 
         #region Public Methods
+
+        [HttpDelete]
+        [Authorize]
+        [Route("{tournamentId}")]
+        public async Task<IActionResult> DeleteUserTournament(string tournamentId)
+        {
+            var response = new ResponseModel<string>();
+
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Select(x => x.Value.Errors)
+                    .Where(y => y.Count > 0)
+                    .SelectMany(s => s.Select(s1 => s1.Exception?.ToString() ?? s1.ErrorMessage))
+                    .ToList();
+
+                var combinedErrors = String.Join("/r/n", errors);
+                response.Result = combinedErrors;
+                response.Result = combinedErrors;
+
+                return BadRequest(response);
+            }
+
+            var userId = _accessor.HttpContext?.User.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            await _mediator.Send(new DeleteUserTournamentCommand { TournamentId = tournamentId, UserId = userId });
+            response.Data = "Tournament Leave Operation Successfull";
+            response.Result = "Tournament Delete Operation Successful";
+
+            return Ok(response);
+        }
 
         [Authorize]
         [HttpPost]
@@ -66,33 +97,56 @@ namespace BetCR.Web.Controllers.API
                 return BadRequest(response);
             }
 
-            try
+            var result = await _mediator.Send(new AddUserActionCommand()
             {
-                var result = await _mediator.Send(new AddUserActionCommand()
-                {
-                    ActionObject = model.TournamentId,
-                    ActionType = UserActionType.TOURNAMENT_INVITE,
-                    ActionStatus = UserActionStatus.WAITING_FOR_REPLY,
-                    FromUserId = model.InviterUserId,
-                    ToUserId = model.InviteeUserId
-                });
+                ActionObject = model.TournamentId,
+                ActionType = UserActionType.TOURNAMENT_INVITE,
+                ActionStatus = UserActionStatus.WAITING_FOR_REPLY,
+                FromUserId = model.InviterUserId,
+                ToUserId = model.InviteeUserId
+            });
 
-                response.Result = $"Invitation sent";
-                response.Data = result;
-            }
-            catch (Exception ex)
-            {
-                var errorMessage = new StringBuilder();
-                errorMessage.AppendLine("Invitation send failed");
-                errorMessage.AppendLine($"CODE:{ex.Message}");
-
-                response.Result = errorMessage.ToString();
-                response.ErrorMessage = ex.Message;
-
-                return StatusCode(500, response);
-            }
+            response.Result = $"Invitation sent";
+            response.Data = result;
 
             return Ok(response);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Post([FromBody] CreateTournamentModel model)
+        {
+            var response = new ResponseModel<UserTournament>();
+
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Select(x => x.Value.Errors)
+                    .Where(y => y.Count > 0)
+                    .SelectMany(s => s.Select(s1 => s1.Exception?.ToString() ?? s1.ErrorMessage))
+                    .ToList();
+
+                var combinedErrors = String.Join("/r/n", errors);
+                response.Result = combinedErrors;
+
+                return BadRequest(response);
+            }
+
+            var userId = _accessor.HttpContext?.User.Claims
+                .FirstOrDefault(f => f.Type == ClaimTypes.NameIdentifier)
+                ?.Value;
+
+            var result = await _mediator.Send(new CreateUserTournamentCommand()
+            {
+                EndDateEpoch = model.EndDateEpoch,
+                StartDateEpoch = model.StartDateEpoch,
+                TournamentName = model.TournamentName,
+                TournamentPassword = EncryptionHelper.MD5Hash(model.Password),
+                UserId = userId
+            });
+
+            response.Data = result;
+            response.Result = "Tournament Successfully Created";
+            return Created(string.Empty, response);
         }
 
         [Authorize]
@@ -103,8 +157,8 @@ namespace BetCR.Web.Controllers.API
             var response = new ResponseModel<UserAction>();
 
             var userId = _accessor.HttpContext?.User.Claims
-                 .FirstOrDefault(f => f.Type == ClaimTypes.NameIdentifier)
-                 ?.Value;
+                .FirstOrDefault(f => f.Type == ClaimTypes.NameIdentifier)
+                ?.Value;
 
             var validation = await new RespondUserTournamentModelValidator().ValidateAsync(model);
 
@@ -121,39 +175,29 @@ namespace BetCR.Web.Controllers.API
                 return BadRequest(response);
             }
 
-            try
+            UserAction action = null;
+
+            if (model.Response)
             {
-                UserAction action = null;
-
-                if (model.Response)
+                await _mediator.Send(new JoinTournamentCommand()
                 {
-                    await _mediator.Send(new JoinTournamentCommand()
-                    {
-                        InviteId = model.InvitationId,
-                        TournamentId = model.TournamentId,
-                        UserId = userId
-                    });
-                }
-                else
-                {
-                    action = await _mediator.Send(new UpdateUserActionCommand()
-                    { ActionResult = model.Response.ToString().ToUpperInvariant(), ActionStatus = UserActionStatus.RESPOND, Id = model.InvitationId });
-                }
-
-                response.Result = $"Operation Completed";
-                response.Data = action;
+                    InviteId = model.InvitationId,
+                    TournamentId = model.TournamentId,
+                    UserId = userId
+                });
             }
-            catch (Exception ex)
+            else
             {
-                var errorMessage = new StringBuilder();
-                errorMessage.AppendLine("Operation Failed");
-                errorMessage.AppendLine($"CODE:{ex.Message}");
-
-                response.Result = errorMessage.ToString();
-                response.ErrorMessage = ex.Message;
-
-                return StatusCode(500, response);
+                action = await _mediator.Send(new UpdateUserActionCommand()
+                {
+                    ActionResult = model.Response.ToString().ToUpperInvariant(),
+                    ActionStatus = UserActionStatus.RESPOND,
+                    Id = model.InvitationId
+                });
             }
+
+            response.Result = $"Operation Completed";
+            response.Data = action;
 
             return Ok(response);
         }

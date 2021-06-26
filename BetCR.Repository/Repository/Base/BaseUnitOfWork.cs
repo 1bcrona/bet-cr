@@ -36,17 +36,11 @@ namespace BetCR.Repository.Repository.Base
 
         #region Public Properties
 
-        public DbContext DbContext { get { return _dbContext; } }
+        public DbContext DbContext => _dbContext;
 
-        public string Id
-        {
-            get
-            {
-                return _id;
-            }
-        }
+        public string Id => _id;
 
-        public ILogger Logger { get { return _logger; } }
+        public ILogger Logger => _logger;
 
         #endregion Public Properties
 
@@ -63,30 +57,16 @@ namespace BetCR.Repository.Repository.Base
             return new BaseRepository<T, TKey>(_dbContext);
         }
 
-        public bool SaveChanges()
+        public void SaveChanges()
         {
-            try
-            {
-                DbContext.SaveChanges();
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            return true;
+            DbContext.SaveChanges();
         }
 
-        public async Task<bool> SaveChangesAsync()
+        public async Task SaveChangesAsync()
         {
-            try
-            {
-                await DbContext.SaveChangesAsync();
-            }
-            catch (Exception exception)
-            {
-                return false;
-            }
-            return true;
+
+            await DbContext.SaveChangesAsync();
+
         }
 
         #endregion Public Methods

@@ -2,7 +2,7 @@
 using BetCR.Repository.Entity;
 using BetCR.Services.Base;
 using BetCR.Web.Controllers.API.Model;
-using BetCR.Web.Handlers.Command;
+using BetCR.Web.Handlers.Query.Tournament;
 using BetCR.Web.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
@@ -11,14 +11,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using BetCR.Web.Handlers.Command.UserTournamentRel;
-using BetCR.Web.Handlers.Query.Tournament;
 
 namespace BetCR.Web.Controllers.API
 {
@@ -48,80 +45,6 @@ namespace BetCR.Web.Controllers.API
 
         #region Public Methods
 
-        [HttpGet]
-        [Authorize]
-        [Route("Tournament")]
-        public async Task<IActionResult> UserTournament()
-        {
-
-            var response = new ResponseModel<GetUserTournamentResponseModel>();
-
-            try
-            {
-                var userId = _accessor.HttpContext?.User.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
-                var result = await _mediator.Send(new GetUserTournamentQuery
-                {
-                    UserId = userId
-                });
-
-
-                response.Data = result;
-                response.Result = "Tournament Get Operation Succeeded";
-            }
-            catch (Exception ex)
-            {
-                response.Result = "Tournament Get Operation Failed";
-                response.ErrorMessage = ex.Message;
-                return StatusCode(500, response);
-            }
-
-            return Ok(response);
-
-
-
-
-        }
-
-
-        [HttpDelete]
-        [Authorize]
-        [Route("Tournament/{tournamentId}")]
-        public async Task<IActionResult> DeleteUserTournament(string tournamentId)
-        {
-            var response = new ResponseModel<string>();
-
-            if (!ModelState.IsValid)
-            {
-                var errors = ModelState.Select(x => x.Value.Errors)
-                    .Where(y => y.Count > 0)
-                    .SelectMany(s => s.Select(s1 => s1.Exception?.ToString() ?? s1.ErrorMessage))
-                    .ToList();
-
-                var combinedErrors = String.Join("/r/n", errors);
-                response.Result = combinedErrors;
-                response.Result = combinedErrors;
-
-                return BadRequest(response);
-            }
-
-            var userId = _accessor.HttpContext?.User.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
-
-            try
-            {
-                await _mediator.Send(new DeleteUserTournamentCommand { TournamentId = tournamentId, UserId = userId });
-                response.Data = "Tournament Leave Operation Successfull";
-                response.Result = "Tournament Delete Operation Successful";
-            }
-            catch (Exception ex)
-            {
-                response.Result = "Tournament Delete Operation Failed";
-                response.ErrorMessage = ex.Message;
-                return StatusCode(500, response);
-            }
-
-            return Ok(response);
-        }
-
         [HttpPost]
         [Route("Login")]
         public async Task<IActionResult> Login(LoginModel model)
@@ -148,18 +71,29 @@ namespace BetCR.Web.Controllers.API
 
             if (isUser == null)
             {
-                response.ErrorMessage = "User or Password is not correct";
-                response.Result = "Login Failed";
-                return StatusCode(500, response);
+                throw new ApiException()
+                {
+                    ErrorCode = "USER_PASSWORD_INCORRECT",
+                    ErrorMessage = "Username or Password is not correct",
+                    StatusCode = 500
+                };
             }
 
-            if (isUser.Password == EncryptionHelper.MD5Hash(model.Password))
+            if (isUser.Password != EncryptionHelper.MD5Hash(model.Password))
             {
-                var userTournaments = isUser.UserTournameRels
-                    .Where(w => w.Tournament.IsStill && w.Active == 1 && w.Tournament.Active == 1)
-                    .OrderBy(o => o.Tournament.TournamentEndDateEpoch).Select(s => s.Tournament).ToList();
+                throw new ApiException()
+                {
+                    ErrorCode = "USER_PASSWORD_INCORRECT",
+                    ErrorMessage = "Username or Password is not correct",
+                    StatusCode = 500
+                };
+            }
 
-                List<Claim> userClaims = new List<Claim>
+            var userTournaments = isUser.UserTournameRels
+                .Where(w => w.Tournament.IsStill && w.Active == 1 && w.Tournament.Active == 1)
+                .OrderBy(o => o.Tournament.TournamentEndDateEpoch).Select(s => s.Tournament).ToList();
+
+            List<Claim> userClaims = new List<Claim>
                 {
                     new(ClaimTypes.NameIdentifier, isUser.Id),
                     new(ClaimTypes.Name, String.Join(" ", isUser.Firstname, isUser.Surname)),
@@ -169,27 +103,20 @@ namespace BetCR.Web.Controllers.API
                     new (ClaimTypes.IsPersistent, model.IsRememberMe.ToString())
                 };
 
-                var claimsIdentity = new ClaimsIdentity(userClaims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var claimsIdentity = new ClaimsIdentity(userClaims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                var authProperties = new AuthenticationProperties
-                {
-                    IsPersistent = model.IsRememberMe
-                };
-
-                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
-                response.ErrorMessage = null;
-                response.Result = "Login Successful";
-                response.ReturnUrl = "/";
-                return Ok(response);
-            }
-            else
+            var authProperties = new AuthenticationProperties
             {
-                response.ErrorMessage = "User or Password is not correct";
-                response.Result = "Login Failed";
-                response.ReturnUrl = "/User/Login";
-                return StatusCode(500, response);
-            }
+                IsPersistent = model.IsRememberMe
+            };
+
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+            response.ErrorMessage = null;
+            response.Result = "Login Successful";
+            response.ReturnUrl = "/";
+            return Ok(response);
+
         }
 
         [HttpPost]
@@ -215,29 +142,50 @@ namespace BetCR.Web.Controllers.API
             model.Email = model.Email.NormalizeString();
             var existingUser = await _userService.GetUser(model.Email);
 
-            if (existingUser == null)
+            if (existingUser != null)
             {
-                existingUser = new User
+                throw new ApiException()
                 {
-                    Email = model.Email,
-                    Firstname = model.Firstname,
-                    Password = EncryptionHelper.MD5Hash(model.Password),
-                    Surname = model.Surname,
-                    Id = Guid.NewGuid().ToString("D")
+                    ErrorMessage = "Existing user found with this mail address",
+                    StatusCode = 500,
+                    ErrorCode = "USER_ALREADY_FOUND"
                 };
-                await _userService.SaveUser(existingUser);
+            }
 
-                await Login(new LoginModel { Email = existingUser.Email, IsRememberMe = true, Password = model.Password });
-                response.Result = "User registration successful.";
-                response.ReturnUrl = "/";
-                return Ok(response);
-            }
-            else
+            existingUser = new User
             {
-                response.Result = "User registration fail. Existing user found with this mail address";
-                response.ErrorMessage = "User registration fail. Existing user found with this mail address";
-                return StatusCode(500, response);
-            }
+                Email = model.Email,
+                Firstname = model.Firstname,
+                Password = EncryptionHelper.MD5Hash(model.Password),
+                Surname = model.Surname,
+                Id = Guid.NewGuid().ToString("D")
+            };
+            await _userService.SaveUser(existingUser);
+
+            await Login(new LoginModel { Email = existingUser.Email, IsRememberMe = true, Password = model.Password });
+            response.Result = "User registration successful.";
+            response.ReturnUrl = "/";
+            return Ok(response);
+
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("Tournament")]
+        public async Task<IActionResult> UserTournament()
+        {
+            var response = new ResponseModel<GetUserTournamentResponseModel>();
+
+            var userId = _accessor.HttpContext?.User.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
+            var result = await _mediator.Send(new GetUserTournamentQuery
+            {
+                UserId = userId
+            });
+
+            response.Data = result;
+            response.Result = "Tournament Get Operation Succeeded";
+
+            return Ok(response);
         }
 
         #endregion Public Methods
