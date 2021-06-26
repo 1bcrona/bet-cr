@@ -3,15 +3,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace BetCR.Repository.Entity
 {
-    public class UserTournameRel : EntityBase<string>
+    public class UserTournament : EntityBase<string>
     {
         private User _user;
         private Tournament _tournament;
 
-        public UserTournameRel()
+        public UserTournament()
         {
         }
-        public UserTournameRel(ILazyLoader lazyLoader) : base(lazyLoader)
+        public UserTournament(ILazyLoader lazyLoader) : base(lazyLoader)
         {
         }
 

@@ -22,7 +22,7 @@ namespace BetCR.Web.Controllers
         private readonly ILogger<MatchController> _logger;
         private readonly IHttpContextAccessor _accessor;
 
-        public MatchController(IMediator mediator, ILogger<MatchController> logger, IHttpContextAccessor accessor) : base(accessor)
+        public MatchController(IMediator mediator, ILogger<MatchController> logger, IHttpContextAccessor accessor) : base(accessor,mediator)
         {
             _mediator = mediator;
             _logger = logger;

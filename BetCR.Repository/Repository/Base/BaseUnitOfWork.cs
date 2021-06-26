@@ -28,6 +28,7 @@ namespace BetCR.Repository.Repository.Base
         public BaseUnitOfWork(DbContext context)
         {
             this._dbContext = context;
+
             this._id = Guid.NewGuid().ToString("D");
         }
 
@@ -68,7 +69,7 @@ namespace BetCR.Repository.Repository.Base
             {
                 DbContext.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -81,7 +82,7 @@ namespace BetCR.Repository.Repository.Base
             {
                 await DbContext.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
                 return false;
             }

@@ -21,7 +21,7 @@ namespace BetCR.Web.Handlers.Query.Tournament
 
         public async Task<GetUserTournamentResponseModel> Handle(GetUserTournamentQuery request, CancellationToken cancellationToken)
         {
-            var tournamentRepository = _unitOfWork.GetRepository<Repository.Entity.UserTournameRel, string>();
+            var tournamentRepository = _unitOfWork.GetRepository<Repository.Entity.UserTournament, string>();
 
             var tournaments = await tournamentRepository.FindAsync(f => f.Active == 1 && f.User.Id == request.UserId);
             var userTournameRels = tournaments.ToList();

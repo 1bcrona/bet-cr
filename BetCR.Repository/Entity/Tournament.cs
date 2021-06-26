@@ -64,7 +64,7 @@ namespace BetCR.Repository.Entity
         }
 
         [IgnoreDataMember]
-        public ICollection<UserTournameRel> UserTournameRels { get; set; }
+        public ICollection<UserTournament> UserTournameRels { get; set; }
 
     }
 

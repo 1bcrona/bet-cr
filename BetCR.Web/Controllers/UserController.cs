@@ -4,9 +4,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using BetCR.Repository.Entity;
+using BetCR.Repository.ValueObject;
 using BetCR.Services.Base;
 using BetCR.Web.Controllers.Base;
 using BetCR.Web.Handlers.Query.Tournament;
+using BetCR.Web.Handlers.Query.UserAction;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -31,7 +33,7 @@ namespace BetCR.Web.Controllers
 
         #region Public Constructors
 
-        public UserController(ILogger<UserController> logger, IMediator mediator, IHttpContextAccessor accessor) : base(accessor)
+        public UserController(ILogger<UserController> logger, IMediator mediator, IHttpContextAccessor accessor) : base(accessor, mediator)
         {
             _logger = logger;
             _mediator = mediator;
@@ -67,10 +69,8 @@ namespace BetCR.Web.Controllers
         [HttpGet]
         [Authorize]
         [Route("Tournament")]
-        public async Task<IActionResult> UserTournament()
+        public async Task<IActionResult> GetUserTournament()
         {
-
-
             var userId = _accessor.HttpContext?.User.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
 
             var result = await _mediator.Send(new GetUserTournamentQuery
@@ -78,6 +78,9 @@ namespace BetCR.Web.Controllers
                 UserId = userId
             });
 
+            var invitationResult = await _mediator.Send(new GetUserActionQuery() { ActionType = UserActionType.TOURNAMENT_INVITE, ActionStatus = UserActionStatus.WAITING_FOR_REPLY, ToUserId = userId });
+
+            ViewBag.TournamentInvitations = invitationResult;
             return View("Tournament/Index", result.All);
         }
 
@@ -94,6 +97,7 @@ namespace BetCR.Web.Controllers
                 Login();
             }
 
+            await Task.CompletedTask;
             ViewBag.CurrentTournamentId = tournamentId;
             return RedirectToAction("Index", "/");
         }

@@ -18,17 +18,17 @@
 
         var modal = ` <div class="modal fade" id="${id}" role="dialog">
             <div class="modal-dialog">
-                <div class="card">
-                    <div class="card-img">
+                <div class="card modal-card">
+                    <div class="card-img modal-card-img">
                         <img class="img-fluid">
                     </div>
-                    <div class="card-title">
+                    <div class="modal-card-title card-title">
                     </div>
-                    <div class="card-text text-center">
+                    <div class="modal-card-text card-text text-center">
                         <p> ${options.modalContent}</p>
                     </div>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                    <div class="modal-progress progress">
+                        <div class="progress-bar modal-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
                             <span class="sr-only"></span>
                         </div>
                     </div>
@@ -40,13 +40,13 @@
 
         let currentModal = $(`#${id}`);
         if (options.closeTimer > 0) {
-            $('.progress-bar').css('width', '0%');
+            $('.modal-progress-bar').css('width', '0%');
             let i = 0;
 
             var counterBack = setInterval(function () {
                 console.log(i);
                 if (i <= options.closeTimer) {
-                    $('.progress-bar').css('width', (i) * (100 / options.closeTimer) + '%');
+                    $('.modal-progress-bar').css('width', (i) * (100 / options.closeTimer) + '%');
                     i += 0.1;
                 } else {
                     currentModal.modal('hide');
@@ -78,24 +78,24 @@
             element: $(currentModal),
             show: function () {
                 let img = $(currentModal).find(".img-fluid");
-                let card = $(currentModal).find(".card");
-                let pb = $(currentModal).find(".progress-bar");
-                $(img).removeClass("img-success img-error img-loading");
-                $(card).removeClass("card-success card-error card-loading");
-                $(pb).removeClass("progress-bar-error progress-bar-success progress-bar-loading");
+                let card = $(currentModal).find(".modal-card");
+                let pb = $(currentModal).find(".modal-progress-bar");
+                $(img).removeClass("modal-img-success modal-img-error modal-img-loading");
+                $(card).removeClass("modal-card-success modal-card-error modal-card-loading");
+                $(pb).removeClass("modal-progress-bar-error modal-progress-bar-success modal-progress-bar-loading");
                 if (options.modalState === "success") {
-                    $(card).addClass("card-success");
-                    $(img).addClass("img-success");
-                    $(pb).addClass("progress-bar-success");
+                    $(card).addClass("modal-card-success");
+                    $(img).addClass("modal-img-success");
+                    $(pb).addClass("modal-progress-bar-success");
                 } else if (options.modalState === "loading") {
-                    $(card).addClass("card-loading");
-                    $(img).addClass("img-loading");
-                    $(pb).addClass("progress-bar-loading");
+                    $(card).addClass("modal-card-loading");
+                    $(img).addClass("modal-img-loading");
+                    $(pb).addClass("modal-progress-bar-loading");
                 }
                 else {
-                    $(card).addClass("card-error");
-                    $(img).addClass("img-error");
-                    $(pb).addClass("progress-bar-error");
+                    $(card).addClass("modal-card-error");
+                    $(img).addClass("modal-img-error");
+                    $(pb).addClass("modal-progress-bar-error");
                 }
 
                 $(currentModal).modal('show');

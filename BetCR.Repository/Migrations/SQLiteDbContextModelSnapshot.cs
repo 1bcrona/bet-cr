@@ -316,6 +316,47 @@ namespace BetCR.Repository.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("BetCR.Repository.Entity.UserAction", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("ActionDateEpoch")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ActionObject")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ActionResult")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ActionStatus")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ActionType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Active")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FromUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ToUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("UpsertDateEpoch")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FromUserId");
+
+                    b.HasIndex("ToUserId");
+
+                    b.ToTable("UserAction");
+                });
+
             modelBuilder.Entity("BetCR.Repository.Entity.UserMatchBet", b =>
                 {
                     b.Property<string>("Id")
@@ -360,7 +401,7 @@ namespace BetCR.Repository.Migrations
                     b.ToTable("UserMatchBet");
                 });
 
-            modelBuilder.Entity("BetCR.Repository.UserTournameRel", b =>
+            modelBuilder.Entity("BetCR.Repository.Entity.UserTournament", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
@@ -383,7 +424,7 @@ namespace BetCR.Repository.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserTournameRel");
+                    b.ToTable("UserTournament");
                 });
 
             modelBuilder.Entity("BetCR.Repository.Entity.Match", b =>
@@ -462,6 +503,21 @@ namespace BetCR.Repository.Migrations
                     b.Navigation("Owner");
                 });
 
+            modelBuilder.Entity("BetCR.Repository.Entity.UserAction", b =>
+                {
+                    b.HasOne("BetCR.Repository.Entity.User", "FromUser")
+                        .WithMany()
+                        .HasForeignKey("FromUserId");
+
+                    b.HasOne("BetCR.Repository.Entity.User", "ToUser")
+                        .WithMany()
+                        .HasForeignKey("ToUserId");
+
+                    b.Navigation("FromUser");
+
+                    b.Navigation("ToUser");
+                });
+
             modelBuilder.Entity("BetCR.Repository.Entity.UserMatchBet", b =>
                 {
                     b.HasOne("BetCR.Repository.Entity.Match", "Match")
@@ -477,7 +533,7 @@ namespace BetCR.Repository.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BetCR.Repository.UserTournameRel", b =>
+            modelBuilder.Entity("BetCR.Repository.Entity.UserTournament", b =>
                 {
                     b.HasOne("BetCR.Repository.Entity.Tournament", "Tournament")
                         .WithMany("UserTournameRels")

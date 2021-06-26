@@ -21,7 +21,7 @@ namespace BetCR.Web.Handlers.Command.UserTournamentRel
         public async Task<List<Tournament>> Handle(DeleteUserTournamentCommand request, CancellationToken cancellationToken)
         {
 
-            var repository = _unitOfWork.GetRepository<UserTournameRel, string>();
+            var repository = _unitOfWork.GetRepository<Repository.Entity.UserTournament, string>();
 
             var isUserRegisteredToTournament = (await repository.FindAsync(w => w.User.Id == request.UserId && w.Tournament.Id == request.TournamentId && w.Active == 1)).FirstOrDefault();
 

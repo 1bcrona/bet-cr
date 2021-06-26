@@ -18,17 +18,13 @@ namespace BetCR.Web.Handlers.Query.UserTournament
         }
         public async Task<List<GetUserTournamentSearchUserResponseModel>> Handle(GetUserTournamentSearchUserQuery request, CancellationToken cancellationToken)
         {
-            var userRepository = _unitOfWork.GetRepository<Repository.Entity.UserTournameRel, string>();
-
-            var userTournamentRels = await userRepository.FindAsync(f => f.Active == 1 && (f.User.Id.Contains(request.Id) || f.User.Email.Contains(request.Email)));
-
-            var groupedUser = userTournamentRels.GroupBy(g => g.User.Id).ToList();
-
-            var items = groupedUser.Select(s =>
+            var userRepository = _unitOfWork.GetRepository<Repository.Entity.User, string>();
+            var users = await userRepository.FindAsync(f => f.Active == 1 && (f.Id.Contains(request.Id) || f.Email.Contains(request.Email)));
+            var items = users.Select(s =>
                 new GetUserTournamentSearchUserResponseModel()
                 {
-                    User = s.First().User,
-                    IsRegisteredToTournament = s.Any(s => s.Tournament.Id == request.TournamentId),
+                    User = s,
+                    IsRegisteredToTournament = s.UserTournameRels.Any(s => s.Tournament.Id == request.TournamentId && s.Active == 1),
                     TournamentId = request.TournamentId
                 });
 

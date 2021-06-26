@@ -15,7 +15,7 @@ namespace BetCR.Web.Controllers
         private readonly IMediator _mediator;
         private readonly ILogger<PredictionController> _logger;
 
-        public TournamentController(IMediator mediator, ILogger<PredictionController> logger, IHttpContextAccessor accessor) : base(accessor)
+        public TournamentController(IMediator mediator, ILogger<PredictionController> logger, IHttpContextAccessor accessor) : base(accessor, mediator)
         {
             _mediator = mediator;
             _logger = logger;

@@ -1,0 +1,77 @@
+﻿using BetCR.Repository.Repository.Base.Interfaces;
+using MediatR;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace BetCR.Web.Handlers.Command.UserAction
+{
+    public class AddUserActionCommandHandler : IRequestHandler<AddUserActionCommand, Repository.Entity.UserAction>
+    {
+        #region Private Fields
+
+        private readonly IUnitOfWork _unitOfWork;
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
+        public AddUserActionCommandHandler(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
+        #endregion Public Constructors
+
+        #region Public Methods
+
+        public async Task<Repository.Entity.UserAction> Handle(AddUserActionCommand request, CancellationToken cancellationToken)
+        {
+            var userActionRepository = _unitOfWork.GetRepository<Repository.Entity.UserAction, string>();
+            var userRepository = _unitOfWork.GetRepository<Repository.Entity.User, string>();
+
+            var isExisting = await userActionRepository.FindAsync(f =>
+                f.Active == 1
+                & f.ActionStatus == request.ActionStatus
+                & f.ActionType == request.ActionType
+                && f.FromUser.Id == request.FromUserId
+                && f.ActionObject == request.ActionObject
+                && f.ToUser.Id == request.ToUserId);
+
+            var fromUser = await userRepository.GetAsync(request.FromUserId);
+
+            if (fromUser == null)
+            {
+                throw new Exception("FROM_USER_NOT_FOUND");
+            }
+            var toUser = await userRepository.GetAsync(request.ToUserId);
+
+            if (toUser == null)
+            {
+                throw new Exception("TO_USER_NOT_FOUND");
+            }
+
+            if (isExisting.Any())
+            {
+                throw new Exception("INVITATION_ALREADY_SENT");
+            }
+
+            var added = await userActionRepository.AddAsync(new Repository.Entity.UserAction()
+            {
+                FromUser = fromUser,
+                ToUser = toUser,
+                Id = Guid.NewGuid().ToString("D"),
+                ActionStatus = request.ActionStatus,
+                ActionObject = request.ActionObject,
+                ActionDateEpoch = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                ActionType = request.ActionType
+            });
+
+            await _unitOfWork.SaveChangesAsync();
+            return added;
+        }
+
+        #endregion Public Methods
+    }
+}

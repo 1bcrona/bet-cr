@@ -109,7 +109,7 @@ namespace BetCR.Web.Controllers.API
             try
             {
                 await _mediator.Send(new DeleteUserTournamentCommand { TournamentId = tournamentId, UserId = userId });
-                response.Data = "Tournament Delete Operation Successful";
+                response.Data = "Tournament Leave Operation Successfull";
                 response.Result = "Tournament Delete Operation Successful";
             }
             catch (Exception ex)

@@ -24,7 +24,7 @@ namespace BetCR.Web.Controllers
         private readonly ILogger<LeagueController> _logger;
 
 
-        public LeagueController(IMediator mediator, ILogger<LeagueController> logger, IHttpContextAccessor accessor) : base(accessor)
+        public LeagueController(IMediator mediator, ILogger<LeagueController> logger, IHttpContextAccessor accessor) : base(accessor, mediator)
         {
             _mediator = mediator;
             _logger = logger;

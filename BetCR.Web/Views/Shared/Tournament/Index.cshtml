@@ -1,13 +1,19 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@using BetCR.Repository.Entity
+@using BetCR.Repository.ValueObject
 @model List<BetCR.Repository.Entity.Tournament>
 
+
+@{
+    var inviations = (ViewBag.Invitations as List<UserAction> ?? new List<UserAction>()).Where(w => w.ActionType == UserActionType.TOURNAMENT_INVITE).ToList();
+}
 @section Head
 {
 
     <link rel="stylesheet" href="/static/css/vendor/ajax-bootstrap-select.css">
-
+    <link rel="stylesheet" href="/static/css/modal.css">
 
     <style type="text/css">
         span.tournament-name {
@@ -47,12 +53,25 @@
                role="tab"
                aria-controls="v-create-tournament"
                aria-selected="false">Create Tournament</a>
-            @*<a class="nav-link"
-                id="v-tabs-join-tournament-tab"
-                href="#v-tabs-join-tournament"
-                role="tab"
-                aria-controls="v-tabs-join-tournament"
-                aria-selected="false">Join Tournament</a>*@
+            <a class="nav-link"
+               id="v-pending-invitations-tab"
+               data-bs-toggle="tab"
+               data-toggle="tab"
+               data-bs-target="#v-pending-invitations"
+               data-target="#v-pending-invitations"
+               role="tab"
+               aria-controls="v-pending-invitations"
+               aria-selected="false">
+                Pending Invitations
+
+                @{
+                    if (inviations.Count > 0)
+                    {
+                        <span class="badge bg-danger ms-2">@inviations.Count</span>
+                    }
+                }
+
+            </a>
         </div>
     </div>
 
@@ -66,15 +85,12 @@
 
                 <div class="accordion accordion-flush" id="aTournaments">
 
-
                     @foreach (var tournament in Model)
                     {
-
 
                         var isOwner = @tournament.Owner.Id == ViewBag.UserId;
                         var disContinued = DateTimeOffset.UtcNow.ToUnixTimeSeconds() > @tournament.TournamentEndDateEpoch;
                         <div class="accordion-item">
-
 
                             <h2 class="accordion-header" id="flush-headingOne">
                                 <button class="accordion-button collapsed"
@@ -88,8 +104,6 @@
                                     @tournament.TournamentName
                                 </button>
                             </h2>
-
-
 
                             <div id="o-@tournament.Id"
                                  class="accordion-collapse collapse"
@@ -153,30 +167,20 @@
                                                             {
                                                                 <div class="col-lg-9 justify-content-center align-items-center">
 
-                                                                    <form id="fTournamentInvite"
-                                                                          class="request-form"
+                                                                    <form id="fTournamentInvite(@tournament.Id)"
+                                                                          class="request-form invite-form"
                                                                           novalidate>
 
                                                                         <div class="row">
                                                                             <div class="col-6">
-                                                                                <select class="selectpicker show-tick" data-tournament-id="@tournament.Id" data-live-search="true" multiple data-max-options="5" data-selected-text-format="count > 3">
-                                                                                    <option data-icon="fas fa-user-circle">Mustard</option>
-                                                                                    <option data-icon="fas fa-user-circle">Ketchup</option>
-                                                                                    <option data-icon="fas fa-user-circle">Relish</option>
-
+                                                                                <select class="selectpicker show-tick" data-tournament-id="@tournament.Id" data-live-search="true">
                                                                                 </select>
                                                                             </div>
 
                                                                             <div class="col-lg-6">
 
                                                                                 <div class="d-flex">
-                                                                                    <div class="form-group mr-2">
-                                                                                        <input type="submit"
-                                                                                               id="sSearchUser"
-                                                                                               value="Sign in"
-                                                                                               class="btn btn-primary  px-4" />
-                                                                                    </div>
-                                                                                    <div class="form-group ml-2">
+                                                                                    <div class="form-group">
                                                                                         <input type="submit"
                                                                                                id="sInviteUser"
                                                                                                value="Invite"
@@ -198,12 +202,6 @@
                             </div>
                         </div>
                     }
-
-
-
-
-
-
                 </div>
             </div>
             <div class="tab-pane fade"
@@ -235,13 +233,31 @@
                                        placeholder="Password"
                                        required />
                             </div>
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <label>
-                                        <input name="IsPublick" type="checkbox" />Public
-                                    </label>
+
+                            <div class="d-flex">
+                                <div class="form-group mr-2">
+                                    <label for="" class="label">Start Date</label>
+                                    <input type="date"
+                                           class="form-control"
+                                           placeholder="Date"
+                                           id="dStartDate"
+                                           onkeydown="return false"
+                                           name="EndDateString"
+                                           required />
+                                </div>
+                                <div class="form-group ml-2">
+                                    <label for="" class="label">End Date</label>
+                                    <input type="date"
+                                           class="form-control"
+                                           id="dEndDate"
+                                           name="EndDateString"
+                                           onkeydown="return false"
+                                           placeholder="Date"
+                                           required />
                                 </div>
                             </div>
+
+
                             <div class="form-group mt-3">
                                 <input type="submit"
                                        id="sCreateTournament"
@@ -252,44 +268,51 @@
                     </div>
                 </section>
             </div>
-            @*<div class="tab-pane fade"
-                     id="v-tabs-join-tournament"
-                     role="tabpanel"
-                     aria-labelledby="v-tabs-join-tournament-tab">
-                    <section>
-                        <div id="dJoinTournament" class="container">
-                            <form id="fJoinTournament" method="POST" class="request-form">
-                                <h2>Join A Tournament</h2>
-                                <div class="form-group has-error">
+            <div class="tab-pane fade"
+                 id="v-pending-invitations"
+                 role="tabpanel"
+                 aria-labelledby="v-tabs-pending-invitations-tab">
+                <section>
+                    <div id="dPendingInvitations" class="container">
+                        <div class="list-group">
+                            @{
 
-                                    <label for="iJoinTournamentId" class="label">Tournament ID</label>
-                                    <input type="text"
-                                           name="JoinTournament"
-                                           class="form-control"
-                                           id="iJoinTournamentId"
-                                           required
-                                           autofocus />
-                                </div>
-                                <div class="form-group  has-error ">
-                                    <label for="iPassword" class="label">Password</label>
-                                    <input type="password"
-                                           id="iPassword"
-                                           name="Password"
-                                           class="form-control"
-                                           placeholder="Password"
-                                           required />
-                                </div>
+                                var orderedInvitations = inviations.OrderByDescending(o => o.ActionDateEpoch);
 
-                                <div class="form-group mt-3">
-                                    <input type="submit"
-                                           id="sJoinTournament"
-                                           value="Join"
-                                           class="btn btn-primary py-3 px-4" />
-                                </div>
-                            </form>
+                                foreach (var invitation in orderedInvitations)
+                                {
+
+                                    <div class="list-group-item list-group-item-action" aria-current="true">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">
+                                                Tournament Invitation
+                                                @{
+                                                    if (invitation.ActionStatus == UserActionStatus.WAITING_FOR_REPLY)
+                                                    {
+                                                        <span class='badge bg-danger ms-2'>New</span>
+                                                    }
+                                                }
+                                            </h5>
+                                            <small>@invitation.ActionDate.Local.ToString()</small>
+                                        </div>
+                                        <p class="mb-1">
+                                            <strong>@invitation.FromUser.FullName</strong> invited you to join their tournament! Would you like to join?
+                                        </p>
+                                        <div class="btn-group shadow-0" role="group">
+                                            <button type="button" data-response-type="1" data-tournament-id="@invitation.ActionObject" data-invitation-id="@invitation.Id" class="btn  btn-success" data-mdb-color="dark">Yes</button>
+                                            <button type="button" data-response-type="0" data-tournament-id="@invitation.ActionObject" data-invitation-id="@invitation.Id" class="btn btn-danger" data-mdb-color="dark">No</button>
+                                        </div>
+                                    </div>
+                                }
+
+
+                            }
+
                         </div>
-                    </section>
-                </div>*@
+
+                    </div>
+                </section>
+            </div>
         </div>
     </div>
 </div>
@@ -303,6 +326,66 @@
 
     <script type="text/javascript">
 
+
+        $(".list-group-item button").click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            let target = this;
+
+            let invitationId = $(target).data("invitation-id");
+            let tournamentId = $(target).data("tournament-id");
+            let response = $(target).data("response-type");
+
+            let params = {}
+
+            params.InvitationId = invitationId;
+            params.TournamentId = tournamentId;
+            params.Response = response;
+
+            const url = `/api/UserTournament/invite/respond`
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: JSON.stringify(params),
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    const modalFadeSeconds = 2;
+                    let modalData = `<br>${data.result}</br>`;
+                    if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
+
+                    const modal = $("#dPendingInvitations").addModal({
+                        id: "successModal",
+                        modalContent: modalData,
+                        closeTimer: modalFadeSeconds,
+                        modalState: "success",
+                        afterCloseAction:
+                            function () {
+                                window.location.reload();
+                            }
+
+                    });
+                    modal.modalElement.show();
+                },
+                error: function (err) {
+                    const data = err.responseJSON;
+                    const modalFadeSeconds = 2;
+                    let modalData = `<br>${data.result}</br>`;
+                    if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
+
+                    const modal = $("#dPendingInvitations").addModal({
+                        id: "errorModal",
+                        modalContent: modalData,
+                        closeTimer: modalFadeSeconds,
+                        modalState: "error"
+                    });
+                    modal.modalElement.show();
+                }
+            });
+
+        });
 
         $("#sLeaveTournament").click(function (e) {
             e.preventDefault();
@@ -349,20 +432,146 @@
             });
         });
 
+        $(".invite-form").submit(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            let picker = $(this).find('.selectpicker');
+
+            let tournamentId = $(picker).data("tournament-id");
+            let toUserId = $(picker).val();
+
+            const url = `/api/UserTournament/invite`
+
+            let params = {}
+
+            params.TournamentId = tournamentId;
+            params.InviteeUserId = toUserId;
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: JSON.stringify(params),
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    const modalFadeSeconds = 2;
+                    let modalData = `<br>${data.result}</br>`;
+                    if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
+
+                    const modal = $("#fTournament").addModal({
+                        id: "successModal",
+                        modalContent: modalData,
+                        closeTimer: modalFadeSeconds,
+                        modalState: "success",
+                        afterCloseAction:
+                            function () {
+                                window.location.reload();
+                            }
+
+                    });
+                    modal.modalElement.show();
+                },
+                error: function (err) {
+                    const data = err.responseJSON;
+                    const modalFadeSeconds = 2;
+                    let modalData = `<br>${data.result}</br>`;
+                    if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
+
+                    const modal = $("#fTournament").addModal({
+                        id: "errorModal",
+                        modalContent: modalData,
+                        closeTimer: modalFadeSeconds,
+                        modalState: "error"
+                    });
+                    modal.modalElement.show();
+                }
+            });
+        });
+
         $(document).ready(function () {
+
+            const validator = $("#fCreateTournament").jbvalidator({
+                errorMessage: true,
+                successClass: true,
+                errorMessageHandler: function (el, message) {
+                    $(el).removeClass("success");
+                    $(el).addClass("error");
+                    $(el).attr('title', message)
+                        .attr('data-original-title', message)
+                        .attr('data-bs-original-title', message)
+                        .attr('data-mdb-original-title', message)
+                        .tooltip('update')
+                        .tooltip('show');
+
+                    $("#fCreateTournament input[type = submit]").prop('disabled', true);
+                },
+                successMessageHandler: function (el, event) {
+                    $(el).addClass("success");
+                    $(el).removeClass("error");
+                    $(el).attr('title', "")
+                        .attr('data-original-title', "")
+                        .attr('data-bs-original-title', "")
+                        .attr('data-mdb-original-title', "")
+                        .tooltip('update')
+                        .tooltip('hide');
+
+                    if ($(".error").length === 0) {
+                        $("#fCreateTournament input[type=submit]").prop('disabled', false);
+                    }
+
+                }
+            });
+            validator.validator.custom = function (el, event) {
+                if ($(el).is("[name=StartDateString]")) {
+
+                    const endDate = Date.parse(`${$("[name=EndDateString]").val()}`);
+                    const startDate = Date.parse(`${$("[name=StartDateString]").val()}`);
+                    if (startDate >= endDate) {
+                        return "Start date must be lower than end date";
+                    }
+                    if (Date.now() > startDate) {
+                        return "Start date must be higher than now";
+                    }
+                }
+
+                if ($(el).is("[name=EndDateString]")) {
+
+                    const endDate = Date.parse(`${$("[name=EndDateString]").val()}`);
+                    const startDate = Date.parse(`${$("[name=StartDateString]").val()}`);
+                    if (startDate >= endDate) {
+                        return "Start date must be lower than end date";
+                    }
+                    if (Date.now() > startDate) {
+                        return "Start date must be higher than now";
+                    }
+                }
+
+
+
+
+            };
+
+
+            $("#fCreateTournament").submit(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                let form = this;
+
+                const formString = JSON.stringify($(form).serializeArray());
+                let formObject = JSON.parse(formString);
+
+
+            })
 
             $(".selectpicker").each((index, element) => {
                 $(element).selectpicker({ liveSearch: true })
                     .ajaxSelectPicker({
                         ajax: {
 
-                            //headers: {
-                            //    'Accept': 'application/json',
-                            //    'Content-Type': 'application/json'
-                            //},
                             url: '/api/UserTournament/searchuser',
                             type: 'POST',
-             
+
                             data: function () {
                                 var params = {};
                                 let email = $(element).parent().find(".bs-searchbox input").val();
@@ -381,30 +590,25 @@
                             var contacts = [];
                             const data = result.data
 
-                            data.each((index, element) => {
+                            $(data).each((index, element) => {
 
                                 let contact = {};
                                 contact.value = element.user.id;
-                                contact.text = element.email;
-                                contact.disabled = contact.isRegisteredToTournament;
+                                contact.text = element.user.email;
+                                contact.disabled = element.isRegisteredToTournament;
                                 contact.data = {}
                                 contact.data.icon = "fas fa-user-circle";
-                                contact.data.subText = `${contact.isRegisteredToTournament}` ? "Already Registed" : "";
+                                contact.data.subText = element.isRegisteredToTournament ? "Already Registed" : "";
                                 contacts.push(contact);
                             });
 
                             return contacts;
                         },
-                        preserveSelected: false
+                        preserveSelected: true
                     });
             })
-
-
 
         });
     </script>
 
 }
-
-
-

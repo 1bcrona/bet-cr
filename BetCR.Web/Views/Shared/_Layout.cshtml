@@ -1,8 +1,10 @@
 ﻿@using System.Security.Claims
 @using BetCR.Repository.Entity
+@using BetCR.Repository.ValueObject
 @using Microsoft.EntityFrameworkCore.Internal
 @using Newtonsoft.Json
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
 
 
 <!DOCTYPE html>
@@ -24,9 +26,7 @@
 
     @*<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">*@
 
-
     @*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">*@
-
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css"
           rel="stylesheet" />
@@ -36,7 +36,6 @@
     @RenderSection("Head", false)
 </head>
 <body>
-
 
     <nav class="navbar navbar-expand-sm fixed-top navbar-light bg-light">
         <a class="navbar-brand" href="/">Bet<span>CR</span></a>
@@ -60,24 +59,48 @@
                     }
                     else
                     {
+                        var waitingUserActions = (List<UserAction>)ViewBag.Invitations ?? new List<UserAction>();
 
                         <li class="nav-item dropdown">
-                            <a href="#" id="menu" 
+                            <a href="#" id="menu"
                                data-mdb-toggle="dropdown"
                                @*data-bs-toggle="dropdown"*@
                                data-toggle="dropdown"
                                class="nav-link dropdown-toggle"
-                               data-display="static">@((ViewBag.Claims as List<Claim> ?? new List<Claim>()).FirstOrDefault(f => f.Type == ClaimTypes.Name || f.Type == ClaimTypes.Email)?.Value)</a>
+                               data-display="static">
+                                @((ViewBag.Claims as List<Claim> ?? new List<Claim>()).FirstOrDefault(f => f.Type == ClaimTypes.Name || f.Type == ClaimTypes.Email)?.Value)
+
+                                @{
+
+                                    if (waitingUserActions.Count > 0)
+                                    {
+                                        <span class="badge bg-danger ms-2">@waitingUserActions.Count</span>
+                                    }
+
+                                }
+                            </a>
                             <ul class="dropdown-menu">
                                 <li class="dropdown-item">
                                     <a href="/User/Logout">Logout</a>
                                 </li>
                                 <li class="dropdown-item dropdown-submenu">
-                                    <a href="#" 
-                                       data-mdb-toggle="dropdown" 
-                                       @*data-bs-toggle="dropdown"*@ 
-                                       data-toggle="dropdown" 
-                                       class="dropdown-toggle">Tournaments</a>
+                                    <a href="#"
+                                       data-mdb-toggle="dropdown"
+                                       @*data-bs-toggle="dropdown"*@
+                                       data-toggle="dropdown"
+                                       class="dropdown-toggle">
+                                        Tournaments
+                                        @{
+                                            var tournamentInvites = waitingUserActions.Where(w => w.ActionType == UserActionType.TOURNAMENT_INVITE).ToList();
+                                            if (tournamentInvites.Count > 0)
+                                            {
+                                                <a href='/User/Tournament'>
+                                                    <span class="badge bg-danger ms-2">@tournamentInvites.Count</span>
+                                                </a>
+
+                                            }
+                                        }
+                                    </a>
                                     <ul class="dropdown-menu tournament">
                                         <li class="dropdown-item">
                                             <a href="/User/Tournament">Tournament Center</a>

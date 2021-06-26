@@ -1,4 +1,5 @@
-﻿using BetCR.Repository.Entity.Base;
+﻿using System;
+using BetCR.Repository.Entity.Base;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -17,7 +18,7 @@ namespace BetCR.Repository.Entity
         {
 
         }
-        private ICollection<UserTournameRel> _userTournameRels;
+        private ICollection<UserTournament> _userTournameRels;
 
         #region Public Properties
 
@@ -32,10 +33,18 @@ namespace BetCR.Repository.Entity
 
         public string DateOfBirth { get; set; }
 
+        public string FullName
+        {
+            get
+            {
+                return String.Join(" ", this.Firstname, this.Surname);
+            }
+        }
+
         [IgnoreDataMember]
         public ICollection<UserMatchBet> UserMatchBets { get; set; }
 
-        public ICollection<UserTournameRel> UserTournameRels
+        public ICollection<UserTournament> UserTournameRels
         {
             get => LazyLoader.Load(this, ref _userTournameRels);
             set => _userTournameRels = value;
