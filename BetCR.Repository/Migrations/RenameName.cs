@@ -4,13 +4,7 @@ namespace BetCR.Repository.Migrations
 {
     public partial class RenameName : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.RenameColumn(
-                name: "ExternalMatchId",
-                table: "Match",
-                newName: "ExternalId");
-        }
+        #region Protected Methods
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
@@ -19,5 +13,15 @@ namespace BetCR.Repository.Migrations
                 table: "Match",
                 newName: "ExternalMatchId");
         }
+
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.RenameColumn(
+                name: "ExternalMatchId",
+                table: "Match",
+                newName: "ExternalId");
+        }
+
+        #endregion Protected Methods
     }
 }

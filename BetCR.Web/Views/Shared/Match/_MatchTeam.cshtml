@@ -6,8 +6,6 @@
 
 <head>
 
-
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css"
           rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&amp;display=swap" rel="stylesheet">
@@ -22,7 +20,6 @@
     @{
         var goalKeeper = Model.FirstOrDefault(w => w.Position == "GOALKEEPER");
         <div class="player-view">
-
 
             @{
                 if ((events ?? Array.Empty<Tuple<int, Event>>().ToList()).Any(w => w.Item2.Player1.FullName == goalKeeper.Player.FullName && w.Item2.EventType == "GOAL"))
@@ -47,8 +44,6 @@
                 }
             }
 
-
-
             <div class="player" style="background-color: @ViewData["background-color"].ToString(); border-color: @ViewData["color"].ToString();">
                 <div class="number" style="color: @ViewData["color"].ToString();">@goalKeeper.Number</div>
                 <div class="name  d-none d-lg-block">@goalKeeper.Player.Name</div>
@@ -66,9 +61,7 @@
             foreach (var player in defenders)
             {
 
-
                 <div class="player-view">
-
 
                     @{
                         if ((events ?? Array.Empty<Tuple<int, Event>>().ToList()).Any(w => w.Item2.Player1.FullName == player.Player.FullName && w.Item2.EventType == "GOAL"))
@@ -139,9 +132,6 @@
                 </div>
             }
         }
-
-
-
     </div>
     <div class="line">
 
@@ -180,7 +170,5 @@
                 </div>
             }
         }
-
-
     </div>
 </div>

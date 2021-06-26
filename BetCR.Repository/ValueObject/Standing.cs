@@ -12,8 +12,9 @@
         public int Played { get; set; }
 
         public int Point { get; set; }
-        public int Win { get; set; }
         public TeamStanding TeamStanding { get; set; }
+        public int Win { get; set; }
+
         #endregion Public Properties
     }
 }

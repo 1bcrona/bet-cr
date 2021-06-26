@@ -1,14 +1,18 @@
-﻿using System;
-using BetCR.Library.Operation.Helper;
+﻿using BetCR.Library.Operation.Helper;
 using BetCR.Library.Operation.Infrastructure;
+using System;
 
 namespace BetCR.Library.Operation.Impl
 {
     public static class Operation
     {
-        private static readonly Lazy<OperationHelper> lazy = new(() => new OperationHelper(), true);
-        public static OperationHelper OperationHelper => lazy.Value;
+        #region Private Fields
 
+        private static readonly Lazy<OperationHelper> lazy = new(() => new OperationHelper(), true);
+
+        #endregion Private Fields
+
+        #region Public Properties
 
         /// <summary>
         /// Operation representing a range comparison.
@@ -96,18 +100,26 @@ namespace BetCR.Library.Operation.Impl
         public static IOperation NotEqualTo { get { return new NotEqualTo(); } }
 
         /// <summary>
+        /// Operation representing the inverse of a list "Contains" method call.
+        /// </summary>
+        public static IOperation NotIn { get { return new NotIn(); } }
+
+        public static OperationHelper OperationHelper => lazy.Value;
+
+        /// <summary>
         /// Operation representing a string "StartsWith" method call.
         /// </summary>
         public static IOperation StartsWith { get { return new StartsWith(); } }
 
-        /// <summary>
-        /// Operation representing the inverse of a list "Contains" method call.
-        /// </summary>
-        public static IOperation NotIn { get { return new NotIn(); } }
+        #endregion Public Properties
+
+        #region Public Methods
 
         public static IOperation ByName(string operationName)
         {
             return OperationHelper.GetOperationByName(operationName);
         }
+
+        #endregion Public Methods
     }
 }

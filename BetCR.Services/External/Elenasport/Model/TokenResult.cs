@@ -4,9 +4,14 @@ namespace BetCR.Services.External.Elenasport.Model
 {
     public class TokenResult
     {
-        [JsonProperty("access_token")]
-        public string Token { get; set; }
+        #region Public Properties
+
         [JsonProperty("expires_in")]
         public int ExpiresIn { get; set; }
+
+        [JsonProperty("access_token")]
+        public string Token { get; set; }
+
+        #endregion Public Properties
     }
 }

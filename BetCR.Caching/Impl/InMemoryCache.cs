@@ -1,9 +1,9 @@
-﻿using System;
+﻿using BetCR.Caching.Interface;
+using System;
 using System.Collections.Concurrent;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using BetCR.Caching.Interface;
 
 namespace BetCR.Caching.Impl
 {

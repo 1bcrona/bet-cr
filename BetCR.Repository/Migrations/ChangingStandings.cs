@@ -4,6 +4,20 @@ namespace BetCR.Repository.Migrations
 {
     public partial class ChangingStandings : Migration
     {
+        #region Protected Methods
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "Serialized",
+                table: "StageStanding");
+
+            migrationBuilder.RenameColumn(
+                name: "Standings",
+                table: "StageStanding",
+                newName: "Data");
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
@@ -18,16 +32,6 @@ namespace BetCR.Repository.Migrations
                 nullable: true);
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "Serialized",
-                table: "StageStanding");
-
-            migrationBuilder.RenameColumn(
-                name: "Standings",
-                table: "StageStanding",
-                newName: "Data");
-        }
+        #endregion Protected Methods
     }
 }

@@ -1,13 +1,20 @@
-﻿using System;
+﻿using BetCR.Library.Operation.Infrastructure;
+using System;
 using System.Collections.Concurrent;
 using System.Linq;
-using BetCR.Library.Operation.Infrastructure;
 
 namespace BetCR.Library.Operation.Helper
 {
     public class OperationHelper
     {
+        #region Private Fields
+
         private static ConcurrentDictionary<string, IOperation> _operations;
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
         static OperationHelper()
         {
             if (_operations == null)
@@ -16,6 +23,10 @@ namespace BetCR.Library.Operation.Helper
                 LoadDefaultOperations();
             }
         }
+
+        #endregion Public Constructors
+
+        #region Public Methods
 
         public static void LoadDefaultOperations()
         {
@@ -32,7 +43,6 @@ namespace BetCR.Library.Operation.Helper
             }
         }
 
-
         public IOperation GetOperationByName(string operationName)
         {
             IOperation operation = null;
@@ -40,7 +50,6 @@ namespace BetCR.Library.Operation.Helper
             return operation;
         }
 
-
-
+        #endregion Public Methods
     }
 }

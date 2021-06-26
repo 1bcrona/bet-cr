@@ -1,41 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using BetCR.Repository.Entity;
+﻿using BetCR.Repository.Entity;
 using BetCR.Repository.Repository.Base.Interfaces;
 using BetCR.Web.Controllers.API.Model;
 using MediatR;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace BetCR.Web.Handlers.Command.UserTournament
 {
     public class CreateUserTournamentCommand : IRequest<Repository.Entity.UserTournament>
     {
+        #region Public Properties
 
+        public long EndDateEpoch { get; set; }
+        public long StartDateEpoch { get; set; }
         public string TournamentName { get; set; }
         public string TournamentPassword { get; set; }
-        public long StartDateEpoch { get; set; }
-        public long EndDateEpoch { get; set; }
-
         public string UserId { get; set; }
+
+        #endregion Public Properties
     }
 
     public class CreateUserTournamentCommandHandler : IRequestHandler<CreateUserTournamentCommand, Repository.Entity.UserTournament>
     {
+        #region Private Fields
+
         private readonly IUnitOfWork _unitOfWork;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public CreateUserTournamentCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
+
+        #endregion Public Constructors
+
+        #region Public Methods
+
         public async Task<Repository.Entity.UserTournament> Handle(CreateUserTournamentCommand request, CancellationToken cancellationToken)
         {
-
             var tournamentRepository = _unitOfWork.GetRepository<Tournament, string>();
             var userTournamentRepository = _unitOfWork.GetRepository<Repository.Entity.UserTournament, string>();
             var userRepository = _unitOfWork.GetRepository<Repository.Entity.User, string>();
-
 
             var tournament = (await tournamentRepository.FindAsync(f => f.TournamentName == request.TournamentName && f.Active == 1)).FirstOrDefault();
 
@@ -49,7 +59,6 @@ namespace BetCR.Web.Handlers.Command.UserTournament
             if (user == null)
             {
                 throw new ApiException() { ErrorCode = "USER_NOT_FOUND", ErrorMessage = "Specified User Not Found", StatusCode = 500 };
-
             }
 
             tournament = new Tournament()
@@ -78,5 +87,7 @@ namespace BetCR.Web.Handlers.Command.UserTournament
             await _unitOfWork.SaveChangesAsync();
             return userTournament;
         }
+
+        #endregion Public Methods
     }
 }

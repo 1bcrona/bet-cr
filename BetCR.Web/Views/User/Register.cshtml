@@ -2,7 +2,6 @@
     ViewData["Title"] = "Register";
 }
 
-
 @section Head
 {
 
@@ -108,7 +107,6 @@
     </div>
 </div>
 
-
 @section Scripts {
 
     <script src="~/static/js/modal.js"></script>
@@ -127,7 +125,6 @@
                     if ($(el).val() !== "") {
                         $(el).tooltip('show');
                     }
-
 
                     $("#fRegister input[type = submit]").prop('disabled', true);
                 },
@@ -153,7 +150,7 @@
                     const date = Date.parse(val);
                     const d = new Date(date);
                     if (
-                        new Date(d.getFullYear() + 18, d.getMonth() - 1, d.getDay()) >
+                        new Date(d.getFullYear() + 18, d.getMonth() - 1, d.getDay())>
                         new Date()
                     ) {
                         return "You must be over 18 years old.";
@@ -174,7 +171,7 @@
                     data: valdata,
                     success: function (data) {
                         const modalFadeSeconds = 2;
-                        let modalData = `<br>${data.result}</br>`;
+                        let modalData = `<br>${data.Result}</br>`;
                         if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
 
                         const modal = $("#dRegister").addModal({
@@ -194,7 +191,7 @@
                     error: function (err) {
                         const data = err.responseJSON;
                         const modalFadeSeconds = 2;
-                        let modalData = `<br>${data.result}</br>`;
+                        let modalData = `<br>${data.Result}</br> <br>${data.ErrorMessage}</br>`;
                         if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
 
                         const modal = $("#dRegister").addModal({

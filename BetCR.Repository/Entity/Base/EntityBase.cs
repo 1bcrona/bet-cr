@@ -1,9 +1,7 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
-using BetCR.Repository.ValueObject;
+﻿using BetCR.Repository.ValueObject;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using System;
+using System.Runtime.Serialization;
 
 namespace BetCR.Repository.Entity.Base
 {
@@ -30,10 +28,7 @@ namespace BetCR.Repository.Entity.Base
         public virtual T Id { get; set; }
 
         [IgnoreDataMember]
-
         public ILazyLoader LazyLoader { get; }
-
-        public long UpsertDateEpoch { get; set; }
 
         public CustomDateTime UpsertDate
         {
@@ -44,6 +39,8 @@ namespace BetCR.Repository.Entity.Base
                 return (CustomDateTime)dt;
             }
         }
+
+        public long UpsertDateEpoch { get; set; }
 
         #endregion Public Properties
     }

@@ -1,32 +1,47 @@
-﻿using System.Diagnostics;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using BetCR.Services.External;
-using BetCR.Web.Controllers.Base;
-using BetCR.Web.Handlers.Query;
+﻿using BetCR.Web.Controllers.Base;
 using BetCR.Web.Handlers.Query.Match;
-using BetCR.Web.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace BetCR.Web.Controllers
 {
     [Route("[controller]")]
     public class MatchController : BaseController
     {
-        private readonly IMediator _mediator;
-        private readonly ILogger<MatchController> _logger;
-        private readonly IHttpContextAccessor _accessor;
+        #region Private Fields
 
-        public MatchController(IMediator mediator, ILogger<MatchController> logger, IHttpContextAccessor accessor) : base(accessor,mediator)
+        private readonly IHttpContextAccessor _accessor;
+        private readonly ILogger<MatchController> _logger;
+        private readonly IMediator _mediator;
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
+        public MatchController(IMediator mediator, ILogger<MatchController> logger, IHttpContextAccessor accessor) : base(accessor, mediator)
         {
             _mediator = mediator;
             _logger = logger;
             _accessor = accessor;
+        }
+
+        #endregion Public Constructors
+
+        #region Public Methods
+
+        [Authorize]
+        [HttpGet]
+        [Route("Details/{id?}")]
+        public async Task<IActionResult> Details(string id)
+        {
+            var result = await _mediator.Send(new MatchDetailQuery { MatchId = id });
+            return PartialView("Match/_MatchDetails", result);
         }
 
         [Authorize]
@@ -35,7 +50,6 @@ namespace BetCR.Web.Controllers
         public async Task<IActionResult> Index(string id)
         {
             var result = await _mediator.Send(new MatchDetailQuery { MatchId = id });
-
 
             var userId = _accessor.HttpContext?.User.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
 
@@ -54,15 +68,6 @@ namespace BetCR.Web.Controllers
             return PartialView("Match/_MatchPitch", result);
         }
 
-        [Authorize]
-        [HttpGet]
-        [Route("Details/{id?}")]
-        public async Task<IActionResult> Details(string id)
-        {
-            var result = await _mediator.Send(new MatchDetailQuery { MatchId = id });
-            return PartialView("Match/_MatchDetails", result);
-        }
-
-
+        #endregion Public Methods
     }
 }

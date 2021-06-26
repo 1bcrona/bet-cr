@@ -2,11 +2,7 @@
 @using Newtonsoft.Json
 @model BetCR.Repository.Entity.Match
 
-
-
 <head>
-
-
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css"
           rel="stylesheet" />
@@ -21,7 +17,6 @@
         <div class="teams">
             @{
 
-
                 <div class="team">
 
                     @{
@@ -30,9 +25,7 @@
                         var homeDomColor2 = colorPaletteHome?.Skip(1).FirstOrDefault() ?? "#000";
                     }
 
-
                     @{ await Html.RenderPartialAsync("Match/_MatchTeam", Model.MatchEvent.MatchLineup.HomeTeamLineup.Where(w => w.StartingXI), new ViewDataDictionary(ViewData) { { "background-color", homeDomColor1 }, { "color", homeDomColor2 } });}
-
                 </div>
             }
             @{
@@ -44,12 +37,9 @@
                         var awayDomColor2 = colorPaletteAway?.Skip(1).FirstOrDefault() ?? "#000";
                     }
 
-
                     @{ await Html.RenderPartialAsync("Match/_MatchTeam", Model.MatchEvent.MatchLineup.AwayTeamLineup.Where(w => w.StartingXI), new ViewDataDictionary(ViewData) { { "background-color", awayDomColor1 }, { "color", awayDomColor2 } });}
-
                 </div>
             }
         </div>
-
     </div>
 </div>

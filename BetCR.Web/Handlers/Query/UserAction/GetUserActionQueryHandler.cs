@@ -50,7 +50,6 @@ namespace BetCR.Web.Handlers.Query.UserAction
             if (request.ActionStatus != null)
             {
                 predicate = predicate.And(p => p.ActionStatus == request.ActionStatus);
-
             }
             predicate = predicate.And(p => p.Active == 1);
 

@@ -4,6 +4,14 @@ namespace BetCR.Repository.Migrations
 {
     public partial class UserActionAdded : Migration
     {
+        #region Protected Methods
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "UserAction");
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -48,10 +56,6 @@ namespace BetCR.Repository.Migrations
                 column: "ToUserId");
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "UserAction");
-        }
+        #endregion Protected Methods
     }
 }

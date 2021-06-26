@@ -1,15 +1,26 @@
-﻿using System.Linq.Expressions;
+﻿using BetCR.Library.Operation.Base;
+using System.Linq.Expressions;
 using System.Reflection;
-using BetCR.Library.Operation.Base;
 
 namespace BetCR.Library.Operation.Impl
 {
     public class StartsWith : OperationBase
     {
+        #region Private Fields
+
         private readonly MethodInfo startsWithMethod = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
 
-        public StartsWith() : base("StartsWith") { }
-       
+        #endregion Private Fields
+
+        #region Public Constructors
+
+        public StartsWith() : base("StartsWith")
+        {
+        }
+
+        #endregion Public Constructors
+
+        #region Public Methods
 
         public override Expression GetExpression(Expression member, ConstantExpression constant1, ConstantExpression constant2)
         {
@@ -18,5 +29,7 @@ namespace BetCR.Library.Operation.Impl
             return Expression.Call(member.TrimToLower(), startsWithMethod, constant)
                    .AddNullCheck(member);
         }
+
+        #endregion Public Methods
     }
 }

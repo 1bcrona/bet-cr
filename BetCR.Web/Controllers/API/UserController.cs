@@ -116,7 +116,6 @@ namespace BetCR.Web.Controllers.API
             response.Result = "Login Successful";
             response.ReturnUrl = "/";
             return Ok(response);
-
         }
 
         [HttpPost]
@@ -166,7 +165,6 @@ namespace BetCR.Web.Controllers.API
             response.Result = "User registration successful.";
             response.ReturnUrl = "/";
             return Ok(response);
-
         }
 
         [HttpGet]

@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BetCR.Repository.Entity;
+﻿using BetCR.Repository.Entity;
 
 namespace BetCR.Web.Controllers.API.Model
 {
     public class GetUserTournamentSearchUserResponseModel
     {
-        public User User { get; set; }
+        #region Public Properties
 
         public bool IsRegisteredToTournament { get; set; }
-
         public string TournamentId { get; set; }
+        public User User { get; set; }
+
+        #endregion Public Properties
     }
 }

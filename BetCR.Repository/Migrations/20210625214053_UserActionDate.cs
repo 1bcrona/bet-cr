@@ -4,6 +4,15 @@ namespace BetCR.Repository.Migrations
 {
     public partial class UserActionDate : Migration
     {
+        #region Protected Methods
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "ActionDateEpoch",
+                table: "UserAction");
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<long>(
@@ -14,11 +23,6 @@ namespace BetCR.Repository.Migrations
                 defaultValue: 0L);
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "ActionDateEpoch",
-                table: "UserAction");
-        }
+        #endregion Protected Methods
     }
 }

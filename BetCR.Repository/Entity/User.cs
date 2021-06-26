@@ -1,37 +1,37 @@
-﻿using System;
-using BetCR.Repository.Entity.Base;
+﻿using BetCR.Repository.Entity.Base;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace BetCR.Repository.Entity
 {
     public class User : EntityBase<string>
     {
+        #region Private Fields
+
+        private ICollection<UserTournament> _userTournameRels;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public User()
         {
-
         }
 
         public User(ILazyLoader lazyLoader) : base(lazyLoader)
         {
-
         }
-        private ICollection<UserTournament> _userTournameRels;
+
+        #endregion Public Constructors
 
         #region Public Properties
 
+        public string DateOfBirth { get; set; }
         public string Email { get; set; }
 
-        public override string Id { get; set; }
-
-        public string Password { get; set; }
-
         public string Firstname { get; set; }
-        public string Surname { get; set; }
-
-        public string DateOfBirth { get; set; }
 
         public string FullName
         {
@@ -40,6 +40,11 @@ namespace BetCR.Repository.Entity
                 return String.Join(" ", this.Firstname, this.Surname);
             }
         }
+
+        public override string Id { get; set; }
+
+        public string Password { get; set; }
+        public string Surname { get; set; }
 
         [IgnoreDataMember]
         public ICollection<UserMatchBet> UserMatchBets { get; set; }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BetCR.Web.Controllers.API.Model
+﻿namespace BetCR.Web.Controllers.API.Model
 {
     public class ResponseModel<T>
     {

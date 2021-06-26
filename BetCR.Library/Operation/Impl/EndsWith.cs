@@ -1,15 +1,26 @@
-﻿using System.Linq.Expressions;
+﻿using BetCR.Library.Operation.Base;
+using System.Linq.Expressions;
 using System.Reflection;
-using BetCR.Library.Operation.Base;
 
 namespace BetCR.Library.Operation.Impl
 {
     public class EndsWith : OperationBase
     {
+        #region Private Fields
+
         private readonly MethodInfo endsWithMethod = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
 
-        public EndsWith() : base("EndsWith") { }
-       
+        #endregion Private Fields
+
+        #region Public Constructors
+
+        public EndsWith() : base("EndsWith")
+        {
+        }
+
+        #endregion Public Constructors
+
+        #region Public Methods
 
         public override Expression GetExpression(Expression member, ConstantExpression constant1, ConstantExpression constant2)
         {
@@ -18,5 +29,7 @@ namespace BetCR.Library.Operation.Impl
             return Expression.Call(member.TrimToLower(), endsWithMethod, constant)
                    .AddNullCheck(member);
         }
+
+        #endregion Public Methods
     }
 }

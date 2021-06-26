@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using BetCR.Repository.Entity;
+﻿using BetCR.Repository.Entity;
 using BetCR.Repository.Repository.Base.Interfaces;
 using BetCR.Services.Base;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BetCR.Services
 {

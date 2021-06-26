@@ -1,25 +1,31 @@
-﻿using System;
+﻿using BetCR.Repository.Entity;
+using BetCR.Repository.Repository.Base.Interfaces;
+using MediatR;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using BetCR.Repository.Entity;
-using BetCR.Repository.Repository.Base.Interfaces;
-using BetCR.Web.Handlers.Query.Match;
-using MediatR;
 
 namespace BetCR.Web.Handlers.Query.League.Handler
 {
     public class SeasonStageQueryHandler : IRequestHandler<LeagueStageQuery, List<Stage>>
     {
+        #region Private Fields
 
         private readonly IUnitOfWork _unitOfWork;
 
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public SeasonStageQueryHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
+
+        #endregion Public Constructors
+
+        #region Public Methods
 
         public async Task<List<Stage>> Handle(LeagueStageQuery request, CancellationToken cancellationToken)
         {
@@ -29,5 +35,7 @@ namespace BetCR.Web.Handlers.Query.League.Handler
 
             return stages.ToList();
         }
+
+        #endregion Public Methods
     }
 }

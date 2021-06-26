@@ -4,48 +4,7 @@ namespace BetCR.Repository.Migrations
 {
     public partial class UserTournamentRename : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "UserTournameRel");
-
-            migrationBuilder.CreateTable(
-                name: "UserTournament",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    TournamentId = table.Column<string>(type: "TEXT", nullable: true),
-                    UserId = table.Column<string>(type: "TEXT", nullable: true),
-                    Active = table.Column<int>(type: "INTEGER", nullable: false),
-                    UpsertDateEpoch = table.Column<long>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserTournament", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserTournament_Tournament_TournamentId",
-                        column: x => x.TournamentId,
-                        principalTable: "Tournament",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_UserTournament_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserTournament_TournamentId",
-                table: "UserTournament",
-                column: "TournamentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserTournament_UserId",
-                table: "UserTournament",
-                column: "UserId");
-        }
+        #region Protected Methods
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
@@ -89,5 +48,50 @@ namespace BetCR.Repository.Migrations
                 table: "UserTournameRel",
                 column: "UserId");
         }
+
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "UserTournameRel");
+
+            migrationBuilder.CreateTable(
+                name: "UserTournament",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    TournamentId = table.Column<string>(type: "TEXT", nullable: true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: true),
+                    Active = table.Column<int>(type: "INTEGER", nullable: false),
+                    UpsertDateEpoch = table.Column<long>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTournament", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserTournament_Tournament_TournamentId",
+                        column: x => x.TournamentId,
+                        principalTable: "Tournament",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserTournament_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTournament_TournamentId",
+                table: "UserTournament",
+                column: "TournamentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTournament_UserId",
+                table: "UserTournament",
+                column: "UserId");
+        }
+
+        #endregion Protected Methods
     }
 }

@@ -1,16 +1,26 @@
-﻿using System.Linq.Expressions;
+﻿using BetCR.Library.Operation.Base;
+using System.Linq.Expressions;
 using System.Reflection;
-using BetCR.Library.Operation.Base;
 
 namespace BetCR.Library.Operation.Impl
 {
     public class Contains : OperationBase
     {
+        #region Private Fields
+
         private readonly MethodInfo stringContainsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
 
-        public Contains():base("Contains") {}
-       
+        #endregion Private Fields
 
+        #region Public Constructors
+
+        public Contains() : base("Contains")
+        {
+        }
+
+        #endregion Public Constructors
+
+        #region Public Methods
 
         public override System.Linq.Expressions.Expression GetExpression(Expression member, ConstantExpression constant1, ConstantExpression constant2)
         {
@@ -19,5 +29,7 @@ namespace BetCR.Library.Operation.Impl
             return System.Linq.Expressions.Expression.Call(member.TrimToLower(), stringContainsMethod, constant)
                    .AddNullCheck(member);
         }
+
+        #endregion Public Methods
     }
 }

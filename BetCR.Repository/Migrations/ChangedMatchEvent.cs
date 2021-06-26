@@ -4,6 +4,25 @@ namespace BetCR.Repository.Migrations
 {
     public partial class ChangedMatchEvent : Migration
     {
+        #region Protected Methods
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "Events",
+                table: "MatchEvent");
+
+            migrationBuilder.RenameColumn(
+                name: "MatchStat",
+                table: "MatchEvent",
+                newName: "Lineups");
+
+            migrationBuilder.RenameColumn(
+                name: "MatchLineup",
+                table: "MatchEvent",
+                newName: "Incidents");
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
@@ -23,21 +42,6 @@ namespace BetCR.Repository.Migrations
                 nullable: true);
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "Events",
-                table: "MatchEvent");
-
-            migrationBuilder.RenameColumn(
-                name: "MatchStat",
-                table: "MatchEvent",
-                newName: "Lineups");
-
-            migrationBuilder.RenameColumn(
-                name: "MatchLineup",
-                table: "MatchEvent",
-                newName: "Incidents");
-        }
+        #endregion Protected Methods
     }
 }

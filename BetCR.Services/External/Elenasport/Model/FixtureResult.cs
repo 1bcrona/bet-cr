@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
+using System;
+using System.Collections.Generic;
 
 namespace BetCR.Services.External.Elenasport.Model
 {
@@ -25,6 +25,15 @@ namespace BetCR.Services.External.Elenasport.Model
         [JsonProperty("elapsed")]
         public int Elapsed { get; set; }
 
+        public List<EventResult> EventResults
+        {
+            get
+            {
+                var token = Expand?["events"] as JArray ?? new JArray();
+                return token.ToObject<List<EventResult>>();
+            }
+        }
+
         [JsonProperty("team_home_ET_goals")]
         public int HomeTeamExtraTimeGoals { get; set; }
 
@@ -37,13 +46,17 @@ namespace BetCR.Services.External.Elenasport.Model
         [JsonProperty("team_home_90min_goals")]
         public int HomeTeamRegularGoals { get; set; }
 
+        public List<LineupResult> LineupResults
+        {
+            get
+            {
+                var token = Expand?["lineups"] as JArray ?? new JArray();
+                return token.ToObject<List<LineupResult>>();
+            }
+        }
+
         [JsonProperty("date")]
         public DateTime MatchDate { get; set; }
-
-        [JsonProperty("status")]
-        public string Status { get; set; }
-
-     
 
         public List<StatResult> StatResults
         {
@@ -54,27 +67,8 @@ namespace BetCR.Services.External.Elenasport.Model
             }
         }
 
-        public List<LineupResult> LineupResults
-        {
-            get
-            {
-                var token = Expand?["lineups"] as JArray ?? new JArray();
-                return token.ToObject<List<LineupResult>>();
-            }
-        }
-
-        public List<EventResult> EventResults
-        {
-            get
-            {
-                var token = Expand?["events"] as JArray ?? new JArray();
-                return token.ToObject<List<EventResult>>();
-            }
-        }
-
-
-
-
+        [JsonProperty("status")]
+        public string Status { get; set; }
 
         #endregion Public Properties
     }

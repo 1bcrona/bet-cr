@@ -1,9 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using BetCR.Repository.Entity.Base;
+﻿using BetCR.Repository.Entity.Base;
 using BetCR.Repository.Repository.Base.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace BetCR.Repository.Repository.Base
 {
@@ -64,9 +64,7 @@ namespace BetCR.Repository.Repository.Base
 
         public async Task SaveChangesAsync()
         {
-
             await DbContext.SaveChangesAsync();
-
         }
 
         #endregion Public Methods

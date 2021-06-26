@@ -1,8 +1,8 @@
-﻿using System;
+﻿using BetCR.Library.Operation.Base;
+using System;
 using System.Collections;
 using System.Linq.Expressions;
 using System.Reflection;
-using BetCR.Library.Operation.Base;
 
 namespace BetCR.Library.Operation.Impl
 {
@@ -11,8 +11,15 @@ namespace BetCR.Library.Operation.Impl
     /// </summary>
     public class In : OperationBase
     {
-        public In() : base("In") { }
+        #region Public Constructors
 
+        public In() : base("In")
+        {
+        }
+
+        #endregion Public Constructors
+
+        #region Public Methods
 
         public override Expression GetExpression(Expression member, ConstantExpression constant1, ConstantExpression constant2)
         {
@@ -21,14 +28,15 @@ namespace BetCR.Library.Operation.Impl
                 throw new ArgumentException("The 'In' operation only supports lists as parameters.");
             }
 
-
-
-
             var type = constant1.Value.GetType();
             var inInfo = type.GetMethod("Contains", new[] { type.GetGenericArguments()[0] });
 
             return GetExpressionHandlingNullables(member, constant1, type, inInfo) ?? Expression.Call(constant1, inInfo, member);
         }
+
+        #endregion Public Methods
+
+        #region Private Methods
 
         private Expression GetExpressionHandlingNullables(Expression member, ConstantExpression constant1, Type type,
             MethodInfo inInfo)
@@ -42,5 +50,7 @@ namespace BetCR.Library.Operation.Impl
 
             return null;
         }
+
+        #endregion Private Methods
     }
 }

@@ -1,21 +1,12 @@
-﻿using System.Linq;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace BetCR.Services.External.Elenasport.Model
 {
     public class LineupResult : BaseElenaResult
     {
-        [JsonProperty("idTeam")]
-        public int TeamId { get; set; }
-        [JsonProperty("isStartingXI")]
-        public bool StartingXI { get; set; }
-
-        [JsonProperty("shirtNumber")]
-        public int ShirtNumber { get; set; }
-
-        [JsonProperty("position")]
-        public string Position { get; set; }
+        #region Public Properties
 
         [JsonIgnore]
         public PlayerResult PlayerResult
@@ -26,5 +17,19 @@ namespace BetCR.Services.External.Elenasport.Model
                 return player?.ToObject<PlayerResult>();
             }
         }
+
+        [JsonProperty("position")]
+        public string Position { get; set; }
+
+        [JsonProperty("shirtNumber")]
+        public int ShirtNumber { get; set; }
+
+        [JsonProperty("isStartingXI")]
+        public bool StartingXI { get; set; }
+
+        [JsonProperty("idTeam")]
+        public int TeamId { get; set; }
+
+        #endregion Public Properties
     }
 }

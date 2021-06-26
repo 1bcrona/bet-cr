@@ -4,6 +4,27 @@ namespace BetCR.Repository.Migrations
 {
     public partial class TournamentChange : Migration
     {
+        #region Protected Methods
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Tournament_User_OwnerUserId",
+                table: "Tournament");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Tournament_OwnerUserId",
+                table: "Tournament");
+
+            migrationBuilder.DropColumn(
+                name: "OwnerUserId",
+                table: "Tournament");
+
+            migrationBuilder.DropColumn(
+                name: "TournamentPassword",
+                table: "Tournament");
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
@@ -32,23 +53,6 @@ namespace BetCR.Repository.Migrations
                 onDelete: ReferentialAction.Restrict);
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Tournament_User_OwnerUserId",
-                table: "Tournament");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Tournament_OwnerUserId",
-                table: "Tournament");
-
-            migrationBuilder.DropColumn(
-                name: "OwnerUserId",
-                table: "Tournament");
-
-            migrationBuilder.DropColumn(
-                name: "TournamentPassword",
-                table: "Tournament");
-        }
+        #endregion Protected Methods
     }
 }

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace BetCR.Services.External.Elenasport.Model
 {
@@ -14,14 +10,19 @@ namespace BetCR.Services.External.Elenasport.Model
 
         [JsonProperty("d")]
         public int Draw { get; set; }
+
         [JsonProperty("ga")]
         public int GoalAgainst { get; set; }
+
         [JsonProperty("gd")]
         public int GoalDifference { get; set; }
+
         [JsonProperty("gf")]
         public int GoalFor { get; set; }
+
         [JsonProperty("l")]
         public int Lost { get; set; }
+
         [JsonProperty("p")]
         public int Played { get; set; }
 
@@ -30,16 +31,15 @@ namespace BetCR.Services.External.Elenasport.Model
 
         [JsonProperty("pos")]
         public int Position { get; set; }
-        [JsonProperty("w")]
-        public int Win { get; set; }
-
-        [JsonProperty("teamName")]
-        public string TeamName { get; set; }
-        [JsonProperty("idTeam")]
-        public string TeamId { get; set; }
 
         [JsonIgnore]
         public string SerializedObject { get; set; }
+
+        [JsonProperty("idTeam")]
+        public string TeamId { get; set; }
+
+        [JsonProperty("teamName")]
+        public string TeamName { get; set; }
 
         public TeamResult TeamResult
         {
@@ -49,6 +49,9 @@ namespace BetCR.Services.External.Elenasport.Model
                 return team?.ToObject<TeamResult>();
             }
         }
+
+        [JsonProperty("w")]
+        public int Win { get; set; }
 
         #endregion Public Properties
     }

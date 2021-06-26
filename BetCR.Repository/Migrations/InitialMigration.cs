@@ -1,10 +1,45 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace BetCR.Repository.Migrations
 {
     public partial class InitialMigration : Migration
     {
+        #region Protected Methods
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "TeamLeagueRel");
+
+            migrationBuilder.DropTable(
+                name: "UserMatchBet");
+
+            migrationBuilder.DropTable(
+                name: "Match");
+
+            migrationBuilder.DropTable(
+                name: "User");
+
+            migrationBuilder.DropTable(
+                name: "MatchEvent");
+
+            migrationBuilder.DropTable(
+                name: "Stage");
+
+            migrationBuilder.DropTable(
+                name: "Team");
+
+            migrationBuilder.DropTable(
+                name: "Tournament");
+
+            migrationBuilder.DropTable(
+                name: "League");
+
+            migrationBuilder.DropTable(
+                name: "StageStanding");
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -302,37 +337,6 @@ namespace BetCR.Repository.Migrations
                 column: "UserId");
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "TeamLeagueRel");
-
-            migrationBuilder.DropTable(
-                name: "UserMatchBet");
-
-            migrationBuilder.DropTable(
-                name: "Match");
-
-            migrationBuilder.DropTable(
-                name: "User");
-
-            migrationBuilder.DropTable(
-                name: "MatchEvent");
-
-            migrationBuilder.DropTable(
-                name: "Stage");
-
-            migrationBuilder.DropTable(
-                name: "Team");
-
-            migrationBuilder.DropTable(
-                name: "Tournament");
-
-            migrationBuilder.DropTable(
-                name: "League");
-
-            migrationBuilder.DropTable(
-                name: "StageStanding");
-        }
+        #endregion Protected Methods
     }
 }

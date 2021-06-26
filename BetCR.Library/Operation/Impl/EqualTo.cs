@@ -1,12 +1,20 @@
-﻿using System.Linq.Expressions;
-using BetCR.Library.Operation.Base;
+﻿using BetCR.Library.Operation.Base;
+using System.Linq.Expressions;
 
 namespace BetCR.Library.Operation.Impl
 {
     public class EqualTo : OperationBase
     {
-        public EqualTo() : base("EqualTo") { }
-      
+        #region Public Constructors
+
+        public EqualTo() : base("EqualTo")
+        {
+        }
+
+        #endregion Public Constructors
+
+        #region Public Methods
+
         /// <inheritdoc />
         public override Expression GetExpression(Expression member, ConstantExpression constant1, ConstantExpression constant2)
         {
@@ -22,5 +30,7 @@ namespace BetCR.Library.Operation.Impl
 
             return Expression.Equal(member, constant);
         }
+
+        #endregion Public Methods
     }
 }

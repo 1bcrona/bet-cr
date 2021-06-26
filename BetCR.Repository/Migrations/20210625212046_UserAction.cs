@@ -4,14 +4,16 @@ namespace BetCR.Repository.Migrations
 {
     public partial class UserAction : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-
-        }
+        #region Protected Methods
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
         }
+
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+        }
+
+        #endregion Protected Methods
     }
 }

@@ -1,11 +1,11 @@
-﻿using System;
+﻿using BetCR.Repository.Entity.Base;
+using BetCR.Repository.Repository.Base.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using BetCR.Repository.Entity.Base;
-using BetCR.Repository.Repository.Base.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace BetCR.Repository.Repository.Base
 {

@@ -1,19 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BetCR.Web.Controllers.Base;
+﻿using BetCR.Web.Controllers.Base;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace BetCR.Web.Controllers
 {
     public class TournamentController : BaseController
     {
-        private readonly IMediator _mediator;
+        #region Private Fields
+
         private readonly ILogger<PredictionController> _logger;
+        private readonly IMediator _mediator;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public TournamentController(IMediator mediator, ILogger<PredictionController> logger, IHttpContextAccessor accessor) : base(accessor, mediator)
         {
@@ -21,10 +23,15 @@ namespace BetCR.Web.Controllers
             _logger = logger;
         }
 
+        #endregion Public Constructors
+
+        #region Public Methods
 
         public IActionResult Index()
         {
             return View();
         }
+
+        #endregion Public Methods
     }
 }

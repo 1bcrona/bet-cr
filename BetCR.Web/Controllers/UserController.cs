@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using BetCR.Repository.Entity;
-using BetCR.Repository.ValueObject;
-using BetCR.Services.Base;
+﻿using BetCR.Repository.ValueObject;
 using BetCR.Web.Controllers.Base;
 using BetCR.Web.Handlers.Query.Tournament;
 using BetCR.Web.Handlers.Query.UserAction;
@@ -16,7 +9,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace BetCR.Web.Controllers
 {
@@ -45,26 +41,19 @@ namespace BetCR.Web.Controllers
         #region Public Methods
 
         [HttpGet]
-        [Route("Login")]
-        public IActionResult Login(string returnUrl = "")
+        [Authorize]
+        [Route("ChangeTournament/{tournamentId}")]
+        public async Task<IActionResult> ChangeTournament([FromRoute] string tournamentId)
         {
-            if (_accessor.HttpContext != null)
+            if (String.IsNullOrEmpty((tournamentId ?? String.Empty).Trim()))
             {
-                var claims = _accessor.HttpContext.User.Claims.ToList();
-                if (claims.Count > 0)
-                {
-                    if (!String.IsNullOrEmpty(returnUrl))
-                    {
-                        return Redirect(returnUrl);
-                    }
-                    return RedirectToAction("Index", "/");
-                }
+                Login();
             }
 
-            return View();
+            await Task.CompletedTask;
+            ViewBag.CurrentTournamentId = tournamentId;
+            return RedirectToAction("Index", "/");
         }
-
-
 
         [HttpGet]
         [Authorize]
@@ -84,26 +73,25 @@ namespace BetCR.Web.Controllers
             return View("Tournament/Index", result.All);
         }
 
-
-
         [HttpGet]
-        [Authorize]
-        [Route("ChangeTournament/{tournamentId}")]
-        public async Task<IActionResult> ChangeTournament([FromRoute] string tournamentId)
+        [Route("Login")]
+        public IActionResult Login(string returnUrl = "")
         {
-
-            if (String.IsNullOrEmpty((tournamentId ?? String.Empty).Trim()))
+            if (_accessor.HttpContext != null)
             {
-                Login();
+                var claims = _accessor.HttpContext.User.Claims.ToList();
+                if (claims.Count > 0)
+                {
+                    if (!String.IsNullOrEmpty(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    return RedirectToAction("Index", "/");
+                }
             }
 
-            await Task.CompletedTask;
-            ViewBag.CurrentTournamentId = tournamentId;
-            return RedirectToAction("Index", "/");
+            return View();
         }
-
-
-
 
         [HttpGet]
         [Route("Logout")]

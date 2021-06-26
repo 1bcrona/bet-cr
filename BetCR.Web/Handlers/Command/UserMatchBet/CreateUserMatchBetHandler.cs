@@ -1,26 +1,35 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using BetCR.Repository.Entity;
+﻿using BetCR.Repository.Entity;
 using BetCR.Repository.Repository.Base.Interfaces;
 using BetCR.Web.Controllers.API.Model;
 using MediatR;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace BetCR.Web.Handlers.Command.UserMatchBet
 {
     public class CreateUserMatchBetHandler : IRequestHandler<CreateUserMatchBetCommand, Match>
     {
+        #region Private Fields
+
         private readonly IUnitOfWork _unitOfWork;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public CreateUserMatchBetHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
+        #endregion Public Constructors
+
+        #region Public Methods
+
         public async Task<Match> Handle(CreateUserMatchBetCommand request, CancellationToken cancellationToken)
         {
-
             var userMatchBetRepository = _unitOfWork.GetRepository<Repository.Entity.UserMatchBet, string>();
 
             var isBetExist = await userMatchBetRepository.FindAsync(w =>
@@ -54,9 +63,8 @@ namespace BetCR.Web.Handlers.Command.UserMatchBet
             var updatedMatch = await matchRepository.GetAsync(request.MatchId);
 
             return updatedMatch;
-
         }
+
+        #endregion Public Methods
     }
-
-
 }

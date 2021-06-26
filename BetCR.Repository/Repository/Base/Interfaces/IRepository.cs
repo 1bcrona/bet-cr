@@ -1,8 +1,8 @@
-﻿using System;
+﻿using BetCR.Repository.Entity.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using BetCR.Repository.Entity.Base;
 
 namespace BetCR.Repository.Repository.Base.Interfaces
 {

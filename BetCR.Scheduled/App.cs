@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using BetCR.Caching.Impl;
+﻿using BetCR.Caching.Impl;
 using BetCR.Caching.Interface;
 using BetCR.Repository.Repository;
 using BetCR.Repository.Repository.Base;
@@ -11,13 +9,14 @@ using BetCR.Services.External.Elenasport;
 using Hangfire;
 using Hangfire.Storage.SQLite;
 using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace BetCR.Scheduled
 {
@@ -56,8 +55,6 @@ namespace BetCR.Scheduled
             Console.WriteLine(Configuration.GetConnectionString("DefaultConnection"));
 
             await host.RunAsync();
-
-
         }
 
         #endregion Public Methods
@@ -82,8 +79,6 @@ namespace BetCR.Scheduled
             services.AddHangfireServer(options =>
             {
                 options.ServerName = "BetCR Hangfire";
-
-
             });
 
             JobStorage.Current = new SQLiteStorage("DefaultConnection");
@@ -92,10 +87,6 @@ namespace BetCR.Scheduled
             RecurringJob.AddOrUpdate<IElenaFetcherService>(s => s.GetFixturesAsync(), Cron.HourInterval(12));
             RecurringJob.AddOrUpdate<IElenaFetcherService>(s => s.GetStandingsAsync(), Cron.HourInterval(12));
             RecurringJob.AddOrUpdate<IElenaFetcherService>(s => s.GetFixtureResultsAsync(), Cron.HourInterval(1));
-
-
-
-
         }
 
         #endregion Private Methods

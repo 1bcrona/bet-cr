@@ -57,7 +57,6 @@
     </div>
 </section>
 
-
 @section Scripts {
 
     <script src="~/static/js/modal.js"></script>
@@ -91,7 +90,7 @@
                     error: function (err) {
                         const data = err.responseJSON;
                         const modalFadeSeconds = 2;
-                        let modalData = `<br>${data.result}</br>`;
+                        let modalData = `<br>${data.Result}</br> <br>${data.ErrorMessage}</br>`;
                         if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
 
                         const modal = $("#dLogin").addModal({
@@ -112,8 +111,6 @@
                     $(el).addClass("error");
                     $(el).removeClass("success");
 
-
-
                     $(el).attr('title', message)
                         .attr('data-original-title', message)
                         .attr('data-bs-original-title', message)
@@ -133,8 +130,6 @@
                         .attr('data-bs-original-title', "")
                         .tooltip('update')
                         .tooltip('hide');
-
-
 
                     if ($(".error").length === 0) {
                         $("#fLoginForm input[type=submit]").prop('disabled', false);

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using BetCR.Library.Operation.Base;
+using System;
 using System.Collections;
 using System.Linq.Expressions;
-using BetCR.Library.Operation.Base;
 
 namespace BetCR.Library.Operation.Impl
 {
@@ -10,8 +10,14 @@ namespace BetCR.Library.Operation.Impl
     /// </summary>
     public class NotIn : OperationBase
     {
+        #region Public Constructors
+
         /// <inheritdoc />
         public NotIn() : base("NotIn") { }
+
+        #endregion Public Constructors
+
+        #region Public Methods
 
         /// <inheritdoc />
         public override Expression GetExpression(Expression member, ConstantExpression constant1, ConstantExpression constant2)
@@ -26,5 +32,7 @@ namespace BetCR.Library.Operation.Impl
             var contains = Expression.Call(constant1, inInfo, member);
             return Expression.Not(contains);
         }
+
+        #endregion Public Methods
     }
 }

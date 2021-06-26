@@ -4,6 +4,20 @@ namespace BetCR.Repository.Migrations
 {
     public partial class UpdatedUser : Migration
     {
+        #region Protected Methods
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "DateOfBirth",
+                table: "User");
+
+            migrationBuilder.RenameColumn(
+                name: "Firstname",
+                table: "User",
+                newName: "Username");
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
@@ -18,16 +32,6 @@ namespace BetCR.Repository.Migrations
                 nullable: true);
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "DateOfBirth",
-                table: "User");
-
-            migrationBuilder.RenameColumn(
-                name: "Firstname",
-                table: "User",
-                newName: "Username");
-        }
+        #endregion Protected Methods
     }
 }

@@ -6,7 +6,6 @@
 @using System.Security.Claims
 @model List<BetCR.Repository.Entity.Match>
 
-
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @section Head
@@ -42,7 +41,6 @@
                                 </a>
                             }
                         }
-
                     </h5>
                     <div class="card-body">
                         <div class="row">
@@ -71,11 +69,11 @@
                                                 <div class="flip-card" data-current=".flip-card-front" data-other=".flip-card-back">
                                                     <div class="flip-card-inner">
                                                         <div class="flip-card-front">
-                                                            <img class="flip-card-change-view"  data-bs-toggle="tooltip" data-title="Change View" data-bs-title="Change View"  title="Change View" />
+                                                            <img class="flip-card-change-view" data-bs-toggle="tooltip" data-title="Change View" data-bs-title="Change View" title="Change View" />
                                                             @{ await Html.RenderPartialAsync("Match/_MatchCard", match, new ViewDataDictionary(ViewData) { { "UserBet", userBet } }); }
                                                         </div>
                                                         <div class="flip-card-back">
-                                                            <img class="flip-card-change-view"  data-bs-toggle="tooltip" data-title="Change View" data-bs-title="Change View"  title="Change View" />
+                                                            <img class="flip-card-change-view" data-bs-toggle="tooltip" data-title="Change View" data-bs-title="Change View" title="Change View" />
                                                             <div class="card border shadow-0  match-row">
                                                                 <div class="card-header">
                                                                     <h3>What were the users' predictions?</h3>
@@ -88,10 +86,8 @@
                                                                                 var draw = match.UserMatchBets.Count(w => w.HomeTeamScore == w.AwayTeamScore);
                                                                                 var awayWin = match.UserMatchBets.Count(w => w.HomeTeamScore < w.AwayTeamScore);
 
-
                                                                             }
                                                                             <canvas id='@($"{match.Id}_chart")' class="bet-chart" data-labels='@match.HomeTeam.Name,Draw,@match.AwayTeam.Name' data-values='[@homeWin,@draw,@awayWin]' , data-colors='@homeDomColor1,#EEEEEE,@awayDomColor1' style="width: 200px; height: 200px;"></canvas>
-
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -121,14 +117,10 @@
     <script src="/static/js/vendor/jbvalidator.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
-
-
     <script>
         $(document).ready(function () {
             $(".team-logo").tooltip({ placement: 'bottom' });
             $(".hover-overlay a").tooltip({ placement: 'bottom' });
-
 
             $(".bet-chart").each((index, element) => {
 
@@ -159,15 +151,6 @@
             );
         });
 
-
-
-
-
-
-
-
-
-
         $(".flip-card-change-view").on("click",
             function (e) {
                 const element = e.target.parentElement.parentElement.parentElement;
@@ -178,7 +161,6 @@
                 $(element).find(other).css("visibility", "visible");
                 $(element).attr("data-current", other);
                 $(element).attr("data-other", current);
-
 
             });
 
@@ -252,8 +234,6 @@
             else {
                 $(matchCard).attr("data-bet-leverage", "1");
             }
-
-
 
         });
     </script>

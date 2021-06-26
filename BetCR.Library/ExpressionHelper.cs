@@ -3,25 +3,49 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using BetCR.Library.Operation.Infrastructure;
 
 namespace BetCR.Library
 {
-
     public static class ExpressionHelper
     {
-        public static Expression<Func<T, bool>> ToExpression<T>(this List<Condition.Condition> query)
-        {
-            if (query == null || query.Count == 0)
-            {
-                return GetTrueExpression(typeof(T)) as Expression<Func<T, bool>>;
-            }
-            return CreateExpression<T>(query);
-        }
+        #region Public Methods
 
-        private static Expression GetTrueExpression(Type type)
+        public static Expression<Func<T, bool>> CreateExpression<T>(IEnumerable<Condition.Condition> query)
         {
-            return Expression.Lambda(Expression.Constant(true), Expression.Parameter(type, "_"));
+            var groups = query.GroupBy(c => c.ColumnName);
+
+            Expression<Func<T, bool>> exp = null;
+            var param = Expression.Parameter(typeof(T), "X");
+
+            foreach (var group in groups)
+            {
+                Expression<Func<T, bool>> groupExp = null;
+                foreach (var condition in group)
+                {
+                    String[] columNames = condition.ColumnName.Split('.');
+                    var con = GetExpression(param, condition, condition.ColumnName) as Expression<Func<T, bool>>;
+
+                    if (groupExp == null)
+                    {
+                        groupExp = con;
+                    }
+                    else
+                    {
+                        var body = Expression.OrElse(groupExp.Body, con?.Body);
+                        groupExp = Expression.Lambda<Func<T, bool>>(body, groupExp.Parameters[0]);
+                    }
+                }
+                if (exp != null)
+                {
+                    var body = Expression.AndAlso(groupExp.Body, exp.Body);
+                    exp = Expression.Lambda<Func<T, bool>>(body, groupExp.Parameters[0]);
+                }
+                else
+                {
+                    exp = groupExp;
+                }
+            }
+            return exp;
         }
 
         public static Expression GetExpression(Expression parameter, Condition.Condition condition, string columName)
@@ -30,7 +54,6 @@ namespace BetCR.Library
             Type childType = null;
             var innerProperty = columName.IndexOf(".");
             var containsInnerProperty = innerProperty > -1;
-
 
             if (containsInnerProperty)
             {
@@ -83,19 +106,22 @@ namespace BetCR.Library
             return con;
         }
 
-
-        private class ParameterVisitor : ExpressionVisitor
+        public static Expression<Func<T, bool>> ToExpression<T>(this List<Condition.Condition> query)
         {
-            public Expression Parameter
+            if (query == null || query.Count == 0)
             {
-                get;
-                private set;
+                return GetTrueExpression(typeof(T)) as Expression<Func<T, bool>>;
             }
-            protected override Expression VisitParameter(ParameterExpression node)
-            {
-                Parameter = node;
-                return node;
-            }
+            return CreateExpression<T>(query);
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private static Expression GetTrueExpression(Type type)
+        {
+            return Expression.Lambda(Expression.Constant(true), Expression.Parameter(type, "_"));
         }
 
         private static Expression MakeLambda(Expression parameter, Expression predicate)
@@ -106,47 +132,33 @@ namespace BetCR.Library
             return Expression.Lambda(predicate, (ParameterExpression)resultParameter);
         }
 
-        public static Expression<Func<T, bool>> CreateExpression<T>(IEnumerable<Condition.Condition> query)
+        #endregion Private Methods
+
+        #region Private Classes
+
+        private class ParameterVisitor : ExpressionVisitor
         {
-            var groups = query.GroupBy(c => c.ColumnName);
+            #region Public Properties
 
-            Expression<Func<T, bool>> exp = null;
-            var param = Expression.Parameter(typeof(T), "X");
-
-            foreach (var group in groups)
+            public Expression Parameter
             {
-                Expression<Func<T, bool>> groupExp = null;
-                foreach (var condition in group)
-                {
-
-                    String[] columNames = condition.ColumnName.Split('.');
-                    var con = GetExpression(param, condition, condition.ColumnName) as Expression<Func<T, bool>>;
-
-                    if (groupExp == null)
-                    {
-                        groupExp = con;
-                    }
-                    else
-                    {
-                        var body = Expression.OrElse(groupExp.Body, con?.Body);
-                        groupExp = Expression.Lambda<Func<T, bool>>(body, groupExp.Parameters[0]);
-                    }
-                }
-                if (exp != null)
-                {
-
-                    var body = Expression.AndAlso(groupExp.Body, exp.Body);
-                    exp = Expression.Lambda<Func<T, bool>>(body, groupExp.Parameters[0]);
-                }
-                else
-                {
-                    exp = groupExp;
-                }
+                get;
+                private set;
             }
-            return exp;
+
+            #endregion Public Properties
+
+            #region Protected Methods
+
+            protected override Expression VisitParameter(ParameterExpression node)
+            {
+                Parameter = node;
+                return node;
+            }
+
+            #endregion Protected Methods
         }
 
-
-
+        #endregion Private Classes
     }
 }

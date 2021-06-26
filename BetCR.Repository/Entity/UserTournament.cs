@@ -5,15 +5,26 @@ namespace BetCR.Repository.Entity
 {
     public class UserTournament : EntityBase<string>
     {
-        private User _user;
+        #region Private Fields
+
         private Tournament _tournament;
+        private User _user;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public UserTournament()
         {
         }
+
         public UserTournament(ILazyLoader lazyLoader) : base(lazyLoader)
         {
         }
+
+        #endregion Public Constructors
+
+        #region Public Properties
 
         public Tournament Tournament
         {
@@ -26,5 +37,7 @@ namespace BetCR.Repository.Entity
             get => LazyLoader.Load(this, ref _user);
             set => _user = value;
         }
+
+        #endregion Public Properties
     }
 }

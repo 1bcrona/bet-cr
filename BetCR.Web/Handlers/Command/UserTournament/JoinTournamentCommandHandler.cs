@@ -1,11 +1,11 @@
 ﻿using BetCR.Repository.Entity;
 using BetCR.Repository.Repository.Base.Interfaces;
+using BetCR.Web.Controllers.API.Model;
 using MediatR;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using BetCR.Web.Controllers.API.Model;
 
 namespace BetCR.Web.Handlers.Command.UserTournament
 {
@@ -46,15 +46,12 @@ namespace BetCR.Web.Handlers.Command.UserTournament
                 if (user == null)
                 {
                     throw new ApiException() { ErrorCode = "USER_NOT_FOUND", ErrorMessage = "User cannot be found", StatusCode = 500 };
-
-
                 }
 
                 var tournament = await tournamentRepository.GetAsync(request.TournamentId);
                 if (tournament == null)
                 {
                     throw new ApiException() { ErrorCode = "TOURNAMENT_NOT_FOUND", ErrorMessage = "Tournament cannot be found", StatusCode = 500 };
-
                 }
 
                 var userTournament = new Repository.Entity.UserTournament

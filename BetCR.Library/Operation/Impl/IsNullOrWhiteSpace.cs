@@ -1,5 +1,5 @@
-﻿using System.Linq.Expressions;
-using BetCR.Library.Operation.Base;
+﻿using BetCR.Library.Operation.Base;
+using System.Linq.Expressions;
 
 namespace BetCR.Library.Operation.Impl
 {
@@ -8,8 +8,14 @@ namespace BetCR.Library.Operation.Impl
     /// </summary>
     public class IsNullOrWhiteSpace : OperationBase
     {
+        #region Public Constructors
+
         /// <inheritdoc />
         public IsNullOrWhiteSpace() : base("IsNullOrWhiteSpace") { }
+
+        #endregion Public Constructors
+
+        #region Public Methods
 
         /// <inheritdoc />
         public override Expression GetExpression(Expression member, ConstantExpression constant1, ConstantExpression constant2)
@@ -22,5 +28,7 @@ namespace BetCR.Library.Operation.Impl
                     Expression.NotEqual(member, exprNull),
                     Expression.Equal(member.TrimToLower(), exprEmpty)));
         }
+
+        #endregion Public Methods
     }
 }

@@ -1,7 +1,3 @@
-using System;
-using System.IO;
-using System.Net;
-using System.Reflection;
 using BetCR.Caching.Impl;
 using BetCR.Caching.Interface;
 using BetCR.Repository.Repository;
@@ -9,7 +5,6 @@ using BetCR.Repository.Repository.Base;
 using BetCR.Repository.Repository.Base.Interfaces;
 using BetCR.Services;
 using BetCR.Services.Base;
-using BetCR.Services.External;
 using BetCR.Services.External.Elenasport;
 using BetCR.Web.Controllers.API.Model;
 using BetCR.Web.Controllers.API.Validator;
@@ -26,50 +21,31 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using System;
+using System.IO;
+using System.Net;
+using System.Reflection;
 
 namespace BetCR.Web
 {
     public class Startup
     {
+        #region Public Constructors
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        #endregion Public Constructors
+
+        #region Public Properties
+
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
+        #endregion Public Properties
 
-            services.AddControllersWithViews();
-            services.AddLogging();
-            services.AddDbContext<SQLiteDbContext>();
-            services.AddSingleton<ICache, InMemoryCache>();
-            services.AddScoped<IUnitOfWork, BaseUnitOfWork>();
-            services.AddScoped<IElenaFetcherService, ElenaFetcherService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<DbContext, SQLiteDbContext>();
-
-            services.AddSingleton<ICache, InMemoryCache>();
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
-            {
-                options.LoginPath = new PathString("/User/Login/");
-            });
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-
-            services.AddMediatR(Assembly.GetAssembly(GetType()));
-            services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginModelValidator>());
-            services.AddControllersWithViews();
-            services.AddControllers().AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );
-
-
-
-
-        }
+        #region Public Methods
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -83,7 +59,6 @@ namespace BetCR.Web
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
 
             app.UseHttpsRedirection();
 
@@ -127,7 +102,6 @@ namespace BetCR.Web
                 });
             });
 
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -143,5 +117,34 @@ namespace BetCR.Web
                     pattern: "api/{controller=Home}/{action=Index}/{id?}");
             });
         }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllersWithViews();
+            services.AddLogging();
+            services.AddDbContext<SQLiteDbContext>();
+            services.AddSingleton<ICache, InMemoryCache>();
+            services.AddScoped<IUnitOfWork, BaseUnitOfWork>();
+            services.AddScoped<IElenaFetcherService, ElenaFetcherService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<DbContext, SQLiteDbContext>();
+
+            services.AddSingleton<ICache, InMemoryCache>();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
+                options.LoginPath = new PathString("/User/Login/");
+            });
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddMediatR(Assembly.GetAssembly(GetType()));
+            services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginModelValidator>());
+            services.AddControllersWithViews();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+        }
+
+        #endregion Public Methods
     }
 }

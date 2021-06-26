@@ -42,8 +42,6 @@
     background-color: rgba(255, 235, 59, 0.95);
 }
 
-
-
 .container {
     max-width: 95%;
     width: 45rem;
@@ -116,7 +114,6 @@
     content: url("/static/images/subst.png");
 }
 
-
 .timeline--inner-pin {
     position: absolute;
     display: block;
@@ -130,7 +127,6 @@
     transition: all 0.7s ease;
 }
 
-
 .is-featured {
     width: 30px;
     height: 30px;
@@ -141,9 +137,6 @@
     width: 20px;
     height: 20px;
 }
-
-
-
 
 .tooltip {
     display: inline-block;

@@ -1,6 +1,4 @@
-﻿
-
-@using BetCR.Repository.ValueObject
+﻿@using BetCR.Repository.ValueObject
 @model BetCR.Repository.Entity.StageStanding
 
 <head>
@@ -36,11 +34,9 @@
                     {
                         <tr>
 
-
                             <td class="align-middle d-none d-lg-table-cell">
                                 <label> @item.TeamStanding.Position</label>
                             </td>
-
 
                             <td class="align-middle">
                                 <button type="button" class="rounded-button" style="border: 5.1px solid!important;
@@ -53,7 +49,6 @@
                             <td class="align-middle">
                                 <label> <strong>@item.TeamStanding.TeamName.ToUpperInvariant()</strong> </label>
                             </td>
-
 
                             <td class="align-middle d-none d-lg-table-cell">
                                 <label> @item.Played</label>
@@ -83,10 +78,9 @@
                                 <label> @item.GoalDifference</label>
                             </td>
 
-                            <td  class="align-middle">
+                            <td class="align-middle">
                                 <label><strong> @item.Point</strong> </label>
                             </td>
-
                         </tr>
                     }
 
@@ -94,7 +88,6 @@
             </tbody>
         </table>
     </div>
-
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>
@@ -104,4 +97,3 @@
 
     });
 </script>
-

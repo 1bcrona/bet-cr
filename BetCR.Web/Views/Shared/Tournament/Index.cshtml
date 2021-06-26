@@ -5,7 +5,6 @@
 @using BetCR.Repository.ValueObject
 @model List<BetCR.Repository.Entity.Tournament>
 
-
 @{
     var inviations = (ViewBag.Invitations as List<UserAction> ?? new List<UserAction>()).Where(w => w.ActionType == UserActionType.TOURNAMENT_INVITE).ToList();
 }
@@ -67,10 +66,9 @@
                 @{
                     if (inviations.Count > 0)
                     {
-                        <span class="badge bg-danger ms-2">@inviations.Count</span>
+                    <span class="badge bg-danger ms-2">@inviations.Count</span>
                     }
                 }
-
             </a>
         </div>
     </div>
@@ -90,111 +88,110 @@
 
                         var isOwner = @tournament.Owner.Id == ViewBag.UserId;
                         var disContinued = DateTimeOffset.UtcNow.ToUnixTimeSeconds() > @tournament.TournamentEndDateEpoch;
-                        <div class="accordion-item">
+                    <div class="accordion-item">
 
-                            <h2 class="accordion-header" id="flush-headingOne">
-                                <button class="accordion-button collapsed"
-                                        type="button"
-                                        data-toggle="collapse"
-                                        data-mdb-toggle="collapse"
-                                        data-mdb-target="#o-@tournament.Id"
-                                        data-target="#o-@tournament.Id"
-                                        aria-expanded="false"
-                                        aria-controls="#o-@tournament.Id">
-                                    @tournament.TournamentName
-                                </button>
-                            </h2>
+                        <h2 class="accordion-header" id="flush-headingOne">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-toggle="collapse"
+                                    data-mdb-toggle="collapse"
+                                    data-mdb-target="#o-@tournament.Id"
+                                    data-target="#o-@tournament.Id"
+                                    aria-expanded="false"
+                                    aria-controls="#o-@tournament.Id">
+                                @tournament.TournamentName
+                            </button>
+                        </h2>
 
-                            <div id="o-@tournament.Id"
-                                 class="accordion-collapse collapse"
-                                 data-parent="#aTournaments"
-                                 data-bs-parent="#aTournaments"
-                                 data-mdb-parent="#aTournaments"
-                                 aria-labelledby="h-@tournament.Id">
-                                <div class="accordion-body">
-                                    <div class="row">
-                                        <div class="col-lg-12 justify-content-center align-items-center">
-                                            <div class="card">
-                                                <div class="card-header text-center">
-                                                    <h7>Tournament Details</h7>
-                                                </div>
+                        <div id="o-@tournament.Id"
+                             class="accordion-collapse collapse"
+                             data-parent="#aTournaments"
+                             data-bs-parent="#aTournaments"
+                             data-mdb-parent="#aTournaments"
+                             aria-labelledby="h-@tournament.Id">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <div class="col-lg-12 justify-content-center align-items-center">
+                                        <div class="card">
+                                            <div class="card-header text-center">
+                                                <h7>Tournament Details</h7>
+                                            </div>
 
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="@(isOwner ? "col-lg-3" : "col-lg-12")">
-                                                            <form id="fTournament_@tournament.Id"
-                                                                  class="request-form tournament-form"
-                                                                  data-id="@tournament.Id"
-                                                                  novalidate>
-                                                                <div class="d-flex">
-                                                                    <div class="form-group has-feedback-left mr-2">
-                                                                        <label class="label">Type</label>
-                                                                    </div>
-                                                                    <div class="form-group  has-feedback-left ml-2">
-                                                                        <label class="label">@(tournament.IsPrivate ? "Private" : "Public")</label>
-                                                                    </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="@(isOwner ? "col-lg-3" : "col-lg-12")">
+                                                        <form id="fTournament_@tournament.Id"
+                                                              class="request-form tournament-form"
+                                                              data-id="@tournament.Id"
+                                                              novalidate>
+                                                            <div class="d-flex">
+                                                                <div class="form-group has-feedback-left mr-2">
+                                                                    <label class="label">Type</label>
                                                                 </div>
-                                                                <div class="d-flex">
-                                                                    <div class="form-group has-feedback-left mr-2">
-                                                                        <label class="label">Start Date</label>
-                                                                    </div>
-                                                                    <div class="form-group  has-feedback-left ml-2">
-                                                                        <label class="label">@(tournament.TournamentStartDate.Local.ToShortDateString())</label>
-                                                                    </div>
+                                                                <div class="form-group  has-feedback-left ml-2">
+                                                                    <label class="label">@(tournament.IsPrivate ? "Private" : "Public")</label>
                                                                 </div>
-
-                                                                <div class="d-flex">
-                                                                    <div class="form-group has-feedback-left mr-2">
-                                                                        <label class="label">End Date</label>
-                                                                    </div>
-                                                                    <div class="form-group  has-feedback-left ml-2">
-                                                                        <label class="label">@(tournament.TournamentEndDate.Local.ToShortDateString())</label>
-                                                                    </div>
+                                                            </div>
+                                                            <div class="d-flex">
+                                                                <div class="form-group has-feedback-left mr-2">
+                                                                    <label class="label">Start Date</label>
                                                                 </div>
+                                                                <div class="form-group  has-feedback-left ml-2">
+                                                                    <label class="label">@(tournament.TournamentStartDate.Local.ToShortDateString())</label>
+                                                                </div>
+                                                            </div>
 
-                                                                @{
+                                                            <div class="d-flex">
+                                                                <div class="form-group has-feedback-left mr-2">
+                                                                    <label class="label">End Date</label>
+                                                                </div>
+                                                                <div class="form-group  has-feedback-left ml-2">
+                                                                    <label class="label">@(tournament.TournamentEndDate.Local.ToShortDateString())</label>
+                                                                </div>
+                                                            </div>
+
+                                                            @{
                                                                     if (!isOwner && !disContinued)
                                                                     {
-                                                                        <div class="form-group">
-                                                                            <input type="submit" id="sLeaveTournament" value="Leave" class="btn btn-danger" />
-                                                                        </div>
+                                                                <div class="form-group">
+                                                                    <input type="submit" id="sLeaveTournament" value="Leave" class="btn btn-danger" />
+                                                                </div>
                                                                     }
-                                                                }
-                                                            </form>
-                                                        </div>
+                                                            }
+                                                        </form>
+                                                    </div>
 
-                                                        @{
+                                                    @{
                                                             if (isOwner && !disContinued)
                                                             {
-                                                                <div class="col-lg-9 justify-content-center align-items-center">
+                                                        <div class="col-lg-9 justify-content-center align-items-center">
 
-                                                                    <form id="fTournamentInvite_@tournament.Id"
-                                                                          class="request-form invite-form"
-                                                                          novalidate>
+                                                            <form id="fTournamentInvite_@tournament.Id"
+                                                                  class="request-form invite-form"
+                                                                  novalidate>
 
-                                                                        <div class="row">
-                                                                            <div class="col-6">
-                                                                                <select class="selectpicker show-tick" data-tournament-id="@tournament.Id" data-live-search="true">
-                                                                                </select>
-                                                                            </div>
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <select class="selectpicker show-tick" data-tournament-id="@tournament.Id" data-live-search="true">
+                                                                        </select>
+                                                                    </div>
 
-                                                                            <div class="col-lg-6">
+                                                                    <div class="col-lg-6">
 
-                                                                                <div class="d-flex">
-                                                                                    <div class="form-group">
-                                                                                        <input type="submit"
-                                                                                               id="sInviteUser"
-                                                                                               value="Invite"
-                                                                                               class="btn btn-success  px-4" />
-                                                                                    </div>
-                                                                                </div>
+                                                                        <div class="d-flex">
+                                                                            <div class="form-group">
+                                                                                <input type="submit"
+                                                                                       id="sInviteUser"
+                                                                                       value="Invite"
+                                                                                       class="btn btn-success  px-4" />
                                                                             </div>
                                                                         </div>
-                                                                    </form>
+                                                                    </div>
                                                                 </div>
+                                                            </form>
+                                                        </div>
                                                             }
-                                                        }
-                                                    </div>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -202,6 +199,7 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
                     }
                 </div>
             </div>
@@ -258,7 +256,6 @@
                                 </div>
                             </div>
 
-
                             <div class="form-group mt-3">
                                 <input type="submit"
                                        id="sCreateTournament"
@@ -283,34 +280,31 @@
                                 foreach (var invitation in orderedInvitations)
                                 {
 
-                                    <div class="list-group-item list-group-item-action" aria-current="true">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">
-                                                Tournament Invitation
-                                                @{
+                                <div class="list-group-item list-group-item-action" aria-current="true">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">
+                                            Tournament Invitation
+                                            @{
                                                     if (invitation.ActionStatus == UserActionStatus.WAITING_FOR_REPLY)
                                                     {
-                                                        <span class='badge bg-danger ms-2'>New</span>
+                                                <span class='badge bg-danger ms-2'>New</span>
                                                     }
-                                                }
-                                            </h5>
-                                            <small>@invitation.ActionDate.Local.ToString()</small>
-                                        </div>
-                                        <p class="mb-1">
-                                            <strong>@invitation.FromUser.FullName</strong> invited you to join their tournament! Would you like to join?
-                                        </p>
-                                        <div class="btn-group shadow-0" role="group">
-                                            <button type="button" data-response-type="1" data-tournament-id="@invitation.ActionObject" data-invitation-id="@invitation.Id" class="btn  btn-success" data-mdb-color="dark">Yes</button>
-                                            <button type="button" data-response-type="0" data-tournament-id="@invitation.ActionObject" data-invitation-id="@invitation.Id" class="btn btn-danger" data-mdb-color="dark">No</button>
-                                        </div>
+                                            }
+                                        </h5>
+                                        <small>@invitation.ActionDate.Local.ToString()</small>
                                     </div>
+                                    <p class="mb-1">
+                                        <strong>@invitation.FromUser.FullName</strong> invited you to join their tournament! Would you like to join?
+                                    </p>
+                                    <div class="btn-group shadow-0" role="group">
+                                        <button type="button" data-response-type="1" data-tournament-id="@invitation.ActionObject" data-invitation-id="@invitation.Id" class="btn  btn-success" data-mdb-color="dark">Yes</button>
+                                        <button type="button" data-response-type="0" data-tournament-id="@invitation.ActionObject" data-invitation-id="@invitation.Id" class="btn btn-danger" data-mdb-color="dark">No</button>
+                                    </div>
+                                </div>
                                 }
 
-
                             }
-
                         </div>
-
                     </div>
                 </section>
             </div>
@@ -326,7 +320,6 @@
     <script src="/static/js/vendor/ajax-bootstrap-select.js"></script>
 
     <script type="text/javascript">
-
 
         $(".list-group-item button").click(function (e) {
             e.preventDefault();
@@ -354,7 +347,7 @@
                 dataType: "json",
                 success: function (data) {
                     const modalFadeSeconds = 2;
-                    let modalData = `<br>${data.result}</br>`;
+                    let modalData = `<br>${data.Result}</br>`;
                     if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
 
                     const modal = $("#dPendingInvitations").addModal({
@@ -373,7 +366,7 @@
                 error: function (err) {
                     const data = err.responseJSON;
                     const modalFadeSeconds = 2;
-                    let modalData = `<br>${data.result}</br>`;
+                    let modalData = `<br>${data.Result}</br> <br>${data.ErrorMessage}</br>`;
                     if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
 
                     const modal = $("#dPendingInvitations").addModal({
@@ -397,7 +390,7 @@
                 type: "DELETE",
                 success: function (data) {
                     const modalFadeSeconds = 2;
-                    let modalData = `<br>${data.result}</br>`;
+                    let modalData = `<br>${data.Result}</br>`;
                     if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
 
                     const modal = $("#fTournament").addModal({
@@ -416,7 +409,7 @@
                 error: function (err) {
                     const data = err.responseJSON;
                     const modalFadeSeconds = 2;
-                    let modalData = `<br>${data.result}</br>`;
+                    let modalData = `<br>${data.Result}</br> <br>${data.ErrorMessage}</br>`;
                     if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
 
                     const modal = $("#fTournament").addModal({
@@ -453,7 +446,7 @@
                 dataType: "json",
                 success: function (data) {
                     const modalFadeSeconds = 2;
-                    let modalData = `<br>${data.result}</br>`;
+                    let modalData = `<br>${data.Result}</br>`;
                     if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
 
                     const modal = $("#fTournament").addModal({
@@ -472,7 +465,7 @@
                 error: function (err) {
                     const data = err.responseJSON;
                     const modalFadeSeconds = 2;
-                    let modalData = `<br>${data.result}</br>`;
+                    let modalData = `<br>${data.Result}</br>`;
                     if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
 
                     const modal = $("#fTournament").addModal({
@@ -546,11 +539,7 @@
                     }
                 }
 
-
-
-
             };
-
 
             $("#fCreateTournament").submit(function (e) {
                 e.preventDefault();
@@ -569,7 +558,7 @@
                     dataType: "json",
                     success: function (data) {
                         const modalFadeSeconds = 2;
-                        let modalData = `<br>${data.result}</br>`;
+                        let modalData = `<br>${data.Result}</br>`;
                         if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
 
                         const modal = $("#fCreateTournament").addModal({
@@ -588,7 +577,7 @@
                     error: function (err) {
                         const data = err.responseJSON;
                         const modalFadeSeconds = 2;
-                        let modalData = `<br>${data.result}</br>`;
+                        let modalData = `<br>${data.Result}</br> <br>${data.ErrorMessage}</br>`;
                         if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
 
                         const modal = $("#fCreateTournament").addModal({
@@ -600,7 +589,6 @@
                         modal.modalElement.show();
                     }
                 });
-
 
             })
 

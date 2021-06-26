@@ -1,5 +1,5 @@
-﻿using System.Linq.Expressions;
-using BetCR.Library.Operation.Base;
+﻿using BetCR.Library.Operation.Base;
+using System.Linq.Expressions;
 
 namespace BetCR.Library.Operation.Impl
 {
@@ -8,9 +8,14 @@ namespace BetCR.Library.Operation.Impl
     /// </summary>
     public class Between : OperationBase
     {
+        #region Public Constructors
+
         /// <inheritdoc />
         public Between() : base("Between") { }
 
+        #endregion Public Constructors
+
+        #region Public Methods
 
         /// <inheritdoc />
         public override Expression GetExpression(Expression member, ConstantExpression constant1, ConstantExpression constant2)
@@ -20,5 +25,7 @@ namespace BetCR.Library.Operation.Impl
 
             return Expression.AndAlso(left, right);
         }
+
+        #endregion Public Methods
     }
 }

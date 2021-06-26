@@ -1,10 +1,44 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace BetCR.Repository.Migrations
 {
     public partial class UserTournameRel : Migration
     {
+        #region Protected Methods
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "UserTournameRel");
+
+            migrationBuilder.DropColumn(
+                name: "IsPrivate",
+                table: "Tournament");
+
+            migrationBuilder.DropColumn(
+                name: "TournameStartDateEpoch",
+                table: "Tournament");
+
+            migrationBuilder.DropColumn(
+                name: "TournamentEndDateEpoch",
+                table: "Tournament");
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "TournamentEndDate",
+                table: "Tournament",
+                type: "TEXT",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "TournamentStartDate",
+                table: "Tournament",
+                type: "TEXT",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
@@ -14,8 +48,6 @@ namespace BetCR.Repository.Migrations
             migrationBuilder.DropColumn(
                 name: "TournamentStartDate",
                 table: "Tournament");
-
-       
 
             migrationBuilder.AddColumn<bool>(
                 name: "IsPrivate",
@@ -76,38 +108,6 @@ namespace BetCR.Repository.Migrations
                 column: "UserId");
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "UserTournameRel");
-
-            migrationBuilder.DropColumn(
-                name: "IsPrivate",
-                table: "Tournament");
-
-            migrationBuilder.DropColumn(
-                name: "TournameStartDateEpoch",
-                table: "Tournament");
-
-            migrationBuilder.DropColumn(
-                name: "TournamentEndDateEpoch",
-                table: "Tournament");
-
- 
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "TournamentEndDate",
-                table: "Tournament",
-                type: "TEXT",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "TournamentStartDate",
-                table: "Tournament",
-                type: "TEXT",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-        }
+        #endregion Protected Methods
     }
 }

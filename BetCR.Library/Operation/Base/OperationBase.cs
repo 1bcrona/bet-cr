@@ -1,19 +1,29 @@
-﻿using System.Linq.Expressions;
-using BetCR.Library.Operation.Infrastructure;
+﻿using BetCR.Library.Operation.Infrastructure;
+using System.Linq.Expressions;
 
 namespace BetCR.Library.Operation.Base
 {
-
     public abstract class OperationBase : IOperation
     {
-        public string Name { get; }
-
-        public abstract System.Linq.Expressions.Expression GetExpression(Expression member, ConstantExpression constant1, ConstantExpression constant2);
+        #region Protected Constructors
 
         protected OperationBase(string name)
         {
             Name = name;
-
         }
+
+        #endregion Protected Constructors
+
+        #region Public Properties
+
+        public string Name { get; }
+
+        #endregion Public Properties
+
+        #region Public Methods
+
+        public abstract System.Linq.Expressions.Expression GetExpression(Expression member, ConstantExpression constant1, ConstantExpression constant2);
+
+        #endregion Public Methods
     }
 }

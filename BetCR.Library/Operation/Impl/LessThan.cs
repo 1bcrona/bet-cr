@@ -1,6 +1,5 @@
-﻿
+﻿using BetCR.Library.Operation.Base;
 using System.Linq.Expressions;
-using BetCR.Library.Operation.Base;
 
 namespace BetCR.Library.Operation.Impl
 {
@@ -9,14 +8,21 @@ namespace BetCR.Library.Operation.Impl
     /// </summary>
     public class LessThan : OperationBase
     {
+        #region Public Constructors
+
         /// <inheritdoc />
         public LessThan() : base("LessThan") { }
-     
+
+        #endregion Public Constructors
+
+        #region Public Methods
 
         /// <inheritdoc />
         public override Expression GetExpression(Expression member, ConstantExpression constant1, ConstantExpression constant2)
         {
             return Expression.LessThan(member, constant1);
         }
+
+        #endregion Public Methods
     }
 }

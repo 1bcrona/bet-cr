@@ -1,47 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BetCR.Repository.Entity.Base;
+﻿using BetCR.Repository.Entity.Base;
 using BetCR.Repository.ValueObject;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BetCR.Repository.Entity
 {
     public class UserAction : EntityBase<string>
     {
+        #region Private Fields
+
         private User _fromUser;
         private User _toUser;
 
-        public UserAction() { }
-        public UserAction(ILazyLoader lazyLoader) : base(lazyLoader) { }
+        #endregion Private Fields
 
-        [ForeignKey("FromUserId")]
-        public User FromUser
+        #region Public Constructors
+
+        public UserAction()
         {
-            get => LazyLoader.Load(this, ref _fromUser);
-            set => _fromUser = value;
         }
 
-
-        [ForeignKey("ToUserId")]
-        public User ToUser
+        public UserAction(ILazyLoader lazyLoader) : base(lazyLoader)
         {
-            get => LazyLoader.Load(this, ref _toUser);
-            set => _toUser = value;
         }
 
-        public string ActionType { get; set; }
+        #endregion Public Constructors
 
-        public string ActionObject { get; set; }
-        public string ActionStatus { get; set; }
-
-        public string ActionResult { get; set; }
-
-
-        public long ActionDateEpoch { get; set; }
+        #region Public Properties
 
         public CustomDateTime ActionDate
         {
@@ -52,5 +38,31 @@ namespace BetCR.Repository.Entity
                 return (CustomDateTime)dt;
             }
         }
+
+        public long ActionDateEpoch { get; set; }
+
+        public string ActionObject { get; set; }
+
+        public string ActionResult { get; set; }
+
+        public string ActionStatus { get; set; }
+
+        public string ActionType { get; set; }
+
+        [ForeignKey("FromUserId")]
+        public User FromUser
+        {
+            get => LazyLoader.Load(this, ref _fromUser);
+            set => _fromUser = value;
+        }
+
+        [ForeignKey("ToUserId")]
+        public User ToUser
+        {
+            get => LazyLoader.Load(this, ref _toUser);
+            set => _toUser = value;
+        }
+
+        #endregion Public Properties
     }
 }

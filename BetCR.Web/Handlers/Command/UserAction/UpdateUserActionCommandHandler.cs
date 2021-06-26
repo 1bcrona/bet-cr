@@ -1,18 +1,29 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using BetCR.Repository.Repository.Base.Interfaces;
+﻿using BetCR.Repository.Repository.Base.Interfaces;
 using MediatR;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace BetCR.Web.Handlers.Command.UserAction
 {
     public class UpdateUserActionCommandHandler : IRequestHandler<UpdateUserActionCommand, Repository.Entity.UserAction>
     {
+        #region Private Fields
+
         private readonly IUnitOfWork _unitOfWork;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public UpdateUserActionCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
+
+        #endregion Public Constructors
+
+        #region Public Methods
+
         public async Task<Repository.Entity.UserAction> Handle(UpdateUserActionCommand request, CancellationToken cancellationToken)
         {
             var userActionRepository = _unitOfWork.GetRepository<Repository.Entity.UserAction, string>();
@@ -28,5 +39,7 @@ namespace BetCR.Web.Handlers.Command.UserAction
 
             return invite;
         }
+
+        #endregion Public Methods
     }
 }

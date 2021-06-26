@@ -30,9 +30,8 @@ namespace BetCR.Repository.Entity
         public int AwayTeamScore { get; set; }
         public int HomeTeamScore { get; set; }
 
-        public int Leverage { get; set; }
-        public int UserBetPointDefault { get; set; }
         public override string Id { get; set; }
+        public int Leverage { get; set; }
 
         public Match Match
         {
@@ -49,6 +48,7 @@ namespace BetCR.Repository.Entity
         }
 
         public int? UserBetPoint { get; set; }
+        public int UserBetPointDefault { get; set; }
 
         #endregion Public Properties
     }

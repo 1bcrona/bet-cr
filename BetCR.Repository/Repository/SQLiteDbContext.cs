@@ -1,23 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using BetCR.Repository.Entity;
+﻿using BetCR.Repository.Entity;
 using BetCR.Repository.Repository.Base;
 using BetCR.Repository.ValueObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
+using System.Collections.Generic;
 
 namespace BetCR.Repository.Repository
 {
     public class SQLiteDbContext : DataContext
     {
-        #region Public Fields
-
-
-
-        #endregion Public Fields
-
         #region Public Constructors
 
         public SQLiteDbContext(IConfiguration configuration) : base(configuration)
@@ -50,18 +42,14 @@ namespace BetCR.Repository.Repository
             modelBuilder.Entity<UserTournament>().HasKey(h => h.Id);
             modelBuilder.Entity<UserAction>().HasKey(h => h.Id);
 
-
             modelBuilder.Entity<User>().HasMany(m => m.UserMatchBets).WithOne(o => o.User);
-
 
             modelBuilder.Entity<Match>().HasOne(h => h.Stage).WithMany(m => m.Matches);
             modelBuilder.Entity<Match>().HasOne(h => h.HomeTeam).WithMany(m => m.HomeMatches);
             modelBuilder.Entity<Match>().HasOne(h => h.AwayTeam).WithMany(m => m.AwayMatches);
 
-
             modelBuilder.Entity<Match>().HasOne(h => h.MatchEvent).WithOne(m => m.Match);
             modelBuilder.Entity<Match>().HasMany(h => h.UserMatchBets).WithOne(m => m.Match);
-
 
             modelBuilder.Entity<TeamLeagueRel>().HasOne(h => h.Team).WithMany(m => m.TeamLeagueRels);
             modelBuilder.Entity<TeamLeagueRel>().HasOne(h => h.League).WithMany(m => m.TeamLeagueRels);
@@ -75,24 +63,20 @@ namespace BetCR.Repository.Repository
             modelBuilder.Entity<UserTournament>().HasOne(h => h.User).WithMany(o => o.UserTournameRels);
             modelBuilder.Entity<UserTournament>().HasOne(h => h.Tournament).WithMany(o => o.UserTournameRels);
 
-
             modelBuilder.Entity<MatchEvent>().Property(p => p.Events)
                 .HasConversion(
                     v => JsonConvert.SerializeObject(v),
                     v => JsonConvert.DeserializeObject<MatchEvents>(v));
-
 
             modelBuilder.Entity<MatchEvent>().Property(p => p.MatchStat)
                 .HasConversion(
                     v => JsonConvert.SerializeObject(v),
                     v => JsonConvert.DeserializeObject<MatchStats>(v));
 
-
             modelBuilder.Entity<MatchEvent>().Property(p => p.MatchLineup)
                 .HasConversion(
                     v => JsonConvert.SerializeObject(v),
                     v => JsonConvert.DeserializeObject<MatchLineups>(v));
-
 
             modelBuilder.Entity<StageStanding>().Property(p => p.Standings)
                 .HasConversion(

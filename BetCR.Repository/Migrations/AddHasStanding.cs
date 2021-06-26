@@ -4,6 +4,15 @@ namespace BetCR.Repository.Migrations
 {
     public partial class AddHasStanding : Migration
     {
+        #region Protected Methods
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "HasStanding",
+                table: "Stage");
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<bool>(
@@ -14,11 +23,6 @@ namespace BetCR.Repository.Migrations
                 defaultValue: false);
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "HasStanding",
-                table: "Stage");
-        }
+        #endregion Protected Methods
     }
 }

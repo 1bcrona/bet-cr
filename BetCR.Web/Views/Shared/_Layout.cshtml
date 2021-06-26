@@ -5,8 +5,6 @@
 @using Newtonsoft.Json
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,76 +51,76 @@
                 @{
                     if (ViewBag.Claims?.Count == 0)
                     {
-                        <li class="nav-item">
-                            <a class="nav-link" href="/User/Login">Login</a>
-                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/User/Login">Login</a>
+                    </li>
                     }
                     else
                     {
                         var waitingUserActions = (List<UserAction>)ViewBag.Invitations ?? new List<UserAction>();
 
-                        <li class="nav-item dropdown">
-                            <a href="#" id="menu"
-                               data-mdb-toggle="dropdown"
-                               @*data-bs-toggle="dropdown"*@
-                               data-toggle="dropdown"
-                               class="nav-link dropdown-toggle"
-                               data-display="static">
-                                @((ViewBag.Claims as List<Claim> ?? new List<Claim>()).FirstOrDefault(f => f.Type == ClaimTypes.Name || f.Type == ClaimTypes.Email)?.Value)
+                    <li class="nav-item dropdown">
+                        <a href="#" id="menu"
+                           data-mdb-toggle="dropdown"
+                           @*data-bs-toggle="dropdown"*@
+                           data-toggle="dropdown"
+                           class="nav-link dropdown-toggle"
+                           data-display="static">
+                            @((ViewBag.Claims as List<Claim> ?? new List<Claim>()).FirstOrDefault(f => f.Type == ClaimTypes.Name || f.Type == ClaimTypes.Email)?.Value)
 
-                                @{
+                            @{
 
                                     if (waitingUserActions.Count > 0)
                                     {
-                                        <span class="badge bg-danger ms-2">@waitingUserActions.Count</span>
+                                <span class="badge bg-danger ms-2">@waitingUserActions.Count</span>
                                     }
 
-                                }
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li class="dropdown-item">
-                                    <a href="/User/Logout">Logout</a>
-                                </li>
-                                <li class="dropdown-item dropdown-submenu">
-                                    <a href="#"
-                                       data-mdb-toggle="dropdown"
-                                       @*data-bs-toggle="dropdown"*@
-                                       data-toggle="dropdown"
-                                       class="dropdown-toggle">
-                                        Tournaments
-                                        @{
+                            }
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item">
+                                <a href="/User/Logout">Logout</a>
+                            </li>
+                            <li class="dropdown-item dropdown-submenu">
+                                <a href="#"
+                                   data-mdb-toggle="dropdown"
+                                   @*data-bs-toggle="dropdown"*@
+                                   data-toggle="dropdown"
+                                   class="dropdown-toggle">
+                                    Tournaments
+                                    @{
                                             var tournamentInvites = waitingUserActions.Where(w => w.ActionType == UserActionType.TOURNAMENT_INVITE).ToList();
                                             if (tournamentInvites.Count > 0)
                                             {
-                                                <a href='/User/Tournament'>
-                                                    <span class="badge bg-danger ms-2">@tournamentInvites.Count</span>
-                                                </a>
+                                        <a href='/User/Tournament'>
+                                            <span class="badge bg-danger ms-2">@tournamentInvites.Count</span>
+                                        </a>
 
                                             }
-                                        }
-                                    </a>
-                                    <ul class="dropdown-menu tournament">
+                                    }
+                                </a>
+                                <ul class="dropdown-menu tournament">
+                                    <li class="dropdown-item">
+                                        <a href="/User/Tournament">Tournament Center</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            @*<li class="dropdown-item dropdown-submenu">
+                                    <a href="#" data-mdb-toggle="dropdown" class="dropdown-toggle">Submenu-2</a>
+                                    <ul class="dropdown-menu">
                                         <li class="dropdown-item">
-                                            <a href="/User/Tournament">Tournament Center</a>
+                                            <a href="#">Item-1</a>
+                                        </li>
+                                        <li class="dropdown-item">
+                                            <a href="#">Item-2</a>
+                                        </li>
+                                        <li class="dropdown-item">
+                                            <a href="#">Item-3</a>
                                         </li>
                                     </ul>
-                                </li>
-                                @*<li class="dropdown-item dropdown-submenu">
-                                        <a href="#" data-mdb-toggle="dropdown" class="dropdown-toggle">Submenu-2</a>
-                                        <ul class="dropdown-menu">
-                                            <li class="dropdown-item">
-                                                <a href="#">Item-1</a>
-                                            </li>
-                                            <li class="dropdown-item">
-                                                <a href="#">Item-2</a>
-                                            </li>
-                                            <li class="dropdown-item">
-                                                <a href="#">Item-3</a>
-                                            </li>
-                                        </ul>
-                                    </li>*@
-                            </ul>
-                        </li>
+                                </li>*@
+                        </ul>
+                    </li>
                     }
 
                 }

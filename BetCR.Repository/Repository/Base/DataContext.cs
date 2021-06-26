@@ -1,23 +1,25 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace BetCR.Repository.Repository.Base
 {
     public class DataContext : DbContext
     {
-        private readonly IConfiguration _configuration;
-
         #region Private Fields
 
+        private readonly IConfiguration _configuration;
+
+        #endregion Private Fields
+
+
+
+        #region Private Fields
 
         private string _connectionString;
 
         #endregion Private Fields
 
         #region Public Constructors
-
-
 
         public DataContext(IConfiguration configuration)
         {
@@ -33,7 +35,6 @@ namespace BetCR.Repository.Repository.Base
         #endregion Public Constructors
 
         #region Public Properties
-
 
         public string ConnectionString { get { return _connectionString; } }
 

@@ -1,16 +1,21 @@
-﻿using System;
+﻿using BetCR.Library.Operation.Base;
+using System;
 using System.Collections;
 using System.Linq.Expressions;
-using BetCR.Library.Operation.Base;
 
 namespace BetCR.Library.Operation.Impl
 {
     public class ArrayContains : OperationBase
     {
+        #region Public Constructors
 
-        public ArrayContains() : base("ArrayContains") { }
+        public ArrayContains() : base("ArrayContains")
+        {
+        }
 
+        #endregion Public Constructors
 
+        #region Public Methods
 
         public override System.Linq.Expressions.Expression GetExpression(Expression member, ConstantExpression constant1, ConstantExpression constant2)
         {
@@ -22,9 +27,10 @@ namespace BetCR.Library.Operation.Impl
 
             var arrayContainsMethod = member.Type.GetMethod("Contains", new[] { member.Type.GetGenericArguments()[0] });
 
-
             return System.Linq.Expressions.Expression.Call(member, arrayContainsMethod, constant1)
                    .AddNullCheck(member);
         }
+
+        #endregion Public Methods
     }
 }

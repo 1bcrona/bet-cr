@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BetCR.Library
 {
     public static class FixtureHelper
     {
+        #region Public Methods
 
         public static string GetWeek(DateTime date)
         {
@@ -14,7 +12,8 @@ namespace BetCR.Library
             var startOfWeek = date.AddDays(-1 * diff).Date;
             var endOfWeek = startOfWeek.AddDays(6);
             return $"{startOfWeek.Date:dd.MM.yyyy}_{endOfWeek.Date:dd.MM.yyyy}";
-
         }
+
+        #endregion Public Methods
     }
 }

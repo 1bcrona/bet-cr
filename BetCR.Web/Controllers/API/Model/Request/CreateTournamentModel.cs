@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BetCR.Web.Controllers.API.Model
 {
@@ -9,9 +6,6 @@ namespace BetCR.Web.Controllers.API.Model
     {
         #region Public Properties
 
-        public string TournamentName { get; set; }
-
-        public string Password { get; set; }
         public DateTime EndDate => DateTime.Parse((EndDateString)).ToUniversalTime();
 
         public long EndDateEpoch
@@ -24,7 +18,7 @@ namespace BetCR.Web.Controllers.API.Model
         }
 
         public string EndDateString { get; set; }
-
+        public string Password { get; set; }
         public DateTime StartDate => DateTime.Parse(StartDateString).ToUniversalTime();
 
         public long StartDateEpoch
@@ -37,7 +31,7 @@ namespace BetCR.Web.Controllers.API.Model
         }
 
         public string StartDateString { get; set; }
-
+        public string TournamentName { get; set; }
 
         #endregion Public Properties
     }

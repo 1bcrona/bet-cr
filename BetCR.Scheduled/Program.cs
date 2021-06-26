@@ -1,10 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using Hangfire;
+﻿using System.Threading.Tasks;
 
 namespace BetCR.Scheduled
 {
-    class Program
+    internal class Program
     {
         #region Private Methods
 

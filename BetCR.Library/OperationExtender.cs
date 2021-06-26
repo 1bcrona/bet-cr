@@ -5,6 +5,19 @@ namespace BetCR.Library
 {
     public static class OperationExtender
     {
+        #region Public Methods
+
+        public static bool AddDistinct<T>(this IList<T> list, T value, IEqualityComparer<T> comparer)
+        {
+            if (list.ContainsValue(value, comparer))
+            {
+                return false;
+            }
+
+            list.Add(value);
+            return true;
+        }
+
         public static bool AddRangeDistinct<T>(this IList<T> list, IEnumerable<T> values)
         {
             return list.AddRangeDistinct(values, EqualityComparer<T>.Default);
@@ -22,17 +35,6 @@ namespace BetCR.Library
             }
 
             return allAdded;
-        }
-
-        public static bool AddDistinct<T>(this IList<T> list, T value, IEqualityComparer<T> comparer)
-        {
-            if (list.ContainsValue(value, comparer))
-            {
-                return false;
-            }
-
-            list.Add(value);
-            return true;
         }
 
         public static bool ContainsValue<TSource>(this IEnumerable<TSource> source, TSource value, IEqualityComparer<TSource> comparer)
@@ -58,8 +60,6 @@ namespace BetCR.Library
             return false;
         }
 
-
-
-
+        #endregion Public Methods
     }
 }

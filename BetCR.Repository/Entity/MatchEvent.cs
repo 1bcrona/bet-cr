@@ -1,32 +1,37 @@
 ﻿using BetCR.Repository.Entity.Base;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using BetCR.Repository.ValueObject;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BetCR.Repository.Entity
 {
     public class MatchEvent : EntityBase<string>
     {
+        #region Private Fields
+
+        private Match _match;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public MatchEvent()
         {
         }
+
         public MatchEvent(ILazyLoader lazyLoader) : base(lazyLoader)
         {
         }
-        private Match _match;
 
-        public override string Id { get; set; }
+        #endregion Public Constructors
 
-        public MatchEvents Events { get; set; }
+        #region Public Properties
 
-        public MatchStats MatchStat { get; set; }
-        public MatchLineups MatchLineup { get; set; }
-        public int? HomeTeamScore { get; set; }
-
-        public string CurrentElapsed { get; set; }
         public int? AwayTeamScore { get; set; }
+        public string CurrentElapsed { get; set; }
+        public MatchEvents Events { get; set; }
+        public int? HomeTeamScore { get; set; }
+        public override string Id { get; set; }
 
         [ForeignKey("MatchId")]
         public Match Match
@@ -35,11 +40,9 @@ namespace BetCR.Repository.Entity
             set => _match = value;
         }
 
+        public MatchLineups MatchLineup { get; set; }
+        public MatchStats MatchStat { get; set; }
 
-
-
-
-
+        #endregion Public Properties
     }
-
 }

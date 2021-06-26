@@ -1,29 +1,38 @@
-﻿using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using BetCR.Repository.Entity;
+﻿using BetCR.Repository.Entity;
 using BetCR.Web.Controllers.API.Model;
-using BetCR.Web.Handlers.Command;
 using BetCR.Web.Handlers.Command.UserMatchBet;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace BetCR.Web.Controllers.API
 {
     [Route("api/[controller]")]
     public class UserMatchBetController : Controller
     {
-        private readonly IMediator _mediator;
+        #region Private Fields
+
         private readonly IHttpContextAccessor _accessor;
+        private readonly IMediator _mediator;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public UserMatchBetController(IMediator mediator, IHttpContextAccessor accessor)
         {
             _mediator = mediator;
             _accessor = accessor;
         }
+
+        #endregion Public Constructors
+
+        #region Public Methods
 
         [Authorize]
         [HttpPost]
@@ -58,5 +67,7 @@ namespace BetCR.Web.Controllers.API
             response.Result = "Success";
             return Ok(response);
         }
+
+        #endregion Public Methods
     }
 }

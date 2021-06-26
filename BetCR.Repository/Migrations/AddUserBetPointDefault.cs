@@ -4,6 +4,15 @@ namespace BetCR.Repository.Migrations
 {
     public partial class AddUserBetPointDefault : Migration
     {
+        #region Protected Methods
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "UserBetPointDefault",
+                table: "UserMatchBet");
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
@@ -14,11 +23,6 @@ namespace BetCR.Repository.Migrations
                 defaultValue: 0);
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "UserBetPointDefault",
-                table: "UserMatchBet");
-        }
+        #endregion Protected Methods
     }
 }

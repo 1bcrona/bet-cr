@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace BetCR.Services.External.Elenasport.Model
 {
     public class TeamResult : BaseElenaResult
     {
-        [JsonProperty("fullName")]
-        public string Name { get; set; }
+        #region Public Properties
+
         [JsonProperty("badgeURL")]
         public string BadgeURL { get; set; }
 
@@ -23,5 +19,10 @@ namespace BetCR.Services.External.Elenasport.Model
                 return next_fixtures?.ToObject<List<FixtureResult>>();
             }
         }
+
+        [JsonProperty("fullName")]
+        public string Name { get; set; }
+
+        #endregion Public Properties
     }
 }

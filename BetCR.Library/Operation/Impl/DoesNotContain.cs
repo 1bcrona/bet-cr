@@ -1,6 +1,6 @@
-﻿using System.Linq.Expressions;
+﻿using BetCR.Library.Operation.Base;
+using System.Linq.Expressions;
 using System.Reflection;
-using BetCR.Library.Operation.Base;
 
 namespace BetCR.Library.Operation.Impl
 {
@@ -9,11 +9,21 @@ namespace BetCR.Library.Operation.Impl
     /// </summary>
     public class DoesNotContain : OperationBase
     {
+        #region Private Fields
+
         private readonly MethodInfo stringContainsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         /// <inheritdoc />
         public DoesNotContain() : base("DoesNotContain") { }
-      
+
+        #endregion Public Constructors
+
+        #region Public Methods
+
         /// <inheritdoc />
         public override Expression GetExpression(Expression member, ConstantExpression constant1, ConstantExpression constant2)
         {
@@ -22,5 +32,7 @@ namespace BetCR.Library.Operation.Impl
             return Expression.Not(Expression.Call(member.TrimToLower(), stringContainsMethod, constant))
                    .AddNullCheck(member);
         }
+
+        #endregion Public Methods
     }
 }
