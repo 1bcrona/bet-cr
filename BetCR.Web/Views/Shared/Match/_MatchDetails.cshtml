@@ -127,87 +127,135 @@
             <div class="row">
                 @{ await Html.RenderPartialAsync("Match/_MatchPitch", Model, new ViewDataDictionary(ViewData) { { "events", allEvents } });}
             </div>
-            <div class="row mt-4 mx-4">
-                <div class="timeline">
-                    <div class="timeline--inner">
-                        <div class="timeline--inner-pin is-featured text-center d-flex align-items-center justify-content-center" data-title="Featured Pin" style="left: 0%; background-color: #495057;color: #EEEEEE">
-                            <label>MS</label>
-                        </div>
-                        <div class="timeline--inner-pin is-featured text-center d-flex align-items-center justify-content-center" data-title="Featured Pin" style="left: 50%;background-color: #495057;color: #EEEEEE">
-                            <label>HT</label>
-                        </div>
-                        <div class="timeline--inner-pin is-featured text-center d-flex align-items-center justify-content-center" data-title="Featured Pin" style="left: 99%;background-color: #495057;color: #EEEEEE">
-                            <label>FT</label>
-                        </div>
+            <div class="row mb-5">
+                <div class="mt-5 mb-5">
+                    <div class="timeline">
+                        <div class="timeline--inner">
 
-                        @{
+                            @{
 
-                            foreach (var (item1, item2) in orderedEvents)
-                            {
+                                var matchMaxMinutes = Math.Max(orderedEvents.Max(m => m.Item2.Elapsed), 90) > 90 ? 120 : 90;
+                                var pinLabels = new Dictionary<string, int>() { { "MS", 0 }, { "HT", 45 }, { "FT", 90 } };
+                                if (matchMaxMinutes > 90)
+                                {
+                                    pinLabels.Add("ET", 120);
+                                }
 
-                                var elapsed = Math.Max(item2.Elapsed - 45, 0) > 0 ? item2.Elapsed - 45 : item2.Elapsed;
-                                var baseStep = Math.Max(item2.Elapsed - 45, 0) > 0 ? 53 : 3;
-                                var currentStep = $"{baseStep + (int)((double)elapsed / (double)45 * 40)}%";
-                                var currentEventTop = $"{item1 * 30}px";
-                                var minute = item2.Elapsed + item2.ElapsedPlus;
-                                <div class="timeline--inner-pin is-normal" style="top: @currentEventTop; left: @currentStep; background-color: @(item1 < 0 ? homeDomColor1 : awayDomColor1); color: @(item1 < 0 ? homeDomColor2 : awayDomColor2)" data-title="@minute">
-                                    <div class="tooltip text-center" style="color: @(item1 < 0 ? homeDomColor2 : awayDomColor2); font-size: 12px;">
-                                        @minute
-                                        <div class="bottom">
-                                            <div class="row">
-                                                <div class="col-md-6 timeline-item border-right" style="">
-                                                    <label class="mb-0">@minute'</label>
-                                                </div>
-                                                <div class="col-md-6 timeline-item d-none d-md-inline-block text-center">
-                                                    <img class="event-team-badge" src="@(item1 < 0 ? Model.HomeTeam.TeamLogo : Model.AwayTeam.TeamLogo)">
-                                                </div>
-                                            </div>
-                                            <div class="d-block">
-                                                <div class="row">
-                                                    <div class="col-md-4 timeline-item">
-                                                        <img class="img-@item2.EventType.ToLowerInvariant()" />
-                                                    </div>
-                                                    <div class="col-md-8 timeline-item d-none d-md-inline-block text-center">
-                                                        <label class="mb-0" style="font-size: 10px;transform: translateY(30%);">@validEvents[item2.EventType]</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @{
-                                                if (item2.Player1 != null)
-                                                {
-                                                    <div class="row">
+                                var lefts = new List<int>();
 
-                                                        @{
-                                                            if (item2.Player2 != null)
-                                                            {
-                                                                <div class="col-md-6 timeline-item border-right">
-                                                                    <label class="mb-0" style="font-size: 10px;"><strong>@item2.Player1.FullName</strong></label>
-                                                                </div>
-                                                                <div class="col-md-6 timeline-item">
-                                                                    <label class="mb-0" style="font-size: 10px;"><strong>@item2.Player2.FullName</strong></label>
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="col-md-12">
-                                                                    <label class="mb-0" style="font-size: 10px;"><strong>@item2.Player1.FullName</strong></label>
-                                                                </div>
-                                                            }
-                                                        }
-                                                    </div>
-                                                }
-                                            }
-
-                                            <i></i>
-                                        </div>
-                                        <div class="timeline-inner-event-type">
-                                            <img class="img-@item2.EventType.ToLowerInvariant()">
-                                        </div>
+                                foreach (var pin in pinLabels)
+                                {
+                                    var left = pin.Value * 100 / matchMaxMinutes;
+                                    <div class="timeline--inner-pin is-featured text-center d-flex align-items-center justify-content-center" data-title="Featured Pin" style="left: @left%; background-color: #495057;color: #EEEEEE">
+                                        <label>@pin.Key</label>
                                     </div>
-                                </div>
-                            }
+                                    lefts.Add(left);
+                                }
 
-                        }
+                                var ndx = 0;
+
+                                var minuteGroupedOrderedItems = orderedEvents.GroupBy(g => g.Item2.Elapsed);
+
+                                foreach (var groupedItem in minuteGroupedOrderedItems)
+                                {
+
+                                    var i = 0;
+                                    foreach (var (item1, item2) in groupedItem)
+                                    {
+
+                                        int currentItemLeft;
+                                        while (true)
+                                        {
+                                            var currentPinValue = pinLabels.ElementAt(ndx).Value;
+                                            var isLeftFound = Math.Max(groupedItem.Key, currentPinValue) <= currentPinValue;
+
+                                            if (isLeftFound)
+                                            {
+                                                ndx--;
+                                                currentItemLeft = lefts[ndx];
+                                                break;
+                                            }
+                                            ndx++;
+
+                                        }
+
+                                        var currentItemTop = item1 * 15 + i * item1 * 15;
+
+                                        var distanceBetweenCurrentAndNext = pinLabels.ElementAt(ndx + 1).Value - pinLabels.ElementAt(ndx).Value;
+                                        var pinDistanceBetweenCurrentAndNext = lefts[ndx + 1] - lefts[ndx];
+                                        var distanceBetweenCurrentMinuteAndLeftMinute = groupedItem.Key - pinLabels.ElementAt(ndx).Value;
+
+                                        var marginStep = 5;
+                                        var firstStep = currentItemLeft + marginStep;
+                                        var maxItemStep = pinDistanceBetweenCurrentAndNext - marginStep - 2;
+
+                                        var currentStep = $"{(int)(firstStep + (double)distanceBetweenCurrentMinuteAndLeftMinute / (double)distanceBetweenCurrentAndNext * maxItemStep)}%";
+                                        var currentEventTop = $"{currentItemTop}px";
+                                        var minute = groupedItem.Key.ToString();
+                                        if (item2.ElapsedPlus > 0)
+                                        {
+                                            minute = $"{minute}+{item2.ElapsedPlus}'";
+                                        }
+                                        <div class="timeline--inner-pin is-normal" style="top: @currentEventTop; left: @currentStep; background-color: @(item1 < 0 ? homeDomColor1 : awayDomColor1); color: @(item1 < 0 ? homeDomColor2 : awayDomColor2)" data-title="@minute">
+                                            <div class="tooltip text-center" style="color: @(item1 < 0 ? homeDomColor2 : awayDomColor2); font-size: 10px;">
+                                                <div class="bottom">
+                                                    <div class="row">
+                                                        <div class="col-md-6 timeline-item border-right" style="">
+                                                            <label class="mb-0">@minute</label>
+                                                        </div>
+                                                        <div class="col-md-6 timeline-item d-none d-md-inline-block text-center">
+                                                            <img class="event-team-badge" src="@(item1 < 0 ? Model.HomeTeam.TeamLogo : Model.AwayTeam.TeamLogo)">
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-block">
+                                                        <div class="row">
+                                                            <div class="col-md-4 timeline-item">
+                                                                <img class="img-@item2.EventType.ToLowerInvariant()" />
+                                                            </div>
+                                                            <div class="col-md-8 timeline-item d-none d-md-inline-block text-center">
+                                                                <label class="mb-0" style="font-size: 10px; transform: translateY(30%);">@validEvents[item2.EventType]</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @{
+                                                        if (item2.Player1 != null)
+                                                        {
+                                                            <div class="row">
+
+                                                                @{
+                                                                    if (item2.Player2 != null)
+                                                                    {
+                                                                        <div class="col-md-6 timeline-item border-right">
+                                                                            <label class="mb-0" style="font-size: 10px;"><strong>@item2.Player1.FullName</strong></label>
+                                                                        </div>
+                                                                        <div class="col-md-6 timeline-item">
+                                                                            <label class="mb-0" style="font-size: 10px;"><strong>@item2.Player2.FullName</strong></label>
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="col-md-12">
+                                                                            <label class="mb-0" style="font-size: 10px;"><strong>@item2.Player1.FullName</strong></label>
+                                                                        </div>
+                                                                    }
+                                                                }
+                                                            </div>
+                                                        }
+                                                    }
+
+                                                    <i></i>
+                                                </div>
+                                                <div class="timeline-inner-event-type">
+                                                    <img class="img-@item2.EventType.ToLowerInvariant()">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        i++;
+                                    }
+                                }
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
