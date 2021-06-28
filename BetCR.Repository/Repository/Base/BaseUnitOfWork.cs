@@ -57,11 +57,6 @@ namespace BetCR.Repository.Repository.Base
             return new BaseRepository<T, TKey>(_dbContext);
         }
 
-        public void SaveChanges()
-        {
-            DbContext.SaveChanges();
-        }
-
         public async Task SaveChangesAsync()
         {
             await DbContext.SaveChangesAsync();

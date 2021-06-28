@@ -424,7 +424,7 @@ a.navbar-brand {
         margin-top: -1px;
     }
 
-navbar .tab-highlighter {
+.tab-highlighter {
     height: 1px;
     width: 80px;
     margin-top: 40px;
@@ -440,3 +440,5 @@ navbar .tab-highlighter {
 .mt-100 {
     margin-top: 100px;
 }
+
+

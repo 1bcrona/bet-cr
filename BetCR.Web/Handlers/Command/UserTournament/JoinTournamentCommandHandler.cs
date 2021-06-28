@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using BetCR.Library.Tracking;
 
 namespace BetCR.Web.Handlers.Command.UserTournament
 {
@@ -77,6 +78,7 @@ namespace BetCR.Web.Handlers.Command.UserTournament
                 }
 
                 await _unitOfWork.SaveChangesAsync();
+
                 return userTournament.Tournament;
             }
         }

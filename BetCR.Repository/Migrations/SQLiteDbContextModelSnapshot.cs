@@ -16,6 +16,37 @@ namespace BetCR.Repository.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.7");
 
+            modelBuilder.Entity("BetCR.Repository.Entity.ChangeEvent", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Active")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Data")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DataType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EntityId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EventType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("StreamId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("UpsertDateEpoch")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChangeEvent");
+                });
+
             modelBuilder.Entity("BetCR.Repository.Entity.League", b =>
                 {
                     b.Property<string>("Id")

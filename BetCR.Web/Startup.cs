@@ -1,5 +1,7 @@
 using BetCR.Caching.Impl;
 using BetCR.Caching.Interface;
+using BetCR.Library.Tracking;
+using BetCR.Library.Tracking.Infrastructure;
 using BetCR.Repository.Repository;
 using BetCR.Repository.Repository.Base;
 using BetCR.Repository.Repository.Base.Interfaces;
@@ -125,6 +127,8 @@ namespace BetCR.Web
             services.AddLogging();
             services.AddDbContext<SQLiteDbContext>();
             services.AddSingleton<ICache, InMemoryCache>();
+            services.AddSingleton<BetCR.Library.Tracking.Infrastructure.IPublisher>(provider => PublisherFactory.GetPublisher("events"));
+            services.AddSingleton<ISubscriber, Subscriber>();
             services.AddScoped<IUnitOfWork, BaseUnitOfWork>();
             services.AddScoped<IElenaFetcherService, ElenaFetcherService>();
             services.AddScoped<IUserService, UserService>();
@@ -143,6 +147,8 @@ namespace BetCR.Web
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+
+            services.AddHostedService<TrackingService>();
         }
 
         #endregion Public Methods

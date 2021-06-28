@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using System.IO;
+using BetCR.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BetCR.Web
 {
@@ -15,11 +17,18 @@ namespace BetCR.Web
                     webBuilder
                         .UseContentRoot(Directory.GetCurrentDirectory())
                         .UseStartup<Startup>();
+
+
                 });
+
+
 
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+
+
+            host.Run();
         }
 
         #endregion Public Methods

@@ -5,6 +5,9 @@
 @using Newtonsoft.Json
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
+@{
+    var waitingUserActions = (List<UserAction>)ViewBag.Invitations ?? new List<UserAction>();
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,66 +47,67 @@
         <div class="collapse navbar-collapse " data-title="home" id="navbar1">
             <ul class="navbar-nav">
 
-                <li class="nav-item  @(ViewBag.Title == "Prediction" ? "active" : "")">
+                <li class="nav-item align-self-center  @(ViewBag.Title == "Prediction" ? "active" : "")">
                     <a class="nav-link" href="@Url.Action("Index", "Prediction")">Make Prediction</a>
                 </li>
 
                 @{
-                    if (ViewBag.Claims?.Count == 0)
-                    {
-                    <li class="nav-item">
-                        <a class="nav-link" href="/User/Login">Login</a>
-                    </li>
-                    }
-                    else
-                    {
-                        var waitingUserActions = (List<UserAction>)ViewBag.Invitations ?? new List<UserAction>();
 
-                    <li class="nav-item dropdown">
-                        <a href="#" id="menu"
-                           data-mdb-toggle="dropdown"
-                           @*data-bs-toggle="dropdown"*@
-                           data-toggle="dropdown"
-                           class="nav-link dropdown-toggle"
-                           data-display="static">
-                            @((ViewBag.Claims as List<Claim> ?? new List<Claim>()).FirstOrDefault(f => f.Type == ClaimTypes.Name || f.Type == ClaimTypes.Email)?.Value)
 
+                    <li class="nav-item align-self-center dropdown @(ViewBag.Title == "Standings" ? "active" : "")">
+                        <div id="menu"
+                             data-mdb-toggle="dropdown"
+                             @*data-bs-toggle="dropdown"*@
+                             data-toggle="dropdown"
+                             style="cursor: pointer"
+                             class="nav-link dropdown-toggle"
+                             data-display="static">
+                            Tournaments
                             @{
+                                var tournamentInvites = waitingUserActions.Where(w => w.ActionType == UserActionType.TOURNAMENT_INVITE).ToList();
+                                if (tournamentInvites.Count > 0)
+                                {
+                                    <a href="/User/Tournament">
+                                        <span class="badge bg-danger ms-2"> @tournamentInvites.Count</span>
+                                    </a>
 
-                                    if (waitingUserActions.Count > 0)
-                                    {
-                                <span class="badge bg-danger ms-2">@waitingUserActions.Count</span>
-                                    }
-
+                                }
                             }
-                        </a>
+                        </div>
                         <ul class="dropdown-menu">
-                            <li class="dropdown-item">
-                                <a href="/User/Logout">Logout</a>
-                            </li>
-                            <li class="dropdown-item dropdown-submenu">
-                                <a href="#"
-                                   data-mdb-toggle="dropdown"
-                                   @*data-bs-toggle="dropdown"*@
-                                   data-toggle="dropdown"
-                                   class="dropdown-toggle">
-                                    Tournaments
-                                    @{
-                                            var tournamentInvites = waitingUserActions.Where(w => w.ActionType == UserActionType.TOURNAMENT_INVITE).ToList();
-                                            if (tournamentInvites.Count > 0)
-                                            {
-                                        <a href='/User/Tournament'>
-                                            <span class="badge bg-danger ms-2">@tournamentInvites.Count</span>
-                                        </a>
+                            @{
+                                var userTournaments = (ViewBag.UserTournaments as List<Tournament> ?? new List<Tournament>());
 
-                                            }
+                                if (userTournaments.Count > 0)
+                                {
+                                    <div class="text-center"><span class="text-muted"><strong>Your Tournaments</strong></span></div>
+
+                                    foreach (var userTournament in userTournaments)
+                                    {
+
+                                        if (userTournament.Id == @ViewBag.CurrentTournament)
+                                        {
+                                            <li class="dropdown-item" style="border: 3px solid #EEEEEE"><i class="fas fa-angle-right"></i><span class="text-muted"> @userTournament.TournamentName </span></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="dropdown-item "><a href="/User/ChangeTournament/@userTournament.Id"> @userTournament.TournamentName </a></li>
+                                        }
+
                                     }
-                                </a>
-                                <ul class="dropdown-menu tournament">
+                                    <hr />
+                                }
+                            }
+                            @{
+                                if (@ViewBag.CurrentTournament != null)
+                                {
                                     <li class="dropdown-item">
-                                        <a href="/User/Tournament">Tournament Center</a>
+                                        <a href="/Tournament/@ViewBag.CurrentTournament/standings">Standings</a>
                                     </li>
-                                </ul>
+                                }
+                            }
+                            <li class="dropdown-item">
+                                <a href="/User/Tournament">Tournament Center</a>
                             </li>
                             @*<li class="dropdown-item dropdown-submenu">
                                     <a href="#" data-mdb-toggle="dropdown" class="dropdown-toggle">Submenu-2</a>
@@ -121,12 +125,64 @@
                                 </li>*@
                         </ul>
                     </li>
+
+
+                }
+                @{
+                    if (ViewBag.Claims?.Count == 0)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/User/Login">Login</a>
+                        </li>
+                    }
+                    else
+                    {
+
+                        <li class="nav-item align-self-center dropdown">
+                            <div id="menu"
+                                 data-mdb-toggle="dropdown"
+                                 @*data-bs-toggle="dropdown"*@
+                                 data-toggle="dropdown"
+                                 class="nav-link dropdown-toggle"
+                                 style="cursor: pointer"
+                                 data-display="static">
+                                @((ViewBag.Claims as List<Claim> ?? new List<Claim>()).FirstOrDefault(f => f.Type == ClaimTypes.Name || f.Type == ClaimTypes.Email)?.Value)
+                                @*@{
+
+                                        if (waitingUserActions.Count > 0)
+                                        {
+                                            <span class="badge bg-danger ms-2">@waitingUserActions.Count</span>
+                                        }
+
+                                    }*@
+                            </div>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item">
+                                    <a href="/User/Logout">Logout</a>
+                                </li>
+
+                                @*<li class="dropdown-item dropdown-submenu">
+                                        <a href="#" data-mdb-toggle="dropdown" class="dropdown-toggle">Submenu-2</a>
+                                        <ul class="dropdown-menu">
+                                            <li class="dropdown-item">
+                                                <a href="#">Item-1</a>
+                                            </li>
+                                            <li class="dropdown-item">
+                                                <a href="#">Item-2</a>
+                                            </li>
+                                            <li class="dropdown-item">
+                                                <a href="#">Item-3</a>
+                                            </li>
+                                        </ul>
+                                    </li>*@
+                            </ul>
+                        </li>
                     }
 
                 }
+
+                <div class="tab-highlighter" style="display: none"></div>
             </ul>
-            <div class="tab-highlighter" style="display: none">
-            </div>
         </div>
     </nav>
 
@@ -169,24 +225,12 @@
             $('.dropdown-menu.show').removeClass('show');
         });
 
-        $(document).on('click', 'navbar .tabs ul.navbar-body li a', function () {
-            const $this = $(this);
-            TabHighlighter.set($this);
-            $this.closest('li').siblings('.active').removeClass('active');
-            $this.closest('li').addClass('active');
-        });
         var TabHighlighter = {
-            set: function ($this) {
-                $('.tab-highlighter').css({
-
-                    'left': $this.closest('li').offset().left,
-                    'width': $this.closest('li').outerWidth()
-                });
-            },
             refresh: function () {
-                const $this = $('li.active a');
+                const $this = $('li.active a, li.active div');
 
                 if ($this) {
+
                     $('.tab-highlighter').css({
                         'display': 'block',
                         'left': $this.closest('li').offset().left,
@@ -206,35 +250,6 @@
             TabHighlighter.refresh();
         });
         $(document).ready(function () {
-
-            $.ajax({
-                url: "/api/User/Tournament",
-                type: "GET",
-                success: function (result) {
-                    const data = result.data;
-                    let ulTournaments = $("ul.tournament");
-                    if (data.all) {
-
-                        $(ulTournaments).prepend(`<hr />`);
-
-                        $(data.all).each((index, element) => {
-
-                            if (element.id == data.current.id) {
-                                $(ulTournaments).prepend(` <li class="dropdown-item" style="border: 3px solid #EEEEEE"><i class="fas fa-angle-right"></i><span class="text-muted"> ${element.tournamentName} </span></li>`);
-                            }
-                            else {
-                                $(ulTournaments).prepend(` <li class="dropdown-item "><a href="/User/ChangeTournament/${element.id}"> ${element.tournamentName} </a></li>`);
-
-                            }
-                        });
-
-                        ulTournaments.prepend(`<div class="text-center"><span class="text-muted"><strong>Your Tournaments</strong></span></div>`);
-                    }
-                },
-                error: function (err) {
-
-                }
-            });
             TabHighlighter.hide();
             TabHighlighter.refresh();
 

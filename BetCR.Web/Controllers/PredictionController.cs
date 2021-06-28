@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using BetCR.Caching.Interface;
 
 namespace BetCR.Web.Controllers
 {
@@ -18,16 +19,18 @@ namespace BetCR.Web.Controllers
         #region Private Fields
 
         private readonly ILogger<PredictionController> _logger;
+        private readonly ICache _cache;
         private readonly IMediator _mediator;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public PredictionController(IMediator mediator, ILogger<PredictionController> logger, IHttpContextAccessor accessor) : base(accessor, mediator)
+        public PredictionController(IMediator mediator, ILogger<PredictionController> logger, IHttpContextAccessor accessor, ICache cache) : base(accessor, mediator, cache)
         {
             _mediator = mediator;
             _logger = logger;
+            _cache = cache;
         }
 
         #endregion Public Constructors

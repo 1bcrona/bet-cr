@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using BetCR.Caching.Interface;
 
 namespace BetCR.Web.Controllers
 {
@@ -17,6 +18,7 @@ namespace BetCR.Web.Controllers
         #region Private Fields
 
         private readonly IHttpContextAccessor _accessor;
+        private readonly ICache _cache;
         private readonly ILogger<MatchController> _logger;
         private readonly IMediator _mediator;
 
@@ -24,11 +26,12 @@ namespace BetCR.Web.Controllers
 
         #region Public Constructors
 
-        public MatchController(IMediator mediator, ILogger<MatchController> logger, IHttpContextAccessor accessor) : base(accessor, mediator)
+        public MatchController(IMediator mediator, ILogger<MatchController> logger, IHttpContextAccessor accessor,ICache cache) : base(accessor, mediator,cache)
         {
             _mediator = mediator;
             _logger = logger;
             _accessor = accessor;
+            _cache = cache;
         }
 
         #endregion Public Constructors

@@ -41,6 +41,7 @@ namespace BetCR.Repository.Repository
             modelBuilder.Entity<StageStanding>().HasKey(h => h.Id);
             modelBuilder.Entity<UserTournament>().HasKey(h => h.Id);
             modelBuilder.Entity<UserAction>().HasKey(h => h.Id);
+            modelBuilder.Entity<ChangeEvent>().HasKey(h => h.Id);
 
             modelBuilder.Entity<User>().HasMany(m => m.UserMatchBets).WithOne(o => o.User);
 

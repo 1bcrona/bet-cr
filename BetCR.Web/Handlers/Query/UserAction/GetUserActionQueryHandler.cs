@@ -29,7 +29,9 @@ namespace BetCR.Web.Handlers.Query.UserAction
 
         public async Task<List<Repository.Entity.UserAction>> Handle(GetUserActionQuery request, CancellationToken cancellationToken)
         {
+
             var userActionRepository = _unitOfWork.GetRepository<Repository.Entity.UserAction, string>();
+
 
             var predicate = PredicateBuilder.True<Repository.Entity.UserAction>();
             if (request.FromUserId != null)

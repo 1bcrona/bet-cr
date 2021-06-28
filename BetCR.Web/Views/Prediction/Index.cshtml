@@ -198,7 +198,7 @@
                 var actionUrl = $(element).attr("data-action-url");
 
                 $.ajax({
-                    url: 'api/UserMatchBet',
+                    url: '/api/UserMatchBet',
                     type: 'POST',
                     data: JSON.stringify(model),
                     contentType: "application/json; charset=utf-8",

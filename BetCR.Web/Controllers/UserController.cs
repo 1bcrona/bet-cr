@@ -13,6 +13,7 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using BetCR.Caching.Interface;
 
 namespace BetCR.Web.Controllers
 {
@@ -24,16 +25,18 @@ namespace BetCR.Web.Controllers
         private readonly ILogger<UserController> _logger;
         private readonly IMediator _mediator;
         private IHttpContextAccessor _accessor;
+        private readonly ICache _cache;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public UserController(ILogger<UserController> logger, IMediator mediator, IHttpContextAccessor accessor) : base(accessor, mediator)
+        public UserController(ILogger<UserController> logger, IMediator mediator, IHttpContextAccessor accessor, ICache cache) : base(accessor, mediator, cache)
         {
             _logger = logger;
             _mediator = mediator;
             _accessor = accessor;
+            _cache = cache;
         }
 
         #endregion Public Constructors
@@ -51,7 +54,11 @@ namespace BetCR.Web.Controllers
             }
 
             await Task.CompletedTask;
-            ViewBag.CurrentTournamentId = tournamentId;
+
+            var userId = _accessor.HttpContext?.User.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            await _cache.Set($"{userId}_CurrentTournament", tournamentId);
+
             return RedirectToAction("Index", "/");
         }
 

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using BetCR.Caching.Interface;
 
 namespace BetCR.Web.Controllers
 {
@@ -15,15 +16,17 @@ namespace BetCR.Web.Controllers
 
         private readonly ILogger<HomeController> _logger;
         private readonly IMediator _mediator;
+        private readonly ICache _cache;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public HomeController(ILogger<HomeController> logger, IHttpContextAccessor accessor, IMediator mediator) : base(accessor, mediator)
+        public HomeController(ILogger<HomeController> logger, IHttpContextAccessor accessor, IMediator mediator, ICache cache) : base(accessor, mediator, cache)
         {
             _logger = logger;
             _mediator = mediator;
+            _cache = cache;
         }
 
         #endregion Public Constructors
