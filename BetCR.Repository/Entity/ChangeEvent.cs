@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BetCR.Repository.Entity.Base;
+using BetCR.Repository.Repository;
 
 namespace BetCR.Repository.Entity
 {
-    public class ChangeEvent : EntityBase<string>
+    [NotTracking]
+    public class ChangeEvent : BaseEntity<string>
     {
         public string StreamId { get; set; }
 

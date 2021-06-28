@@ -127,12 +127,12 @@ namespace BetCR.Web
             services.AddLogging();
             services.AddDbContext<SQLiteDbContext>();
             services.AddSingleton<ICache, InMemoryCache>();
-            services.AddSingleton<BetCR.Library.Tracking.Infrastructure.IPublisher>(provider => PublisherFactory.GetPublisher("events"));
+            services.AddSingleton(_ => PublisherFactory.GetPublisher("events"));
             services.AddSingleton<ISubscriber, Subscriber>();
             services.AddScoped<IUnitOfWork, BaseUnitOfWork>();
             services.AddScoped<IElenaFetcherService, ElenaFetcherService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<DbContext, SQLiteDbContext>();
+            services.AddScoped<DataContext, SQLiteDbContext>();
 
             services.AddSingleton<ICache, InMemoryCache>();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>

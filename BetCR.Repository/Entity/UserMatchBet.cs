@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace BetCR.Repository.Entity
 {
-    public class UserMatchBet : EntityBase<string>
+    public class UserMatchBet : BaseEntity<string>
     {
         #region Private Fields
 

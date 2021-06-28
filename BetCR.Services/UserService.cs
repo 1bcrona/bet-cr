@@ -19,6 +19,7 @@ namespace BetCR.Services
         public UserService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+            _unitOfWork.EnableTracking();
         }
 
         #endregion Public Constructors
@@ -46,19 +47,23 @@ namespace BetCR.Services
 
         public async Task<User> SaveUser(User user)
         {
+            await using var transaction = await _unitOfWork.DbContext.Database.BeginTransactionAsync();
             var repository = _unitOfWork.GetRepository<User, string>();
             var currentUser = await repository.GetAsync(user.Id);
 
             if (currentUser == null)
             {
                 await repository.AddAsync(user);
+                await _unitOfWork.SaveChangesAsync();
             }
             else
             {
                 await repository.UpdateAsync(user);
+                await _unitOfWork.SaveChangesAsync();
             }
 
-            await _unitOfWork.SaveChangesAsync();
+            await transaction.CommitAsync();
+
 
             return user;
         }

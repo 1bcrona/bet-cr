@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 
 namespace BetCR.Repository.Entity
 {
-    public class Tournament : EntityBase<string>
+    public class Tournament : BaseEntity<string>
     {
         #region Private Fields
 

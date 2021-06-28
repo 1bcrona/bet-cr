@@ -35,8 +35,9 @@ namespace BetCR.Services.External.Elenasport
 
         public ElenaFetcherService(IUnitOfWork unitOfWork, ICache cache)
         {
-            _unitOfWork = unitOfWork;
             _cache = cache;
+            _unitOfWork = unitOfWork;
+            _unitOfWork.EnableTracking();
         }
 
         #endregion Public Constructors
@@ -97,6 +98,8 @@ namespace BetCR.Services.External.Elenasport
 
                 foreach (var t in data)
                 {
+
+                    await using var transaction = await _unitOfWork.DbContext.Database.BeginTransactionAsync();
                     var elenaFixtureResult = t.ToObject<FixtureResult>();
 
                     var matchEvent = (await matchEventRepository.FindAsync(f => f.Match.ExternalId == match.ExternalId))
@@ -180,9 +183,13 @@ namespace BetCR.Services.External.Elenasport
                     matchEvent.CurrentElapsed = elenaFixtureResult != null && elenaFixtureResult.Status == "finished" ? "FT" : matchEvent.CurrentElapsed;
 
                     await matchRepository.UpsertAsync(match);
-                    await matchEventRepository.UpsertAsync(matchEvent);
-
                     await _unitOfWork.SaveChangesAsync();
+
+                    await matchEventRepository.UpsertAsync(matchEvent);
+                    await _unitOfWork.SaveChangesAsync();
+
+                    await transaction.CommitAsync();
+
                 }
             }
         }
@@ -206,6 +213,8 @@ namespace BetCR.Services.External.Elenasport
 
                 foreach (var t in data)
                 {
+
+                    await using var transaction = await _unitOfWork.DbContext.Database.BeginTransactionAsync();
                     var expand = t["expand"];
                     var season = (expand?["current_season"] as JArray ?? new JArray()).FirstOrDefault();
                     if (season == null) continue;
@@ -265,7 +274,9 @@ namespace BetCR.Services.External.Elenasport
                         var awayDominantColors = TeamHelper.GetColorsOfTeam(elenaAwayTeam);
                         awayTeamObject.DominantColors = awayDominantColors;
                         await teamRepository.UpsertAsync(homeTeamObject);
+                        await _unitOfWork.SaveChangesAsync();
                         await teamRepository.UpsertAsync(awayTeamObject);
+                        await _unitOfWork.SaveChangesAsync();
                         elenaFixture.MatchDate = DateTime.SpecifyKind(elenaFixture.MatchDate, DateTimeKind.Utc);
 
                         var stageObject = (await stageRepository.FindAsync(f => f.ExternalId == elenaStage.Id)).FirstOrDefault();
@@ -280,6 +291,8 @@ namespace BetCR.Services.External.Elenasport
                                 UpsertDateEpoch = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
                             };
                             await stageRepository.AddAsync(stageObject);
+                            await _unitOfWork.SaveChangesAsync();
+
                         }
 
                         var match = new Match
@@ -297,6 +310,8 @@ namespace BetCR.Services.External.Elenasport
 
                         await matchRepository.AddAsync(match);
                         await _unitOfWork.SaveChangesAsync();
+
+                        await transaction.CommitAsync();
                     }
                 }
             }
@@ -311,6 +326,7 @@ namespace BetCR.Services.External.Elenasport
 
             foreach (var stage in stages)
             {
+                await using var transaction = await _unitOfWork.DbContext.Database.BeginTransactionAsync();
                 var uri = ELENA_STANDINGS_URL.Replace("#stage.ExternalId#", stage.ExternalId);
 
                 var result = await FetchData(uri);
@@ -357,9 +373,12 @@ namespace BetCR.Services.External.Elenasport
 
                 stage.StageStanding = stageStanding;
                 await stageStandingRepository.UpsertAsync(stageStanding);
-                await stageRepository.UpsertAsync(stage);
-
                 await _unitOfWork.SaveChangesAsync();
+                await stageRepository.UpsertAsync(stage);
+                await _unitOfWork.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+
             }
         }
 

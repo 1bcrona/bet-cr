@@ -18,6 +18,8 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BetCR.Library.Tracking;
+using BetCR.Library.Tracking.Infrastructure;
 using Hangfire.Dashboard;
 using Console = System.Console;
 
@@ -73,8 +75,13 @@ namespace BetCR.Scheduled
             services.AddScoped<IElenaFetcherService, ElenaFetcherService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserMatchBetService, UserMatchBetService>();
-            services.AddScoped<DbContext, SQLiteDbContext>();
+            services.AddScoped<DataContext, SQLiteDbContext>();
             services.AddSingleton<ICache, InMemoryCache>();
+
+            services.AddSingleton(_ => PublisherFactory.GetPublisher("events"));
+            services.AddSingleton<ISubscriber, Subscriber>();
+
+
             services.AddHangfire(configuration =>
             {
                 configuration.UseSQLiteStorage("DefaultConnection");
@@ -86,12 +93,16 @@ namespace BetCR.Scheduled
 
             });
 
+
             JobStorage.Current = new SQLiteStorage("DefaultConnection");
 
             RecurringJob.AddOrUpdate<IUserMatchBetService>(s => s.CalculateUserPointsAsync(), Cron.MinuteInterval(5));
             RecurringJob.AddOrUpdate<IElenaFetcherService>(s => s.GetFixturesAsync(), Cron.HourInterval(12));
             RecurringJob.AddOrUpdate<IElenaFetcherService>(s => s.GetStandingsAsync(), Cron.HourInterval(12));
             RecurringJob.AddOrUpdate<IElenaFetcherService>(s => s.GetFixtureResultsAsync(), Cron.HourInterval(1));
+
+            services.AddHostedService<TrackingService>();
+
         }
 
         #endregion Private Methods

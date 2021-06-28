@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BetCR.Repository.Entity
 {
-    public class StageStanding : EntityBase<string>
+    public class StageStanding : BaseEntity<string>
     {
         #region Private Fields
 

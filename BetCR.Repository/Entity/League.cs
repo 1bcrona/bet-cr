@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace BetCR.Repository.Entity
 {
-    public class League : EntityBase<string>
+    public class League : BaseEntity<string>
     {
         #region Public Properties
 

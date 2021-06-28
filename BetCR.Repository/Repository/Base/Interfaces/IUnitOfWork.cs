@@ -15,9 +15,9 @@ namespace BetCR.Repository.Repository.Base.Interfaces
 
         #region Public Methods
 
-        IRepository<T, TKey> GetRepository<T, TKey>() where T : EntityBase<TKey>;
+        IRepository<T, TKey> GetRepository<T, TKey>() where T : BaseEntity<TKey>;
 
-
+        void EnableTracking();
         Task SaveChangesAsync();
 
         #endregion Public Methods

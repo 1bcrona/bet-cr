@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace BetCR.Repository.Entity
 {
-    public class Stage : EntityBase<string>
+    public class Stage : BaseEntity<string>
     {
         #region Private Fields
 

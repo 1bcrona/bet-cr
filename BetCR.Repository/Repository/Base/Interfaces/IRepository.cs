@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BetCR.Repository.Repository.Base.Interfaces
 {
-    public interface IRepository<T, in TKey> where T : EntityBase<TKey>
+    public interface IRepository<T, in TKey> where T : BaseEntity<TKey>
     {
         #region Public Properties
 

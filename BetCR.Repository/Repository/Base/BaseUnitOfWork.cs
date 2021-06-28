@@ -3,7 +3,11 @@ using BetCR.Repository.Repository.Base.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using BetCR.Library.Tracking.Infrastructure;
+using BetCR.Repository.Entity;
 
 namespace BetCR.Repository.Repository.Base
 {
@@ -17,7 +21,8 @@ namespace BetCR.Repository.Repository.Base
 
         #region Private Fields
 
-        private readonly DbContext _dbContext;
+        private readonly DataContext _dbContext;
+        private readonly IPublisher _publisher;
         private ILogger _logger;
         private bool disposed = false;
 
@@ -25,9 +30,10 @@ namespace BetCR.Repository.Repository.Base
 
         #region Public Constructors
 
-        public BaseUnitOfWork(DbContext context)
+        public BaseUnitOfWork(DataContext context, IPublisher publisher)
         {
             this._dbContext = context;
+            _publisher = publisher;
 
             this._id = Guid.NewGuid().ToString("D");
         }
@@ -52,7 +58,7 @@ namespace BetCR.Repository.Repository.Base
             GC.SuppressFinalize(this);
         }
 
-        public IRepository<T, TKey> GetRepository<T, TKey>() where T : EntityBase<TKey>
+        public IRepository<T, TKey> GetRepository<T, TKey>() where T : BaseEntity<TKey>
         {
             return new BaseRepository<T, TKey>(_dbContext);
         }
@@ -69,13 +75,48 @@ namespace BetCR.Repository.Repository.Base
         protected virtual void Dispose(bool disposing)
         {
             if (!this.disposed)
+            {
                 if (disposing)
                 {
                     this.disposed = true;
+                    this.DbContext.ChangeTracker.StateChanged -= ChangeTracker_StateChanged;
                 }
+
+            }
+
             this.disposed = true;
+        }
+
+        public void EnableTracking()
+        {
+            this.DbContext.ChangeTracker.DetectChanges();
+            this.DbContext.ChangeTracker.StateChanged += ChangeTracker_StateChanged;
+        }
+
+
+        private void ChangeTracker_StateChanged(object sender, Microsoft.EntityFrameworkCore.ChangeTracking.EntityStateChangedEventArgs e)
+        {
+            if (e.Entry.Entity.GetType().GetCustomAttribute<NotTrackingAttribute>() != null) return;
+
+
+            var context = (sender as Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker)?.Context;
+            var entityId = e.Entry.Entity.GetType().GetProperty("Id")?.GetValue(e.Entry.Entity)?.ToString();
+            var entityChangeModel = new EntityChangeModel { EntityId = entityId, Entity = e.Entry.Entity, Context = context };
+
+            entityChangeModel.EventType = e.NewState switch
+            {
+                EntityState.Deleted => String.Join(".", e.Entry.Entity.GetType().Name.ToLowerInvariant(), "deleted"),
+                EntityState.Unchanged when e.OldState == EntityState.Modified => String.Join(".", e.Entry.Entity.GetType().Name.ToLowerInvariant(), "updated"),
+                EntityState.Unchanged when e.OldState == EntityState.Added => String.Join(".",
+                    e.Entry.Entity.GetType().Name.ToLowerInvariant(), "added"),
+                _ => entityChangeModel.EventType
+            };
+            if (entityChangeModel.EventType != null)
+                _publisher?.Publish(entityChangeModel);
         }
 
         #endregion Protected Methods
     }
+
+
 }

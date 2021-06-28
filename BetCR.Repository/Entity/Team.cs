@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 
 namespace BetCR.Repository.Entity
 {
-    public class Team : EntityBase<string>
+    public class Team : BaseEntity<string>
     {
         #region Public Properties
 

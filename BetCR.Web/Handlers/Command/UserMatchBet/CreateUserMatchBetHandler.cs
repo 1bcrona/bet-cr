@@ -22,6 +22,7 @@ namespace BetCR.Web.Handlers.Command.UserMatchBet
         public CreateUserMatchBetHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+            _unitOfWork.EnableTracking();
         }
 
         #endregion Public Constructors
@@ -30,6 +31,9 @@ namespace BetCR.Web.Handlers.Command.UserMatchBet
 
         public async Task<Match> Handle(CreateUserMatchBetCommand request, CancellationToken cancellationToken)
         {
+
+            await using var transaction = await _unitOfWork.DbContext.Database.BeginTransactionAsync(cancellationToken);
+
             var userMatchBetRepository = _unitOfWork.GetRepository<Repository.Entity.UserMatchBet, string>();
 
             var isBetExist = await userMatchBetRepository.FindAsync(w =>
@@ -59,7 +63,7 @@ namespace BetCR.Web.Handlers.Command.UserMatchBet
             });
 
             await _unitOfWork.SaveChangesAsync();
-
+            await transaction.CommitAsync(cancellationToken);
             var updatedMatch = await matchRepository.GetAsync(request.MatchId);
 
             return updatedMatch;

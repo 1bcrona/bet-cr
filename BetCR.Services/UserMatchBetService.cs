@@ -1,5 +1,6 @@
 ﻿using BetCR.Repository.Entity;
 using BetCR.Repository.Repository.Base.Interfaces;
+using BetCR.Repository.ValueObject;
 using System;
 using System.Threading.Tasks;
 
@@ -18,6 +19,7 @@ namespace BetCR.Services
         public UserMatchBetService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+            _unitOfWork.EnableTracking();
         }
 
         #endregion Public Constructors
@@ -36,43 +38,31 @@ namespace BetCR.Services
 
             foreach (var bet in bets)
             {
+                await using var transaction = await _unitOfWork.DbContext.Database.BeginTransactionAsync();
                 CalculateUserPoints(bet);
                 await repository.UpdateAsync(bet);
                 await _unitOfWork.SaveChangesAsync();
+                await transaction.CommitAsync();
             }
         }
 
-        public async Task CalculateUserPointsAsync(string id)
-        {
-            var repository = _unitOfWork.GetRepository<UserMatchBet, string>();
-
-            var bet = await repository.GetAsync(id);
-
-            if (bet != null && bet.Active == 1)
-            {
-                CalculateUserPoints(bet);
-                await repository.UpdateAsync(bet);
-                await _unitOfWork.SaveChangesAsync();
-            }
-        }
-
-        #endregion Public Methods
+          #endregion Public Methods
 
         #region Private Methods
 
         private int CalculatePointForBet(int matchHomeScore, int matchAwayScore, int userBetHomeScore, int userBetAwayScore)
         {
-            var point = -1;
+            var point = UserBetPoint.LossMatch;
             var matchDiff = matchHomeScore - matchAwayScore;
             var userDiff = userBetHomeScore - userBetAwayScore;
 
             if ((matchDiff * userDiff <= 0) && (matchDiff != 0 || userDiff != 0)) return point;
-            point = 1;
+            point = UserBetPoint.WinMatch;
             if (userDiff != matchDiff) return point;
-            point = 2;
+            point = UserBetPoint.WinDifference;
             if (userBetHomeScore == matchHomeScore)
             {
-                point = 5;
+                point = UserBetPoint.WinMatchScore;
             }
 
             return point;

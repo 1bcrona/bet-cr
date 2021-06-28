@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using BetCR.Repository.Entity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace BetCR.Repository.Repository.Base
@@ -37,6 +39,9 @@ namespace BetCR.Repository.Repository.Base
         #region Public Properties
 
         public string ConnectionString { get { return _connectionString; } }
+
+
+        
 
         #endregion Public Properties
     }

@@ -21,6 +21,8 @@ namespace BetCR.Web.Handlers.Command.UserAction
         public AddUserActionCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+            _unitOfWork.EnableTracking();
+
         }
 
         #endregion Public Constructors
@@ -29,6 +31,8 @@ namespace BetCR.Web.Handlers.Command.UserAction
 
         public async Task<Repository.Entity.UserAction> Handle(AddUserActionCommand request, CancellationToken cancellationToken)
         {
+            await using var transacation = await _unitOfWork.DbContext.Database.BeginTransactionAsync(cancellationToken);
+
             var userActionRepository = _unitOfWork.GetRepository<Repository.Entity.UserAction, string>();
             var userRepository = _unitOfWork.GetRepository<Repository.Entity.User, string>();
 
@@ -70,6 +74,8 @@ namespace BetCR.Web.Handlers.Command.UserAction
             });
 
             await _unitOfWork.SaveChangesAsync();
+
+            await transacation.CommitAsync(cancellationToken);
             return added;
         }
 

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BetCR.Repository.Entity
 {
-    public class MatchEvent : EntityBase<string>
+    public class MatchEvent : BaseEntity<string>
     {
         #region Private Fields
 

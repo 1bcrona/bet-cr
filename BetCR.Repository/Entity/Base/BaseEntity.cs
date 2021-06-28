@@ -5,16 +5,16 @@ using System.Runtime.Serialization;
 
 namespace BetCR.Repository.Entity.Base
 {
-    public class EntityBase<T>
+    public class BaseEntity<T>
     {
         #region Public Constructors
 
-        public EntityBase(ILazyLoader lazyLoader) : this()
+        public BaseEntity(ILazyLoader lazyLoader) : this()
         {
             LazyLoader = lazyLoader;
         }
 
-        public EntityBase()
+        public BaseEntity()
         {
             Active = 1;
         }

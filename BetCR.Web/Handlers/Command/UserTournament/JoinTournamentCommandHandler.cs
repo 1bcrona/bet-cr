@@ -23,6 +23,7 @@ namespace BetCR.Web.Handlers.Command.UserTournament
         public JoinTournamentCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+            _unitOfWork.EnableTracking();
         }
 
         #endregion Public Constructors
@@ -31,6 +32,8 @@ namespace BetCR.Web.Handlers.Command.UserTournament
 
         public async Task<Tournament> Handle(JoinTournamentCommand request, CancellationToken cancellationToken)
         {
+
+            await using var transaction = await _unitOfWork.DbContext.Database.BeginTransactionAsync(cancellationToken);
             var userTournamentRepository = _unitOfWork.GetRepository<Repository.Entity.UserTournament, string>();
             var tournamentRepository = _unitOfWork.GetRepository<Repository.Entity.Tournament, string>();
             var userRepository = _unitOfWork.GetRepository<Repository.Entity.User, string>();
@@ -64,6 +67,8 @@ namespace BetCR.Web.Handlers.Command.UserTournament
                 };
 
                 await userTournamentRepository.AddAsync(userTournament);
+                await _unitOfWork.SaveChangesAsync();
+
 
                 if (request.InviteId != null)
                 {
@@ -74,11 +79,11 @@ namespace BetCR.Web.Handlers.Command.UserTournament
                         invite.ActionResult = "OK";
                         invite.ActionStatus = "RESPOND";
                         await userActionRepository.UpsertAsync(invite);
+                        await _unitOfWork.SaveChangesAsync();
                     }
                 }
 
-                await _unitOfWork.SaveChangesAsync();
-
+                await transaction.CommitAsync(cancellationToken);
                 return userTournament.Tournament;
             }
         }

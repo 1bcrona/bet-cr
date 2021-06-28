@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 
 namespace BetCR.Repository.Entity
 {
-    public class User : EntityBase<string>
+    public class User : BaseEntity<string>
     {
         #region Private Fields
 

@@ -22,6 +22,7 @@ namespace BetCR.Web.Handlers.Command.UserTournamentRel
         public DeleteUserTournamentCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+            _unitOfWork.EnableTracking();
         }
 
         #endregion Public Constructors
@@ -30,6 +31,8 @@ namespace BetCR.Web.Handlers.Command.UserTournamentRel
 
         public async Task<List<Tournament>> Handle(DeleteUserTournamentCommand request, CancellationToken cancellationToken)
         {
+            await using var transaction = await _unitOfWork.DbContext.Database.BeginTransactionAsync(cancellationToken);
+
             var repository = _unitOfWork.GetRepository<Repository.Entity.UserTournament, string>();
 
             var isUserRegisteredToTournament = (await repository.FindAsync(w => w.User.Id == request.UserId && w.Tournament.Id == request.TournamentId && w.Active == 1)).FirstOrDefault();
@@ -42,8 +45,8 @@ namespace BetCR.Web.Handlers.Command.UserTournamentRel
             isUserRegisteredToTournament.Active = 0;
             await repository.UpdateAsync(isUserRegisteredToTournament);
             await _unitOfWork.SaveChangesAsync();
+            await transaction.CommitAsync(cancellationToken);
             var tournaments = await repository.FindAsync(f => f.Active == 1 && f.User.Id == request.UserId);
-
             return tournaments.Select(s => s.Tournament).ToList();
         }
 

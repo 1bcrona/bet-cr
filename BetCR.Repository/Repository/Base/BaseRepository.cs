@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BetCR.Repository.Repository.Base
 {
-    public class BaseRepository<T, TKey> : IRepository<T, TKey> where T : EntityBase<TKey>
+    public class BaseRepository<T, TKey> : IRepository<T, TKey> where T : BaseEntity<TKey>
     {
         #region Public Fields
 
