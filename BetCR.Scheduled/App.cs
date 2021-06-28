@@ -54,6 +54,9 @@ namespace BetCR.Scheduled
                 .ConfigureServices(InitializeContainer)
                 .Configure(builder => builder.UseHangfireDashboard("/hangfire", new DashboardOptions() { Authorization = new List<IDashboardAuthorizationFilter>() { new DashboardNoAuthorizationFilter() } }))
                 .UseEnvironment(environment)
+#if DEBUG
+                .UseUrls("http://localhost:5004")
+#endif 
                 .Build();
 
             Environment.GetEnvironmentVariable("BETCR_ENVIRONMENT");
@@ -84,7 +87,7 @@ namespace BetCR.Scheduled
 
             services.AddHangfire(configuration =>
             {
-                configuration.UseSQLiteStorage("DefaultConnection");
+                configuration.UseSQLiteStorage(Configuration.GetConnectionString("HangfireConnection"));
 
             });
             services.AddHangfireServer(options =>
@@ -94,7 +97,7 @@ namespace BetCR.Scheduled
             });
 
 
-            JobStorage.Current = new SQLiteStorage("DefaultConnection");
+            JobStorage.Current = new SQLiteStorage(Configuration.GetConnectionString("HangfireConnection"));
 
             RecurringJob.AddOrUpdate<IUserMatchBetService>(s => s.CalculateUserPointsAsync(), Cron.MinuteInterval(5));
             RecurringJob.AddOrUpdate<IElenaFetcherService>(s => s.GetFixturesAsync(), Cron.HourInterval(12));
