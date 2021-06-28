@@ -7,9 +7,10 @@ services:
       context: .
       target: scheduled
     ports:
-      - 127.0.0.1:5002:5002
+      - 5002:5002
     environment:
       - BETCR_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:5002
     volumes:
       - ~/source/repos/BetCR/DB:/DB
 

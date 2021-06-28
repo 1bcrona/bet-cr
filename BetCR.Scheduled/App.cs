@@ -49,7 +49,6 @@ namespace BetCR.Scheduled
                     builder.AddEnvironmentVariables("BETCR_");
                     Configuration = builder.Build();
                 })
-                .UseUrls("http://+:5002")
                 .ConfigureServices(InitializeContainer)
                 .Configure(builder => builder.UseHangfireDashboard("/hangfire", new DashboardOptions() { Authorization = new List<IDashboardAuthorizationFilter>() { new DashboardNoAuthorizationFilter() } }))
                 .UseEnvironment(environment)
