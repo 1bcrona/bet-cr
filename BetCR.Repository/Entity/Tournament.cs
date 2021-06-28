@@ -33,7 +33,12 @@ namespace BetCR.Repository.Entity
         public override string Id { get; set; }
 
         public bool IsPrivate { get; set; }
-        public bool IsStill => TournamentEndDateEpoch > DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+        [NotMapped]
+        public bool IsStill
+        {
+            get { return TournamentEndDateEpoch > DateTimeOffset.UtcNow.ToUnixTimeSeconds(); }
+        }
 
         [ForeignKey("OwnerUserId")]
         public User Owner

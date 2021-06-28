@@ -31,6 +31,7 @@ namespace BetCR.Web.Handlers.Query.Tournament
             var tournamentRepository = _unitOfWork.GetRepository<Repository.Entity.UserTournament, string>();
 
             var tournaments = await tournamentRepository.FindAsync(f => f.Active == 1 && f.User.Id == request.UserId);
+            tournaments = tournaments.Where(w => w.Tournament.IsStill);
             var userTournameRels = tournaments.ToList();
             var allTournaments = userTournameRels.Select(s => s.Tournament).ToList();
             ;
