@@ -25,7 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire" Version="1.7.23" />
+    <PackageReference Include="Hangfire" Version="1.7.24" />
+    <PackageReference Include="Hangfire.Dashboard.Authorization" Version="3.0.0" />
     <PackageReference Include="Hangfire.Storage.SQLite" Version="0.3.0" />
   </ItemGroup>
 

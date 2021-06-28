@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "BetCR.Scheduled": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "BETCR_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

@@ -1,8 +1,23 @@
-version: "3.1"
+version: "3"
 services:
+  betcr-scheduled-server:
+    restart: always
+    
+    build:
+      context: .
+      target: scheduled
+    ports:
+      - 127.0.0.1:5002:5002
+    environment:
+      - BETCR_ENVIRONMENT=Production
+    volumes:
+      - ~/source/repos/BetCR/DB:/DB
+
   betcr-app-server:
+    restart: always
     build: 
       context: .
+      target: final
     ports:
       - 5000:5000
       - 5001:5001

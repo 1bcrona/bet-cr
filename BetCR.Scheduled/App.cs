@@ -16,7 +16,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Hangfire.Dashboard;
+using Console = System.Console;
 
 namespace BetCR.Scheduled
 {
@@ -32,7 +35,7 @@ namespace BetCR.Scheduled
 
         public async Task Run()
         {
-            var environment = Environment.GetEnvironmentVariable("BetCR_Environment") ?? "Production";
+            var environment = Environment.GetEnvironmentVariable("BETCR_ENVIRONMENT") ?? "Production";
             var host = WebHost.CreateDefaultBuilder()
                 .ConfigureLogging(builder =>
                 {
@@ -43,15 +46,16 @@ namespace BetCR.Scheduled
                 .ConfigureAppConfiguration(builder =>
                 {
                     builder.AddJsonFile(environment == "Production" ? "appsettings.json" : $"appsettings.{environment}.json", true, true);
-                    builder.AddEnvironmentVariables("BetCR_");
+                    builder.AddEnvironmentVariables("BETCR_");
                     Configuration = builder.Build();
                 })
-                .UseUrls("https://localhost:1234")
+                .UseUrls("http://+:5002")
                 .ConfigureServices(InitializeContainer)
-                .Configure(builder => builder.UseHangfireDashboard("/hangfire"))
+                .Configure(builder => builder.UseHangfireDashboard("/hangfire", new DashboardOptions() { Authorization = new List<IDashboardAuthorizationFilter>() { new DashboardNoAuthorizationFilter() } }))
                 .UseEnvironment(environment)
                 .Build();
 
+            Environment.GetEnvironmentVariable("BETCR_ENVIRONMENT");
             Console.WriteLine(Configuration.GetConnectionString("DefaultConnection"));
 
             await host.RunAsync();
@@ -75,10 +79,12 @@ namespace BetCR.Scheduled
             services.AddHangfire(configuration =>
             {
                 configuration.UseSQLiteStorage("DefaultConnection");
+
             });
             services.AddHangfireServer(options =>
             {
                 options.ServerName = "BetCR Hangfire";
+
             });
 
             JobStorage.Current = new SQLiteStorage("DefaultConnection");
