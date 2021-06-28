@@ -14,36 +14,47 @@
 
 @{
     var events = ViewData["events"] as IEnumerable<Tuple<int, Event>>;
+
+    var ownGoalCount = 0;
+    var goalCount = 0;
 }
 
 <div class="goalkeeper">
     @{
         var goalKeeper = Model.FirstOrDefault(w => w.Position == "GOALKEEPER");
         <div class="player-view">
-
             @{
-                if ((events ?? Array.Empty<Tuple<int, Event>>().ToList()).Any(w => w.Item2.Player1.FullName == goalKeeper.Player.FullName && w.Item2.EventType == "GOAL"))
+
+                goalCount = (events ?? Array.Empty<Tuple<int, Event>>().ToList()).Count(w => w.Item2.Player1.FullName == goalKeeper.Player.FullName && (w.Item2.EventType == "GOAL" || w.Item2.EventType == "PEN_SCORED"));
+                ownGoalCount = (events ?? Array.Empty<Tuple<int, Event>>().ToList()).Count(w => w.Item2.Player1.FullName == goalKeeper.Player.FullName && w.Item2.EventType == "OWN_GOAL");
+
+                if (goalCount > 0)
                 {
                     <div style="border-radius: 100%;margin-left: 30%;width: 33%;margin-top: -5px;margin-top: -30%;height: 50%;z-index: 999">
                         <img class="img-goal">
+                        @{
+                            if (goalCount > 1)
+                            {
+                                <div class="lrvl-gcc-c"><span>@goalCount</span></div>
+                            }
+                        }
+
                     </div>
                 }
-                if ((events ?? Array.Empty<Tuple<int, Event>>().ToList()).Any(w => w.Item2.Player1.FullName == goalKeeper.Player.FullName && w.Item2.EventType == "OWN_GOAL"))
+                if (ownGoalCount > 0)
                 {
                     <div style="border-radius: 100%;margin-left: 30%;width: 33%;margin-top: -5px;margin-top: -30%;height: 50%;z-index: 999">
                         <img class="img-own_goal">
-                    </div>
+                        @{
+                            if (goalCount > 1)
+                            {
+                                <div class="lrvl-gcc-c"><span>@goalCount</span></div>
+                            }
+                        }
 
-                }
-                if ((events ?? Array.Empty<Tuple<int, Event>>().ToList()).Any(w => w.Item2.Player1.FullName == goalKeeper.Player.FullName && w.Item2.EventType == "PEN_SCORED"))
-                {
-                    <div style="border-radius: 100%;margin-left: 30%;width: 33%;margin-top: -5px;margin-top: -30%;height: 50%;z-index: 999">
-                        <img class="img-pen_scored">
                     </div>
-
                 }
             }
-
             <div class="player" style="background-color: @ViewData["background-color"].ToString(); border-color: @ViewData["color"].ToString();">
                 <div class="number" style="color: @ViewData["color"].ToString();">@goalKeeper.Number</div>
                 <div class="name  d-none d-lg-block">@goalKeeper.Player.Name</div>
@@ -62,31 +73,39 @@
             {
 
                 <div class="player-view">
-
                     @{
-                        if ((events ?? Array.Empty<Tuple<int, Event>>().ToList()).Any(w => w.Item2.Player1.FullName == player.Player.FullName && w.Item2.EventType == "GOAL"))
+
+                        goalCount = (events ?? Array.Empty<Tuple<int, Event>>().ToList()).Count(w => w.Item2.Player1.FullName == player.Player.FullName && (w.Item2.EventType == "GOAL" || w.Item2.EventType == "PEN_SCORED"));
+                        ownGoalCount = (events ?? Array.Empty<Tuple<int, Event>>().ToList()).Count(w => w.Item2.Player1.FullName == player.Player.FullName && w.Item2.EventType == "OWN_GOAL");
+
+                        if (goalCount > 0)
                         {
                             <div style="border-radius: 100%;margin-left: 30%;width: 33%;margin-top: -5px;margin-top: -30%;height: 50%;z-index: 999">
                                 <img class="img-goal">
+                                @{
+                                    if (goalCount > 1)
+                                    {
+                                        <div class="lrvl-gcc-c"><span>@goalCount</span></div>
+                                    }
+                                }
+
                             </div>
                         }
-                        if ((events ?? Array.Empty<Tuple<int, Event>>().ToList()).Any(w => w.Item2.Player1.FullName == player.Player.FullName && w.Item2.EventType == "OWN_GOAL"))
+                        if (ownGoalCount > 0)
                         {
                             <div style="border-radius: 100%;margin-left: 30%;width: 33%;margin-top: -5px;margin-top: -30%;height: 50%;z-index: 999">
                                 <img class="img-own_goal">
-                            </div>
+                                @{
+                                    if (goalCount > 1)
+                                    {
+                                        <div class="lrvl-gcc-c"><span>@goalCount</span></div>
+                                    }
+                                }
 
-                        }
-                        if ((events ?? Array.Empty<Tuple<int, Event>>().ToList()).Any(w => w.Item2.Player1.FullName == player.Player.FullName && w.Item2.EventType == "PEN_SCORED"))
-                        {
-                            <div style="border-radius: 100%;margin-left: 30%;width: 33%;margin-top: -5px;margin-top: -30%;height: 50%;z-index: 999">
-                                <img class="img-pen_scored">
                             </div>
-
                         }
                     }
-
-                    <div class="player" style="background-color:  @ViewData["background-color"].ToString(); border-color: @ViewData["color"].ToString(); ">
+                    <div class="player" style="background-color: @ViewData["background-color"].ToString(); border-color: @ViewData["color"].ToString();">
                         <div class="number" style="color: @ViewData["color"].ToString();">@player.Number</div>
                         <div class="name  d-none d-lg-block">@player.Player.Name</div>
                     </div>
@@ -102,27 +121,36 @@
             foreach (var player in midfielders)
             {
                 <div class="player-view">
-
                     @{
-                        if ((events ?? Array.Empty<Tuple<int, Event>>().ToList()).Any(w => w.Item2.Player1.FullName == player.Player.FullName && w.Item2.EventType == "GOAL"))
+
+                        goalCount = (events ?? Array.Empty<Tuple<int, Event>>().ToList()).Count(w => w.Item2.Player1.FullName == player.Player.FullName && (w.Item2.EventType == "GOAL" || w.Item2.EventType == "PEN_SCORED"));
+                        ownGoalCount = (events ?? Array.Empty<Tuple<int, Event>>().ToList()).Count(w => w.Item2.Player1.FullName == player.Player.FullName && w.Item2.EventType == "OWN_GOAL");
+
+                        if (goalCount > 0)
                         {
                             <div style="border-radius: 100%;margin-left: 30%;width: 33%;margin-top: -5px;margin-top: -30%;height: 50%;z-index: 999">
                                 <img class="img-goal">
+                                @{
+                                    if (goalCount > 1)
+                                    {
+                                        <div class="lrvl-gcc-c"><span>@goalCount</span></div>
+                                    }
+                                }
+
                             </div>
                         }
-                        if ((events ?? Array.Empty<Tuple<int, Event>>().ToList()).Any(w => w.Item2.Player1.FullName == player.Player.FullName && w.Item2.EventType == "OWN_GOAL"))
+                        if (ownGoalCount > 0)
                         {
                             <div style="border-radius: 100%;margin-left: 30%;width: 33%;margin-top: -5px;margin-top: -30%;height: 50%;z-index: 999">
                                 <img class="img-own_goal">
-                            </div>
+                                @{
+                                    if (goalCount > 1)
+                                    {
+                                        <div class="lrvl-gcc-c"><span>@goalCount</span></div>
+                                    }
+                                }
 
-                        }
-                        if ((events ?? Array.Empty<Tuple<int, Event>>().ToList()).Any(w => w.Item2.Player1.FullName == player.Player.FullName && w.Item2.EventType == "PEN_SCORED"))
-                        {
-                            <div style="border-radius: 100%;margin-left: 30%;width: 33%;margin-top: -5px;margin-top: -30%;height: 50%;z-index: 999">
-                                <img class="img-pen_scored">
                             </div>
-
                         }
                     }
                     <div class="player" style="background-color: @ViewData["background-color"].ToString(); border-color: @ViewData["color"].ToString();">
@@ -142,25 +170,35 @@
             {
                 <div class="player-view">
                     @{
-                        if ((events ?? Array.Empty<Tuple<int, Event>>().ToList()).Any(w => w.Item2.Player1.FullName == player.Player.FullName && w.Item2.EventType == "GOAL"))
+
+                         goalCount = (events ?? Array.Empty<Tuple<int, Event>>().ToList()).Count(w => w.Item2.Player1.FullName == player.Player.FullName && (w.Item2.EventType == "GOAL" || w.Item2.EventType == "PEN_SCORED"));
+                         ownGoalCount = (events ?? Array.Empty<Tuple<int, Event>>().ToList()).Count(w => w.Item2.Player1.FullName == player.Player.FullName && w.Item2.EventType == "OWN_GOAL");
+
+                        if (goalCount > 0)
                         {
                             <div style="border-radius: 100%;margin-left: 30%;width: 33%;margin-top: -5px;margin-top: -30%;height: 50%;z-index: 999">
                                 <img class="img-goal">
+                                @{
+                                    if (goalCount > 1)
+                                    {
+                                        <div class="lrvl-gcc-c"><span>@goalCount</span></div>
+                                    }
+                                }
+
                             </div>
                         }
-                        if ((events ?? Array.Empty<Tuple<int, Event>>().ToList()).Any(w => w.Item2.Player1.FullName == player.Player.FullName && w.Item2.EventType == "OWN_GOAL"))
+                        if (ownGoalCount > 0)
                         {
                             <div style="border-radius: 100%;margin-left: 30%;width: 33%;margin-top: -5px;margin-top: -30%;height: 50%;z-index: 999">
                                 <img class="img-own_goal">
-                            </div>
+                                @{
+                                    if (goalCount > 1)
+                                    {
+                                        <div class="lrvl-gcc-c"><span>@goalCount</span></div>
+                                    }
+                                }
 
-                        }
-                        if ((events ?? Array.Empty<Tuple<int, Event>>().ToList()).Any(w => w.Item2.Player1.FullName == player.Player.FullName && w.Item2.EventType == "PEN_SCORED"))
-                        {
-                            <div style="border-radius: 100%;margin-left: 30%;width: 33%;margin-top: -5px;margin-top: -30%;height: 50%;z-index: 999">
-                                <img class="img-pen_scored">
                             </div>
-
                         }
                     }
                     <div class="player" style="background-color: @ViewData["background-color"].ToString(); border-color: @ViewData["color"].ToString();">

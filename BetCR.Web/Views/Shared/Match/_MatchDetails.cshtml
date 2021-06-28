@@ -113,7 +113,10 @@
                             SUBS
                         </h5>
                         <div class="card-body">
-                            @{ await Html.RenderPartialAsync("Match/_TeamLineup", Model.MatchEvent.MatchLineup.HomeTeamLineup.Where(w => !w.StartingXI), new ViewDataDictionary(ViewData) { { "background-color", homeDomColor2 }, { "color", homeDomColor1 } });}
+                            @{ await Html.RenderPartialAsync("Match/_TeamLineup", Model.MatchEvent.MatchLineup.HomeTeamLineup.Where(w => !w.StartingXI),
+                                                new ViewDataDictionary(ViewData) { { "background-color", homeDomColor2 },
+                                       { "color", homeDomColor1 },
+                                       { "CurrentTeamEvents", orderedEvents.Where(w => w.Item1 == -1).Select(s => s.Item2).ToList() } });}
                         </div>
                     </div>
                 </div>
@@ -277,7 +280,14 @@
                             SUBS
                         </h5>
                         <div class="card-body">
-                            @{ await Html.RenderPartialAsync("Match/_TeamLineup", Model.MatchEvent.MatchLineup.AwayTeamLineup.Where(w => !w.StartingXI), new ViewDataDictionary(ViewData) { { "background-color", awayDomColor2 }, { "color", awayDomColor1 } }); }
+                            @{ await Html.RenderPartialAsync("Match/_TeamLineup",
+                                              Model.MatchEvent.MatchLineup.AwayTeamLineup.Where(w => !w.StartingXI),
+                                              new ViewDataDictionary(ViewData) {
+                                              { "background-color", awayDomColor2 },
+                                             { "color", awayDomColor1 },
+                                             { "CurrentTeamEvents", orderedEvents.Where(w => w.Item1 == 1).Select(s => s.Item2).ToList() } }
+                                        );
+                            }
                         </div>
                     </div>
                 </div>

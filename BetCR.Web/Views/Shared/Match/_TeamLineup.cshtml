@@ -1,4 +1,5 @@
 ﻿@using BetCR.Repository.Entity
+@using BetCR.Repository.ValueObject
 @using Newtonsoft.Json
 @model IEnumerable<BetCR.Repository.ValueObject.Lineup>
 
@@ -6,17 +7,52 @@
     <table class="table table-borderless no-cellpadding" style="word-wrap: break-word;table-layout: fixed">
         <tbody>
             @{
-
+                var events = ViewData["CurrentTeamEvents"] as List<Event> ?? new List<Event>();
                 var numbers = Model.OrderBy(o => o.Number);
                 foreach (var item in numbers)
                 {
+
                     <tr>
                         <td>
                             <button type="button" class="rounded-button" data-bs-color="dark" style="background-color : @ViewData["background-color"].ToString(); color: @ViewData["color"].ToString(); width: 50px;height: 50px">@item.Number</button>
+                            @{
+                                var playerEvents = events.Where(w => w.TeamId == item.TeamId && w.Player1.FullName == item.Player.FullName);
+
+                                var goalCount = playerEvents.Count(w => w.EventType == "GOAL" || w.EventType == "PEN_SCORED");
+                                var ownGoalCount = playerEvents.Count(w => w.EventType == "OWN_GOAL");
+                                if (goalCount > 0)
+                                {
+                                    <span>
+                                        <img class="img-goal" />
+                                        @{
+                                            if (goalCount > 1)
+                                            {
+                                                <span class="lineup-gc text-center"><span>@goalCount</span></span>
+                                            }
+                                        }
+                                    </span>
+                                }
+                                if (ownGoalCount > 0)
+                                {
+                                    <span>
+                                        <img class="img-own_goal" />
+                                        @{
+                                            if (goalCount > 1)
+                                            {
+                                                <span class="lineup-gc text-center"><span>@goalCount</span></span>
+                                            }
+                                        }
+                                    </span>
+                                }
+                            }
                         </td>
 
                         <td class="d-md-none d-lg-table-cell align-middle">
-                            <small class="align-self-center"> @item.Player.FullName</small>
+                            <span>
+                                <span>
+                                    <small>@item.Player.FullName</small>
+                                </span>
+                            </span>
                         </td>
                     </tr>
                 }
