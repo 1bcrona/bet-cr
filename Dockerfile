@@ -1,8 +1,17 @@
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-focal AS base
+FROM mcr.microsoft.com/dotnet/sdk:5.0-focal AS build
+RUN apt-get update \
+    && apt-get install -y --allow-unauthenticated \
+        libc6-dev \
+        libgdiplus \
+        libx11-dev \
+     && rm -rf /var/lib/apt/lists/*
+
 EXPOSE 5001
 EXPOSE 5000
 EXPOSE 5002
+
+
 
 WORKDIR /src
 
@@ -30,7 +39,7 @@ WORKDIR "/src/BetCR.Web"
 RUN dotnet publish "BetCR.Web.csproj" --no-build --no-restore -c Release -o /app/publish
 
 
-FROM base AS scheduled
+FROM build AS scheduled
 WORKDIR /app
 COPY --from=runtime /app/scheduled .
 CMD ["dotnet", "BetCR.Scheduled.dll"]
