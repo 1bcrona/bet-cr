@@ -1,4 +1,12 @@
 FROM mcr.microsoft.com/dotnet/aspnet:5.0-focal AS base
+
+
+ENV LC_ALL tr_TR.UTF-8
+ENV LANG tr_TR.UTF-8
+ENV LANGUAGE tr_TR.UTF-8
+
+
+
 FROM mcr.microsoft.com/dotnet/sdk:5.0-focal AS build
 RUN apt-get update \
     && apt-get install -y --allow-unauthenticated \
@@ -13,7 +21,11 @@ EXPOSE 5002
 
 
 
-WORKDIR /src
+
+
+
+
+WORKDIR /src                                                                                                                                
 
 COPY ["BetCR.sln", "BetCR.sln"]
 COPY ["BetCR.Web/BetCR.Web.csproj","BetCR.Web/" ]
