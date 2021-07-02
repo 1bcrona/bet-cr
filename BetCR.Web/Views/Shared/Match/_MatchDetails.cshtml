@@ -201,14 +201,14 @@
                                                 var minute = groupedItem.Key.ToString();
                                                 if (item2.ElapsedPlus > 0)
                                                 {
-                                                    minute = $"{minute}+{item2.ElapsedPlus}'";
+                                                    minute = $"{minute}+{item2.ElapsedPlus}";
                                                 }
                                                 <div class="timeline--inner-pin is-normal" style="top: @currentEventTop; left: @currentStep; background-color: @(item1 < 0 ? homeDomColor1 : awayDomColor1); color: @(item1 < 0 ? homeDomColor2 : awayDomColor2)" data-title="@minute">
                                                     <div class="tooltip text-center" style="color: @(item1 < 0 ? homeDomColor2 : awayDomColor2); font-size: 10px;">
                                                         <div class="bottom">
                                                             <div class="row">
                                                                 <div class="col-md-6 timeline-item border-right" style="">
-                                                                    <label class="mb-0">@minute</label>
+                                                                    <label class="mb-0">@minute'</label>
                                                                 </div>
                                                                 <div class="col-md-6 timeline-item d-none d-md-inline-block text-center">
                                                                     <img class="event-team-badge" src="@(item1 < 0 ? Model.HomeTeam.TeamLogo : Model.AwayTeam.TeamLogo)">
