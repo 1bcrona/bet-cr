@@ -89,9 +89,6 @@ namespace BetCR.Web.Controllers.API
                 };
             }
 
-            var userTournaments = isUser.UserTournameRels
-                .Where(w => w.Tournament.IsStill && w.Active == 1 && w.Tournament.Active == 1)
-                .OrderBy(o => o.Tournament.TournamentEndDateEpoch).Select(s => s.Tournament).ToList();
 
             List<Claim> userClaims = new List<Claim>
                 {

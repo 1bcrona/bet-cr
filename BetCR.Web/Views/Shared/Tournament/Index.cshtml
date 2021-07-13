@@ -351,7 +351,7 @@
                 dataType: "json",
                 success: function (data) {
                     const modalFadeSeconds = 2;
-                    let modalData = `<br>${data.Result}</br>`;
+                    let modalData = `<br>${data.result}</br>`;
                     if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
 
                     const modal = $("#dPendingInvitations").addModal({
@@ -394,7 +394,7 @@
                 type: "DELETE",
                 success: function (data) {
                     const modalFadeSeconds = 2;
-                    let modalData = `<br>${data.Result}</br>`;
+                    let modalData = `<br>${data.result}</br>`;
                     if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
 
                     const modal = $("#fTournament").addModal({
@@ -430,6 +430,8 @@
         $(".invite-form").submit(function (e) {
             e.preventDefault();
             e.stopPropagation();
+
+            let target = e.target;
             let picker = $(this).find('.selectpicker');
 
             let tournamentId = $(picker).data("tournament-id");
@@ -450,10 +452,10 @@
                 dataType: "json",
                 success: function (data) {
                     const modalFadeSeconds = 2;
-                    let modalData = `<br>${data.Result}</br>`;
+                    let modalData = `<br>${data.result}</br>`;
                     if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
 
-                    const modal = $("#fTournament").addModal({
+                    const modal = $(target).addModal({
                         id: "successModal",
                         modalContent: modalData,
                         closeTimer: modalFadeSeconds,
@@ -472,7 +474,7 @@
                     let modalData = `<br>${data.Result}</br>`;
                     if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
 
-                    const modal = $("#fTournament").addModal({
+                    const modal = $(target).addModal({
                         id: "errorModal",
                         modalContent: modalData,
                         closeTimer: modalFadeSeconds,
@@ -562,7 +564,7 @@
                     dataType: "json",
                     success: function (data) {
                         const modalFadeSeconds = 2;
-                        let modalData = `<br>${data.Result}</br>`;
+                        let modalData = `<br>${data.result}</br>`;
                         if (data.returnUrl) modalData = ` ${modalData} <br>You will be redirected to next page after ${modalFadeSeconds} seconds</br>`;
 
                         const modal = $("#fCreateTournament").addModal({
