@@ -19,7 +19,7 @@ namespace BetCR.Web.Models
         public int WinDifferenceCount { get; set; }
 
         public int WinMatchScoreCount { get; set; }
-        public int? TotalPoints { get; set; }
+        public int TotalPoints { get; set; }
         public int LossMatchCount { get; set; }
     }
 }

@@ -61,7 +61,7 @@ namespace BetCR.Web.Handlers.Query.Tournament
                 WinDifferenceCount = userBet.Where(w => w.UserBetPointDefault == UserBetPoint.WinDifference).Sum(w => w.UserBetPoint).Value,
                 WinMatchScoreCount = userBet.Where(w => w.UserBetPointDefault == UserBetPoint.WinMatchScore).Sum(w => w.UserBetPoint).Value,
                 LossMatchCount = userBet.Where(w => w.UserBetPointDefault == UserBetPoint.LossMatch).Sum(w => w.UserBetPoint).Value,
-                TotalPoints = userBet.Sum(s => s.UserBetPoint)
+                TotalPoints = userBet.Sum(s => s.UserBetPoint ?? 0)
             })
                 .ToList();
 
@@ -74,14 +74,7 @@ namespace BetCR.Web.Handlers.Query.Tournament
 
             userBetPoints.AddRange(nonBetUsers.Select(user => new TournamentStandingsModel()
             {
-                User = user,
-                WinCount = 0,
-                LossCount = 0,
-                WinMatchCount = 0,
-                WinDifferenceCount = 0,
-                WinMatchScoreCount = 0,
-                LossMatchCount = 0,
-                TotalPoints = 0
+                User = user
             }));
 
             userBetPoints = userBetPoints
