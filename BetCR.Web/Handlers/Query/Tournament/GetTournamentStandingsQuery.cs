@@ -41,15 +41,18 @@ namespace BetCR.Web.Handlers.Query.Tournament
         public async Task<List<TournamentStandingsModel>> Handle(GetTournamentStandingsQuery request, CancellationToken cancellationToken)
         {
             var betRepository = _unitOfWork.GetRepository<UserMatchBet, string>();
+            var tournamentRepository = _unitOfWork.GetRepository<Repository.Entity.Tournament, string>();
+            var userRepository = _unitOfWork.GetRepository<Repository.Entity.User, string>();
+            var tournament = await tournamentRepository.GetAsync(request.TournamentId);
 
             var bets = await betRepository.FindAsync(f =>
-                f.Active == 1 && f.User.Active == 1 &&
+                f.Active == 1 && f.User.Active == 1 && f.Match.MatchDateEpoch > tournament.TournameStartDateEpoch &&
                 f.User.UserTournameRels.Any(w => w.Tournament.Id == request.TournamentId && w.Active == 1) &&
                 f.ProcessState == 2);
 
             var groupedBets = bets.GroupBy(g => g.User.Id);
 
-            return groupedBets.Select(userBet => new TournamentStandingsModel()
+            var userBetPoints = groupedBets.Select(userBet => new TournamentStandingsModel()
             {
                 User = userBet.First().User,
                 WinCount = userBet.Count(w => w.UserBetPoint > 0),
@@ -61,6 +64,33 @@ namespace BetCR.Web.Handlers.Query.Tournament
                 TotalPoints = userBet.Sum(s => s.UserBetPoint)
             })
                 .ToList();
+
+            var tournamentUsers = await userRepository.FindAsync(f =>
+                f.Active == 1 && f.UserTournameRels.Any(w => w.Tournament.Id == request.TournamentId && w.Active == 1));
+
+
+            var nonBetUsers = tournamentUsers.Where(a => userBetPoints.All(a1 => a1.User.Id != a.Id));
+
+
+            userBetPoints.AddRange(nonBetUsers.Select(user => new TournamentStandingsModel()
+            {
+                User = user,
+                WinCount = 0,
+                LossCount = 0,
+                WinMatchCount = 0,
+                WinDifferenceCount = 0,
+                WinMatchScoreCount = 0,
+                LossMatchCount = 0,
+                TotalPoints = 0
+            }));
+
+            userBetPoints = userBetPoints
+                .OrderByDescending(o => o.TotalPoints)
+                .ThenByDescending(o => o.WinCount)
+                .ThenByDescending(o => o.WinMatchScoreCount)
+                .ThenBy(o => o.User.FullName).ToList();
+
+            return userBetPoints;
         }
 
         #endregion Public Methods
