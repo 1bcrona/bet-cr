@@ -8,11 +8,9 @@ namespace BetCR.Services.External.Elenasport.Model
     {
         #region Public Properties
 
-        [JsonProperty("elapsed")]
-        public int Elapsed { get; set; }
+        [JsonProperty("elapsed")] public int Elapsed { get; set; }
 
-        [JsonProperty("elapsedPlus")]
-        public int ElapsedPlus { get; set; }
+        [JsonProperty("elapsedPlus")] public int ElapsedPlus { get; set; }
 
         [JsonIgnore]
         public PlayerResult Player1Result
@@ -34,11 +32,9 @@ namespace BetCR.Services.External.Elenasport.Model
             }
         }
 
-        [JsonProperty("idTeam")]
-        public int TeamId { get; set; }
+        [JsonProperty("idTeam")] public int TeamId { get; set; }
 
-        [JsonProperty("type")]
-        public string Type { get; set; }
+        [JsonProperty("type")] public string Type { get; set; }
 
         #endregion Public Properties
     }

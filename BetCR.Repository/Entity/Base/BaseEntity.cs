@@ -27,8 +27,7 @@ namespace BetCR.Repository.Entity.Base
 
         public virtual T Id { get; set; }
 
-        [IgnoreDataMember]
-        public ILazyLoader LazyLoader { get; }
+        [IgnoreDataMember] public ILazyLoader LazyLoader { get; }
 
         public CustomDateTime UpsertDate
         {
@@ -36,7 +35,7 @@ namespace BetCR.Repository.Entity.Base
             {
                 var dt = DateTimeOffset.FromUnixTimeSeconds(UpsertDateEpoch).DateTime;
                 DateTime.SpecifyKind(dt, DateTimeKind.Utc);
-                return (CustomDateTime)dt;
+                return (CustomDateTime) dt;
             }
         }
 

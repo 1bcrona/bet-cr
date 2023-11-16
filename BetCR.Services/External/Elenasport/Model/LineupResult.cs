@@ -18,17 +18,13 @@ namespace BetCR.Services.External.Elenasport.Model
             }
         }
 
-        [JsonProperty("position")]
-        public string Position { get; set; }
+        [JsonProperty("position")] public string Position { get; set; }
 
-        [JsonProperty("shirtNumber")]
-        public int ShirtNumber { get; set; }
+        [JsonProperty("shirtNumber")] public int ShirtNumber { get; set; }
 
-        [JsonProperty("isStartingXI")]
-        public bool StartingXI { get; set; }
+        [JsonProperty("isStartingXI")] public bool StartingXI { get; set; }
 
-        [JsonProperty("idTeam")]
-        public int TeamId { get; set; }
+        [JsonProperty("idTeam")] public int TeamId { get; set; }
 
         #endregion Public Properties
     }

@@ -48,10 +48,7 @@ namespace BetCR.Web.Controllers
         [Route("ChangeTournament/{tournamentId}")]
         public async Task<IActionResult> ChangeTournament([FromRoute] string tournamentId)
         {
-            if (String.IsNullOrEmpty((tournamentId ?? String.Empty).Trim()))
-            {
-                Login();
-            }
+            if (string.IsNullOrEmpty((tournamentId ?? string.Empty).Trim())) Login();
 
             await Task.CompletedTask;
 
@@ -74,7 +71,8 @@ namespace BetCR.Web.Controllers
                 UserId = userId
             });
 
-            var invitationResult = await _mediator.Send(new GetUserActionQuery() { ActionType = UserActionType.TOURNAMENT_INVITE, ActionStatus = UserActionStatus.WAITING_FOR_REPLY, ToUserId = userId });
+            var invitationResult =
+                await _mediator.Send(new GetUserActionQuery() {ActionType = UserActionType.TOURNAMENT_INVITE, ActionStatus = UserActionStatus.WAITING_FOR_REPLY, ToUserId = userId});
 
             ViewBag.TournamentInvitations = invitationResult;
             return View("Tournament/Index", result.All);
@@ -89,10 +87,7 @@ namespace BetCR.Web.Controllers
                 var claims = _accessor.HttpContext.User.Claims.ToList();
                 if (claims.Count > 0)
                 {
-                    if (!String.IsNullOrEmpty(returnUrl))
-                    {
-                        return Redirect(returnUrl);
-                    }
+                    if (!string.IsNullOrEmpty(returnUrl)) return Redirect(returnUrl);
                     return RedirectToAction("Index", "/");
                 }
             }
@@ -115,10 +110,7 @@ namespace BetCR.Web.Controllers
             if (_accessor.HttpContext != null)
             {
                 var claims = _accessor.HttpContext.User.Claims.ToList();
-                if (claims.Count > 0)
-                {
-                    return RedirectToAction("Index", "/");
-                }
+                if (claims.Count > 0) return RedirectToAction("Index", "/");
             }
 
             return View();

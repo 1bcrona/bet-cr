@@ -11,7 +11,7 @@
     var awayColors = ViewData["away_colors"] as List<string> ?? new List<string>()
     {
         "#000",
-        "#fff",
+        "#fff"
     };
 
     if (Model.Any())
@@ -119,7 +119,7 @@
                                                         {
                                                             <div class="row">
                                                                 @{
-                                                                    if (item2.Player2 != null && !String.IsNullOrEmpty(item2.Player2.FullName))
+                                                                    if (item2.Player2 != null && !string.IsNullOrEmpty(item2.Player2.FullName))
                                                                     {
                                                                         <div class="col-md-6 timeline-item border-right">
                                                                             <label class="mb-0">

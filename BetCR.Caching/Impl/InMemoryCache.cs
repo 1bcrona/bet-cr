@@ -13,7 +13,7 @@ namespace BetCR.Caching.Impl
 
         private const string DEFAULT_KEY_VALUE_STORE_NAME = "__kv_default__";
 
-        private ConcurrentDictionary<string, KeyValueStoreEntry> _Cache = new ConcurrentDictionary<string, KeyValueStoreEntry>();
+        private ConcurrentDictionary<string, KeyValueStoreEntry> _Cache = new();
 
         #endregion Private Fields
 
@@ -21,7 +21,7 @@ namespace BetCR.Caching.Impl
 
         public InMemoryCache()
         {
-            this.Name = DEFAULT_KEY_VALUE_STORE_NAME;
+            Name = DEFAULT_KEY_VALUE_STORE_NAME;
         }
 
         #endregion Public Constructors
@@ -146,17 +146,14 @@ namespace BetCR.Caching.Impl
 
         #region Private Methods
 
-        private T CastValue<T>(KeyValueStoreEntry entry, T defaultValue = default(T))
+        private T CastValue<T>(KeyValueStoreEntry entry, T defaultValue = default)
         {
-            if (entry == null)
-            {
-                return defaultValue;
-            }
+            if (entry == null) return defaultValue;
 
             return CastValue(entry.Key, defaultValue);
         }
 
-        private T CastValue<T>(string key, T defaultValue = default(T))
+        private T CastValue<T>(string key, T defaultValue = default)
         {
             var type = typeof(T);
             if (_Cache.TryGetValue(key, out var existingEntry))
@@ -167,7 +164,7 @@ namespace BetCR.Caching.Impl
                 {
                     if (type.IsSerializable)
                     {
-                        return (T)Convert.ChangeType(value, type);
+                        return (T) Convert.ChangeType(value, type);
                     }
                     else
                     {
@@ -177,7 +174,7 @@ namespace BetCR.Caching.Impl
                 }
                 catch (Exception)
                 {
-                    return default(T);
+                    return default;
                 }
             }
 
@@ -192,17 +189,18 @@ namespace BetCR.Caching.Impl
                 if (_Cache.TryGetValue(key, out rv))
                 {
                     if (deleteIfExpire)
-                    {
                         if (DateTime.UtcNow > rv.ExpireDate)
                         {
                             _Cache.TryRemove(key, out rv);
                             return null;
                         }
-                    }
+
                     return rv;
                 }
             }
-            catch (Exception) { }
+            catch (Exception)
+            {
+            }
 
             return rv;
         }

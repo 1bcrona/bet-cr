@@ -11,7 +11,9 @@ namespace BetCR.Library.Operation.Impl
         #region Public Constructors
 
         /// <inheritdoc />
-        public IsEmpty() : base("IsEmpty") { }
+        public IsEmpty() : base("IsEmpty")
+        {
+        }
 
         #endregion Public Constructors
 
@@ -21,7 +23,7 @@ namespace BetCR.Library.Operation.Impl
         public override Expression GetExpression(Expression member, ConstantExpression constant1, ConstantExpression constant2)
         {
             return Expression.Equal(member.TrimToLower(), Expression.Constant(string.Empty))
-                   .AddNullCheck(member);
+                .AddNullCheck(member);
         }
 
         #endregion Public Methods

@@ -4,19 +4,14 @@ namespace BetCR.Services.External.APIFootball.Model.Standings
 {
     public class StandingStats
     {
-        [JsonProperty("played")]
-        public int Played { get; set; }
+        [JsonProperty("played")] public int Played { get; set; }
 
-        [JsonProperty("win")]
-        public int Win { get; set; }
+        [JsonProperty("win")] public int Win { get; set; }
 
-        [JsonProperty("draw")]
-        public int Draw { get; set; }
+        [JsonProperty("draw")] public int Draw { get; set; }
 
-        [JsonProperty("lose")]
-        public int Lose { get; set; }
+        [JsonProperty("lose")] public int Lose { get; set; }
 
-        [JsonProperty("goals")]
-        public Goals Goals { get; set; }
+        [JsonProperty("goals")] public Goals Goals { get; set; }
     }
 }

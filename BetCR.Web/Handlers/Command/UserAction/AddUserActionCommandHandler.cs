@@ -22,7 +22,6 @@ namespace BetCR.Web.Handlers.Command.UserAction
         {
             _unitOfWork = unitOfWork;
             _unitOfWork.EnableTracking();
-
         }
 
         #endregion Public Constructors
@@ -46,21 +45,12 @@ namespace BetCR.Web.Handlers.Command.UserAction
 
             var fromUser = await userRepository.GetAsync(request.FromUserId);
 
-            if (fromUser == null)
-            {
-                throw new ApiException() { ErrorCode = "FROM_USER_NOT_FOUND", ErrorMessage = "Specified User Not Found", StatusCode = 500 };
-            }
+            if (fromUser == null) throw new ApiException() {ErrorCode = "FROM_USER_NOT_FOUND", ErrorMessage = "Specified User Not Found", StatusCode = 500};
             var toUser = await userRepository.GetAsync(request.ToUserId);
 
-            if (toUser == null)
-            {
-                throw new ApiException() { ErrorCode = "FROM_USER_NOT_FOUND", ErrorMessage = "Specified User Not Found", StatusCode = 500 };
-            }
+            if (toUser == null) throw new ApiException() {ErrorCode = "FROM_USER_NOT_FOUND", ErrorMessage = "Specified User Not Found", StatusCode = 500};
 
-            if (isExisting.Any())
-            {
-                throw new ApiException() { ErrorCode = "INVITATION_ALREADY_SENT", ErrorMessage = "Invitation has already been sent", StatusCode = 500 };
-            }
+            if (isExisting.Any()) throw new ApiException() {ErrorCode = "INVITATION_ALREADY_SENT", ErrorMessage = "Invitation has already been sent", StatusCode = 500};
 
             var added = await userActionRepository.AddAsync(new Repository.Entity.UserAction()
             {

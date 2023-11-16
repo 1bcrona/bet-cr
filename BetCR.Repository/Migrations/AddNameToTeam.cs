@@ -9,16 +9,16 @@ namespace BetCR.Repository.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Name",
-                table: "Team");
+                "Name",
+                "Team");
         }
 
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Name",
-                table: "Team",
-                type: "TEXT",
+                "Name",
+                "Team",
+                "TEXT",
                 nullable: true);
         }
 

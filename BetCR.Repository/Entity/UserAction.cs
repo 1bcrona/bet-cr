@@ -35,7 +35,7 @@ namespace BetCR.Repository.Entity
             {
                 var dt = DateTimeOffset.FromUnixTimeSeconds(ActionDateEpoch).DateTime;
                 DateTime.SpecifyKind(dt, DateTimeKind.Utc);
-                return (CustomDateTime)dt;
+                return (CustomDateTime) dt;
             }
         }
 

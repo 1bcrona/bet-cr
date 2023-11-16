@@ -11,7 +11,9 @@ namespace BetCR.Library.Operation.Impl
         #region Public Constructors
 
         /// <inheritdoc />
-        public Between() : base("Between") { }
+        public Between() : base("Between")
+        {
+        }
 
         #endregion Public Constructors
 

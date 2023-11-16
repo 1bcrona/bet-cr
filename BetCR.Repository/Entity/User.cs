@@ -33,21 +33,14 @@ namespace BetCR.Repository.Entity
 
         public string Firstname { get; set; }
 
-        public string FullName
-        {
-            get
-            {
-                return String.Join(" ", this.Firstname, this.Surname);
-            }
-        }
+        public string FullName => string.Join(" ", Firstname, Surname);
 
         public override string Id { get; set; }
 
         public string Password { get; set; }
         public string Surname { get; set; }
 
-        [IgnoreDataMember]
-        public ICollection<UserMatchBet> UserMatchBets { get; set; }
+        [IgnoreDataMember] public ICollection<UserMatchBet> UserMatchBets { get; set; }
 
         public ICollection<UserTournament> UserTournameRels
         {

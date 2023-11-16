@@ -23,7 +23,7 @@ namespace BetCR.Repository.Repository
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(base.ConnectionString);
+            optionsBuilder.UseSqlite(ConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

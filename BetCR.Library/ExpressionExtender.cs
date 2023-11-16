@@ -21,16 +21,16 @@ namespace BetCR.Library
         /// <param name="expression">Expression to which the null check will be pre-pended.</param>
         /// <param name="member">Member that will be checked.</param>
         /// <returns></returns>
-        public static System.Linq.Expressions.Expression AddNullCheck(this System.Linq.Expressions.Expression expression, Expression member)
+        public static Expression AddNullCheck(this Expression expression, Expression member)
         {
-            System.Linq.Expressions.Expression memberIsNotNull = System.Linq.Expressions.Expression.NotEqual(member, System.Linq.Expressions.Expression.Constant(null));
-            return System.Linq.Expressions.Expression.AndAlso(memberIsNotNull, expression);
+            Expression memberIsNotNull = Expression.NotEqual(member, Expression.Constant(null));
+            return Expression.AndAlso(memberIsNotNull, expression);
         }
 
-        public static System.Linq.Expressions.Expression TrimToLower(this Expression member)
+        public static Expression TrimToLower(this Expression member)
         {
-            var trimMemberCall = System.Linq.Expressions.Expression.Call(member, trimMethod);
-            return System.Linq.Expressions.Expression.Call(trimMemberCall, toLowerMethod);
+            var trimMemberCall = Expression.Call(member, trimMethod);
+            return Expression.Call(trimMemberCall, toLowerMethod);
         }
 
         /// <summary>
@@ -38,10 +38,10 @@ namespace BetCR.Library
         /// </summary>
         /// <param name="constant">Constant to which to methods will be applied.</param>
         /// <returns></returns>
-        public static System.Linq.Expressions.Expression TrimToLower(this ConstantExpression constant)
+        public static Expression TrimToLower(this ConstantExpression constant)
         {
-            var trimMemberCall = System.Linq.Expressions.Expression.Call(constant, trimMethod);
-            return System.Linq.Expressions.Expression.Call(trimMemberCall, toLowerMethod);
+            var trimMemberCall = Expression.Call(constant, trimMethod);
+            return Expression.Call(trimMemberCall, toLowerMethod);
         }
 
         #endregion Public Methods

@@ -29,6 +29,8 @@
     var orderedEvents = allEvents.Where(w => validEvents.ContainsKey(w.Item2.EventType ?? "")).OrderBy(o => o.Item2.Elapsed).ToList();
     var homeLineupGroup = Model?.MatchEvent?.MatchLineup.HomeTeamLineup.Where(w => w.StartingXI).GroupBy(g => g.Position).ToDictionary(g => g.Key);
     var awayLineupGroup = Model?.MatchEvent?.MatchLineup.AwayTeamLineup.Where(w => w.StartingXI).GroupBy(g => g.Position).ToDictionary(g => g.Key);
+    var homeTeam = Model?.HomeTeam;
+    var awayTeam = Model?.AwayTeam;
 
 }
 <head>
@@ -41,7 +43,6 @@
     <title>Match Details</title>
 </head>
 <div class="container">
-
     <div class="row">
         <div class="card margin-bottom-20">
             <div class="card-header">
@@ -55,69 +56,37 @@
                 </div>
                 <div class="row">
                     <div class="col-4 align-self-center">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="bg-image hover-overlay ripple d-md-none d-lg-block align-items-center" data-bs-ripple-color="light">
-                                    <img src="@(Model?.HomeTeam?.TeamLogo)"
-                                         class="img-fluid"
-                                         data-team-name="@Model?.HomeTeam?.Name" data-toggle="tooltip" data-placement="bottom"
-                                         title="@Model?.HomeTeam?.Name"
-                                         alt="@Model?.HomeTeam?.Name"/>
-                                    <a data-placement="bottom" data-toggle="tooltip" href="#!" title="@Model?.HomeTeam?.Name">
-                                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 text-left d-none d-md-block align-self-center">
-                                <p class="text-muted text-uppercase mb-0">
-                                    <strong>@Model?.HomeTeam?.Name</strong>
-                                </p>
-                                <h6>
-                                    <small class="text">@(homeLineupGroup?.GetValueOrDefault("DEFENDER")?.Count() ?? 0) - @(homeLineupGroup?.GetValueOrDefault("MIDFIELDER")?.Count() ?? 0) - @(homeLineupGroup?.GetValueOrDefault("FORWARD")?.Count() ?? 0) </small>
-                                </h6>
-                            </div>
-                        </div>
+                        @{
+                            var homeTeamFormation = $"{homeLineupGroup?.GetValueOrDefault("DEFENDER")?.Count() ?? 0} - {homeLineupGroup?.GetValueOrDefault("MIDFIELDER")?.Count() ?? 0} - {homeLineupGroup?.GetValueOrDefault("FORWARD")?.Count() ?? 0}";
+                            await Html.RenderPartialAsync("Match/_MatchTeamInfo", homeTeam, new ViewDataDictionary(ViewData)
+                            {
+                                {
+                                    "team_formation", homeTeamFormation
+                                },
+                                {
+                                    "team_type", "Home"
+                                }
+                            });
+                        }
                     </div>
                     <div class="col-4 align-self-center">
-
-                        <div class="row  align-items-center">
-
-                            <div class="col-4">
-                                <h1>@Model?.MatchEvent?.HomeTeamScore</h1>
-                            </div>
-                            <div class="col-4">
-                                <h5>:</h5>
-                            </div>
-                            <div class="col-4">
-                                <h1>@Model?.MatchEvent?.AwayTeamScore</h1>
-                            </div>
-                        </div>
+                        @{
+                            await Html.RenderPartialAsync("Match/_MatchDetailScore", Model.MatchEvent);
+                        }
                     </div>
                     <div class="col-4 align-self-center">
-                        <div class="row">
-                            <div class="col-md-6 text-right d-none d-md-block align-self-center">
-                                <p class="text-muted text-uppercase mb-0">
-                                    <strong>@Model.AwayTeam.Name</strong>
-                                </p>
-                                <h6>
-                                    <small class="text">@(awayLineupGroup.GetValueOrDefault("DEFENDER")?.Count() ?? 0) - @(awayLineupGroup.GetValueOrDefault("MIDFIELDER")?.Count() ?? 0) - @(awayLineupGroup.GetValueOrDefault("FORWARD")?.Count() ?? 0) </small>
-                                </h6>
-                            </div>
-                            <div class="col-md-6 ">
-                                <div class="bg-image hover-overlay ripple d-md-none d-lg-block align-items-center" data-bs-ripple-color="light">
-                                    <img src="@(Model?.AwayTeam?.TeamLogo)"
-                                         class="img-fluid"
-                                         data-team-name="@Model?.AwayTeam?.Name" data-toggle="tooltip" data-placement="bottom"
-                                         title="@Model?.AwayTeam?.Name"
-                                         alt="@(Model?.AwayTeam?.Name)"/>
-                                    <a href="#!" data-toggle="tooltip" data-placement="bottom"
-                                       title="@Model?.AwayTeam?.Name">
-                                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                        @{
+                            var awayTeamFormation = $"{awayLineupGroup?.GetValueOrDefault("DEFENDER")?.Count() ?? 0} - {awayLineupGroup?.GetValueOrDefault("MIDFIELDER")?.Count() ?? 0} - {awayLineupGroup?.GetValueOrDefault("FORWARD")?.Count() ?? 0}";
+                            await Html.RenderPartialAsync("Match/_MatchTeamInfo", awayTeam, new ViewDataDictionary(ViewData)
+                            {
+                                {
+                                    "team_formation", awayTeamFormation
+                                },
+                                {
+                                    "team_type", "Away"
+                                }
+                            });
+                        }
                     </div>
                 </div>
             </div>
@@ -186,32 +155,20 @@
     <div class="row">
         <div class="col-md-2">
             @{
-                var colorPaletteHome = Model.HomeTeam.DominantColors?.Split(";").ToList();
-                var homeDomColor1 = colorPaletteHome?.FirstOrDefault() ?? "#fff";
-                var homeDomColor2 = colorPaletteHome?.Skip(1).FirstOrDefault() ?? "#000";
-                var colorPaletteAway = Model.AwayTeam.DominantColors?.Split(";").ToList();
-                var awayDomColor1 = colorPaletteAway?.FirstOrDefault() ?? "#fff";
-                var awayDomColor2 = colorPaletteAway?.Skip(1).FirstOrDefault() ?? "#000";
+                var homeColors = Model.HomeTeam.DominantColors?.Split(";").ToList();
+                var awayColors = Model.AwayTeam.DominantColors?.Split(";").ToList();
             }
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card">
-                        <h5 class="card-header text-center" style="background-color: @homeDomColor2; color: @homeDomColor1">
-                            SUBS
-                        </h5>
-                        <div class="card-body">
-                            @{ await Html.RenderPartialAsync("Match/_TeamLineup", Model.MatchEvent.MatchLineup.HomeTeamLineup.Where(w => !w.StartingXI),
-                                   new ViewDataDictionary(ViewData)
-                                   {
-                                       {
-                                           "background-color", homeDomColor2
-                                       },
-                                       {
-                                           "color", homeDomColor1
-                                       },
-                                   }); }
-                        </div>
-                    </div>
+                    @{ await Html.RenderPartialAsync("Match/_MatchTeamSubs",
+                           Model.MatchEvent.MatchLineup.HomeTeamLineup.Where(w => !w.StartingXI),
+                           new ViewDataDictionary(ViewData)
+                           {
+                               {
+                                   "colors", homeColors
+                               }
+                           }
+                           ); }
                 </div>
             </div>
         </div>
@@ -232,18 +189,10 @@
                 @{ await Html.RenderPartialAsync("Match/_MatchTimeline", orderedEvents, new ViewDataDictionary(ViewData)
                    {
                        {
-                           "home_colors", new List<string>()
-                           {
-                               homeDomColor1,
-                               homeDomColor2
-                           }
+                           "home_colors", homeColors
                        },
                        {
-                           "away_colors", new List<string>()
-                           {
-                               awayDomColor1,
-                               awayDomColor2
-                           }
+                           "away_colors", awayColors
                        },
                        {
                            "home_team", Model.HomeTeam
@@ -261,18 +210,10 @@
                 @{ await Html.RenderPartialAsync("Match/_MatchTimelineVertical", orderedEvents, new ViewDataDictionary(ViewData)
                    {
                        {
-                           "home_colors", new List<string>()
-                           {
-                               homeDomColor1,
-                               homeDomColor2
-                           }
+                           "home_colors", homeColors
                        },
                        {
-                           "away_colors", new List<string>()
-                           {
-                               awayDomColor1,
-                               awayDomColor2
-                           }
+                           "away_colors", awayColors
                        },
                        {
                            "home_team", Model.HomeTeam
@@ -290,25 +231,15 @@
         <div class="col-md-2">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card">
-                        <h5 class="card-header text-center" style="background-color: @awayDomColor2; color: @awayDomColor1">
-                            SUBS
-                        </h5>
-                        <div class="card-body">
-                            @{ await Html.RenderPartialAsync("Match/_TeamLineup",
-                                   Model.MatchEvent.MatchLineup.AwayTeamLineup.Where(w => !w.StartingXI),
-                                   new ViewDataDictionary(ViewData)
-                                   {
-                                       {
-                                           "background-color", awayDomColor2
-                                       },
-                                       {
-                                           "color", awayDomColor1
-                                       },
-                                   }
-                                   ); }
-                        </div>
-                    </div>
+                    @{ await Html.RenderPartialAsync("Match/_MatchTeamSubs",
+                           Model.MatchEvent.MatchLineup.AwayTeamLineup.Where(w => !w.StartingXI),
+                           new ViewDataDictionary(ViewData)
+                           {
+                               {
+                                   "colors", awayColors
+                               }
+                           }
+                           ); }
                 </div>
             </div>
         </div>

@@ -9,17 +9,17 @@ namespace BetCR.Repository.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "ExternalId",
-                table: "Match",
-                newName: "ExternalMatchId");
+                "ExternalId",
+                "Match",
+                "ExternalMatchId");
         }
 
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "ExternalMatchId",
-                table: "Match",
-                newName: "ExternalId");
+                "ExternalMatchId",
+                "Match",
+                "ExternalId");
         }
 
         #endregion Protected Methods

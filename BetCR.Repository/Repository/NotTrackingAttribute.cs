@@ -3,7 +3,7 @@
 namespace BetCR.Repository.Repository
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class NotTrackingAttribute : System.Attribute
+    public class NotTrackingAttribute : Attribute
     {
     }
 }

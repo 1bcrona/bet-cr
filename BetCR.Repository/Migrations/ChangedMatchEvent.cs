@@ -9,36 +9,36 @@ namespace BetCR.Repository.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Events",
-                table: "MatchEvent");
+                "Events",
+                "MatchEvent");
 
             migrationBuilder.RenameColumn(
-                name: "MatchStat",
-                table: "MatchEvent",
-                newName: "Lineups");
+                "MatchStat",
+                "MatchEvent",
+                "Lineups");
 
             migrationBuilder.RenameColumn(
-                name: "MatchLineup",
-                table: "MatchEvent",
-                newName: "Incidents");
+                "MatchLineup",
+                "MatchEvent",
+                "Incidents");
         }
 
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "Lineups",
-                table: "MatchEvent",
-                newName: "MatchStat");
+                "Lineups",
+                "MatchEvent",
+                "MatchStat");
 
             migrationBuilder.RenameColumn(
-                name: "Incidents",
-                table: "MatchEvent",
-                newName: "MatchLineup");
+                "Incidents",
+                "MatchEvent",
+                "MatchLineup");
 
             migrationBuilder.AddColumn<string>(
-                name: "Events",
-                table: "MatchEvent",
-                type: "TEXT",
+                "Events",
+                "MatchEvent",
+                "TEXT",
                 nullable: true);
         }
 

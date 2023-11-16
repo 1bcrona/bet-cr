@@ -1,0 +1,65 @@
+﻿@model BetCR.Repository.Entity.Team
+
+
+@{
+    var teamType = ViewData["team_type"] as string;
+    var formation = ViewData["team_formation"];
+
+    switch (teamType)
+    {
+        case "Home":
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="bg-image hover-overlay ripple d-md-none d-lg-block align-items-center" data-bs-ripple-color="light">
+                        <img src="@(Model?.TeamLogo)"
+                             class="img-fluid"
+                             data-team-name="@Model?.Name" data-toggle="tooltip" data-placement="bottom"
+                             title="@Model?.Name"
+                             alt="@Model?.Name"/>
+                        <a data-placement="bottom" data-toggle="tooltip" href="#!" title="@Model?.Name">
+                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-6 text-left d-none d-md-block align-self-center">
+                    <p class="text-muted text-uppercase mb-0">
+                        <strong>@Model?.Name</strong>
+                    </p>
+                    <h6>
+                        <small class="text">@formation</small>
+                    </h6>
+                </div>
+            </div>
+            break;
+        case "Away":
+            <div class="row">
+                <div class="col-md-6 text-right d-none d-md-block align-self-center">
+                    <p class="text-muted text-uppercase mb-0">
+                        <strong>@Model.Name</strong>
+                    </p>
+                    <h6>
+                        <small class="text">@formation</small>
+                    </h6>
+                </div>
+                <div class="col-md-6 ">
+                    <div class="bg-image hover-overlay ripple d-md-none d-lg-block align-items-center" data-bs-ripple-color="light">
+                        <img src="@(Model?.TeamLogo)"
+                             class="img-fluid"
+                             data-team-name="@Model?.Name" data-toggle="tooltip" data-placement="bottom"
+                             title="@Model?.Name"
+                             alt="@(Model?.Name)"/>
+                        <a href="#!" data-toggle="tooltip" data-placement="bottom"
+                           title="@Model?.Name">
+                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            break;
+        default:
+            <div></div>
+            break;
+    }
+
+}

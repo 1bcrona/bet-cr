@@ -6,7 +6,7 @@ namespace BetCR.Web.Controllers.API.Model.Request
     {
         #region Public Properties
 
-        public DateTime EndDate => DateTime.Parse((EndDateString)).ToUniversalTime();
+        public DateTime EndDate => DateTime.Parse(EndDateString).ToUniversalTime();
 
         public long EndDateEpoch
         {

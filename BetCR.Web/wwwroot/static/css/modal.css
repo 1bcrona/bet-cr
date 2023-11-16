@@ -11,7 +11,7 @@
     display: block;
 }
 
-@media(max-width:767px) {
+@media (max-width: 767px) {
     .modal-card {
         width: 90vw
     }
@@ -24,20 +24,20 @@
     margin-right: 40%;
 }
 
-    .modal-card-img img {
-        opacity: 0.7
-    }
+.modal-card-img img {
+    opacity: 0.7
+}
 
 .modal-card-title {
     margin-bottom: unset
 }
 
-    .modal-card-title p {
-        color: rgb(29, 226, 226);
-        font-weight: 900;
-        font-size: 30px;
-        margin-bottom: unset
-    }
+.modal-card-title p {
+    color: rgb(29, 226, 226);
+    font-weight: 900;
+    font-size: 30px;
+    margin-bottom: unset
+}
 
 .modal-card-text p {
     color: grey;

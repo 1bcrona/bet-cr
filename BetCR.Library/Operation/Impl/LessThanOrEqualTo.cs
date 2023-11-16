@@ -11,7 +11,9 @@ namespace BetCR.Library.Operation.Impl
         #region Public Constructors
 
         /// <inheritdoc />
-        public LessThanOrEqualTo() : base("LessThanOrEqualTo") { }
+        public LessThanOrEqualTo() : base("LessThanOrEqualTo")
+        {
+        }
 
         #endregion Public Constructors
 

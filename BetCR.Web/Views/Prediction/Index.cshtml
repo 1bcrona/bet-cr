@@ -8,16 +8,15 @@
 
 @section Head
 {
-    <link rel="stylesheet" href="/static/css/flip-card.css" />
+    <link rel="stylesheet" href="/static/css/flip-card.css"/>
 }
 
 <div id="prediction">
     <div id="league-panel">
         @{
-
             var orderedMatches = Model.OrderBy(o => DateTimeOffset.UtcNow.ToUnixTimeSeconds() > o.MatchDateEpoch).ThenBy(o => o.MatchDateEpoch);
 
-            var groupedMatches = orderedMatches.GroupBy(g => String.Join(" - ", g.Stage.League.LeagueName, g.Stage.StageName));
+            var groupedMatches = orderedMatches.GroupBy(g => string.Join(" - ", g.Stage.League.LeagueName, g.Stage.StageName));
 
             foreach (var gm in groupedMatches)
             {
@@ -45,7 +44,6 @@
                             @{
                                 foreach (var match in matches)
                                 {
-
                                     var colorPaletteHome = match.HomeTeam.DominantColors?.Split(";").ToList();
                                     var homeDomColor1 = colorPaletteHome?.FirstOrDefault() ?? "#fff";
                                     var colorPaletteAway = match.AwayTeam.DominantColors?.Split(";").ToList();
@@ -58,20 +56,28 @@
                                             var userTournament = ViewBag.CurrentTournamentId;
                                             if (@userBet == null)
                                             {
-                                                await Html.RenderPartialAsync("Match/_MatchCard", match, new ViewDataDictionary(ViewData) { { "UserBet", userBet } });
-
+                                                await Html.RenderPartialAsync("Match/_MatchCard", match, new ViewDataDictionary(ViewData)
+                                                {
+                                                    {
+                                                        "UserBet", userBet
+                                                    }
+                                                });
                                             }
                                             else
                                             {
-
                                                 <div class="flip-card" data-current=".flip-card-front" data-other=".flip-card-back">
                                                     <div class="flip-card-inner">
                                                         <div class="flip-card-front">
-                                                            <img class="flip-card-change-view" data-bs-toggle="tooltip" data-title="Change View" data-bs-title="Change View" title="Change View" />
-                                                            @{ await Html.RenderPartialAsync("Match/_MatchCard", match, new ViewDataDictionary(ViewData) { { "UserBet", userBet } }); }
+                                                            <img class="flip-card-change-view" data-bs-toggle="tooltip" data-title="Change View" data-bs-title="Change View" title="Change View"/>
+                                                            @{ await Html.RenderPartialAsync("Match/_MatchCard", match, new ViewDataDictionary(ViewData)
+                                                               {
+                                                                   {
+                                                                       "UserBet", userBet
+                                                                   }
+                                                               }); }
                                                         </div>
                                                         <div class="flip-card-back">
-                                                            <img class="flip-card-change-view" data-bs-toggle="tooltip" data-title="Change View" data-bs-title="Change View" title="Change View" />
+                                                            <img class="flip-card-change-view" data-bs-toggle="tooltip" data-title="Change View" data-bs-title="Change View" title="Change View"/>
                                                             <div class="card border shadow-0  match-row">
                                                                 <div class="card-header">
                                                                     <h3>What were the users' predictions?</h3>
@@ -93,17 +99,14 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             }
                                         }
                                     </div>
-
                                 }
                             }
                         </div>
                     </div>
                 </div>
-
             }
 
         }

@@ -12,7 +12,6 @@ namespace BetCR.Repository.Repository.Base
         #endregion Private Fields
 
 
-
         #region Private Fields
 
         private string _connectionString;
@@ -36,10 +35,7 @@ namespace BetCR.Repository.Repository.Base
 
         #region Public Properties
 
-        public string ConnectionString { get { return _connectionString; } }
-
-
-        
+        public string ConnectionString => _connectionString;
 
         #endregion Public Properties
     }

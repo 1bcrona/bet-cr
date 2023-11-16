@@ -9,20 +9,17 @@ namespace BetCR.Services.External.Elenasport.Model
     {
         #region Public Properties
 
-        [JsonProperty("team_away_ET_goals")]
-        public int AwayTeamExtraTimeGoals { get; set; }
+        [JsonProperty("team_away_ET_goals")] public int AwayTeamExtraTimeGoals { get; set; }
 
         [JsonProperty("team_away_1stHalf_goals")]
         public int AwayTeamFirstHalfGoals { get; set; }
 
-        [JsonProperty("team_away_PEN_goals")]
-        public int AwayTeamPenaltyGoals { get; set; }
+        [JsonProperty("team_away_PEN_goals")] public int AwayTeamPenaltyGoals { get; set; }
 
         [JsonProperty("team_away_90min_goals")]
         public int AwayTeamRegularGoals { get; set; }
 
-        [JsonProperty("elapsed")]
-        public int Elapsed { get; set; }
+        [JsonProperty("elapsed")] public int Elapsed { get; set; }
 
         public List<EventResult> EventResults
         {
@@ -33,14 +30,12 @@ namespace BetCR.Services.External.Elenasport.Model
             }
         }
 
-        [JsonProperty("team_home_ET_goals")]
-        public int HomeTeamExtraTimeGoals { get; set; }
+        [JsonProperty("team_home_ET_goals")] public int HomeTeamExtraTimeGoals { get; set; }
 
         [JsonProperty("team_home_1stHalf_goals")]
         public int HomeTeamFirstHalfGoals { get; set; }
 
-        [JsonProperty("team_home_PEN_goals")]
-        public int HomeTeamPenaltyGoals { get; set; }
+        [JsonProperty("team_home_PEN_goals")] public int HomeTeamPenaltyGoals { get; set; }
 
         [JsonProperty("team_home_90min_goals")]
         public int HomeTeamRegularGoals { get; set; }
@@ -54,8 +49,7 @@ namespace BetCR.Services.External.Elenasport.Model
             }
         }
 
-        [JsonProperty("date")]
-        public DateTime MatchDate { get; set; }
+        [JsonProperty("date")] public DateTime MatchDate { get; set; }
 
         public List<StatResult> StatResults
         {
@@ -66,8 +60,7 @@ namespace BetCR.Services.External.Elenasport.Model
             }
         }
 
-        [JsonProperty("status")]
-        public string Status { get; set; }
+        [JsonProperty("status")] public string Status { get; set; }
 
         #endregion Public Properties
     }

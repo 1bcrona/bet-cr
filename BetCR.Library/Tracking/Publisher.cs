@@ -33,7 +33,6 @@ namespace BetCR.Library.Tracking
             OnPublish?.Invoke(this, data);
         }
 
-
         #endregion Public Methods
     }
 
@@ -43,14 +42,15 @@ namespace BetCR.Library.Tracking
 
         private string _Name;
         private string _id;
+
         #endregion Private Fields
 
         #region Public Constructors
 
         public Publisher() : this("publisher")
         {
-
         }
+
         public Publisher(string name)
         {
             _Name = name;
@@ -63,6 +63,7 @@ namespace BetCR.Library.Tracking
 
         public string Id => _id;
         public event EventHandler<object> OnPublish;
+
         public void Publish(object data)
         {
             OnPublish?.Invoke(this, data);
@@ -76,7 +77,7 @@ namespace BetCR.Library.Tracking
         {
             if (OnPublish == null) return;
 
-            var changedEvent = new ChangeTrackingArgs { OldValue = oldValue, NewValue = newValue, ValueType = typeof(object) };
+            var changedEvent = new ChangeTrackingArgs {OldValue = oldValue, NewValue = newValue, ValueType = typeof(object)};
             OnPublish(this, changedEvent);
         }
 

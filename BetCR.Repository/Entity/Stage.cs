@@ -42,9 +42,7 @@ namespace BetCR.Repository.Entity
 
         public string LeagueId { get; set; }
 
-        [JsonIgnore]
-        [IgnoreDataMember]
-        public ICollection<Match> Matches { get; set; }
+        [JsonIgnore] [IgnoreDataMember] public ICollection<Match> Matches { get; set; }
 
         public string StageName { get; set; }
 

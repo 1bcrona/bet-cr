@@ -5,79 +5,77 @@
 <div class="table-responsive ">
     <table class="table " style="word-wrap: break-word; table-layout: fixed">
         <thead>
-            <tr>
-                <th class="d-none d-lg-table-cell">#</th>
-                <th>User</th>
-                <th class="d-none d-lg-table-cell">W</th>
-                <th class="d-none d-lg-table-cell">L</th>
-                <th class="d-none d-lg-table-cell">@UserBetPoint.WinMatchScore</th>
-                <th class="d-none d-lg-table-cell">@UserBetPoint.WinDifference</th>
-                <th class="d-none d-lg-table-cell">@UserBetPoint.WinMatch</th>
-                <th class="d-none d-lg-table-cell">@UserBetPoint.LossMatch</th>
-                <th>PT</th>
-            </tr>
+        <tr>
+            <th class="d-none d-lg-table-cell">#</th>
+            <th>User</th>
+            <th class="d-none d-lg-table-cell">W</th>
+            <th class="d-none d-lg-table-cell">L</th>
+            <th class="d-none d-lg-table-cell">@UserBetPoint.WinMatchScore</th>
+            <th class="d-none d-lg-table-cell">@UserBetPoint.WinDifference</th>
+            <th class="d-none d-lg-table-cell">@UserBetPoint.WinMatch</th>
+            <th class="d-none d-lg-table-cell">@UserBetPoint.LossMatch</th>
+            <th>PT</th>
+        </tr>
         </thead>
         <tbody>
-            @{
+        @{
+            var standings = Model.OrderByDescending(o => o.TotalPoints);
+            var i = 1;
+            foreach (var item in standings)
+            {
+                <tr>
 
-                var standings = Model.OrderByDescending(o => o.TotalPoints);
-                int i = 1;
-                foreach (var item in standings)
-                {
-                    <tr>
+                    <td class="align-middle d-none d-lg-table-cell">
+                        <label> @i</label>
+                    </td>
 
-                        <td class="align-middle d-none d-lg-table-cell">
-                            <label> @i</label>
-                        </td>
-
-                        <!--<td class="align-middle">-->
-                        @*<button type="button" class="rounded-button" style="border: 5.1px solid!important;
+                    <!--<td class="align-middle">-->
+                    @*<button type="button" class="rounded-button" style="border: 5.1px solid!important;
                                                                                                                                                                  border-color: #EEEEEE!important;
                                                                                                                                                                  background-color: transparent">
                                 <img  style="max-width: 100%"> //TODO Maybe User Profile Photo?
                             </button>*@
-                        <!--</td>-->
+                    <!--</td>-->
 
-                        <td class="align-middle">
-                            <label> <strong>@item.User.FullName.ToUpperInvariant()</strong> </label>
-                        </td>
+                    <td class="align-middle">
+                        <label>
+                            <strong>@item.User.FullName.ToUpperInvariant()</strong>
+                        </label>
+                    </td>
 
-                        <td class="align-middle d-none d-lg-table-cell">
-                            <label> @item.WinCount</label>
-                        </td>
+                    <td class="align-middle d-none d-lg-table-cell">
+                        <label> @item.WinCount</label>
+                    </td>
 
-                        <td class="align-middle d-none d-lg-table-cell">
-                            <label> @item.LossCount</label>
-                        </td>
+                    <td class="align-middle d-none d-lg-table-cell">
+                        <label> @item.LossCount</label>
+                    </td>
 
-                        <td class="align-middle d-none d-lg-table-cell">
-                            <label> @item.WinMatchScoreCount</label>
-                        </td>
+                    <td class="align-middle d-none d-lg-table-cell">
+                        <label> @item.WinMatchScoreCount</label>
+                    </td>
 
-                        <td class="align-middle d-none d-lg-table-cell">
-                            <label> @item.WinDifferenceCount</label>
-                        </td>
+                    <td class="align-middle d-none d-lg-table-cell">
+                        <label> @item.WinDifferenceCount</label>
+                    </td>
 
-                        <td class="align-middle d-none d-lg-table-cell">
-                            <label> @item.WinMatchCount</label>
-                        </td>
+                    <td class="align-middle d-none d-lg-table-cell">
+                        <label> @item.WinMatchCount</label>
+                    </td>
 
-                        <td class="align-middle d-none d-lg-table-cell">
-                            <label> @item.LossMatchCount</label>
-                        </td>
+                    <td class="align-middle d-none d-lg-table-cell">
+                        <label> @item.LossMatchCount</label>
+                    </td>
 
-                        <td class="align-middle">
-                            <h5>@item.TotalPoints</h5>
-                        </td>
-                    </tr>
+                    <td class="align-middle">
+                        <h5>@item.TotalPoints</h5>
+                    </td>
+                </tr>
 
-                    i++;
-                }
-
+                i++;
             }
+
+        }
         </tbody>
     </table>
 </div>
-
-
-

@@ -8,7 +8,7 @@ namespace BetCR.Library.Operation.Impl
     {
         #region Private Fields
 
-        private readonly MethodInfo endsWithMethod = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
+        private readonly MethodInfo endsWithMethod = typeof(string).GetMethod("EndsWith", new[] {typeof(string)});
 
         #endregion Private Fields
 
@@ -24,10 +24,10 @@ namespace BetCR.Library.Operation.Impl
 
         public override Expression GetExpression(Expression member, ConstantExpression constant1, ConstantExpression constant2)
         {
-            Expression constant = constant1.TrimToLower();
+            var constant = constant1.TrimToLower();
 
             return Expression.Call(member.TrimToLower(), endsWithMethod, constant)
-                   .AddNullCheck(member);
+                .AddNullCheck(member);
         }
 
         #endregion Public Methods

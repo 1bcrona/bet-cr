@@ -4,7 +4,7 @@ namespace BetCR.Services.External.APIFootball.Model.Fixtures
 {
     public class Venue
     {
-        [JsonProperty("id")] public int?Id { get; set; }
+        [JsonProperty("id")] public int? Id { get; set; }
 
         [JsonProperty("name")] public string Name { get; set; }
 

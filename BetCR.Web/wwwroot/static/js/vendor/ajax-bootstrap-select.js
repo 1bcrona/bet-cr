@@ -144,7 +144,7 @@
                         plugin.log(plugin.LOG_WARNING, 'Deprecated option "' + map.from + '". Update code to use:', map.to);
                         delete plugin.options[map.from];
                     }
-                    // Map with a function. Functions are silos. They are responsible
+                        // Map with a function. Functions are silos. They are responsible
                     // for deleting the original option and displaying debug info.
                     else if ($.isFunction(map.to)) {
                         map.to.apply(plugin, [map]);
@@ -171,10 +171,15 @@
         }
 
         // Helper functions.
-        var matchToLowerCase = function (match, p1) { return p1.toLowerCase(); };
+        var matchToLowerCase = function (match, p1) {
+            return p1.toLowerCase();
+        };
         var expandObject = function (keys, value, obj) {
             var k = [].concat(keys), l = k.length, o = obj || {};
-            if (l) { var key = k.shift(); o[key] = expandObject(k, value, o[key]); }
+            if (l) {
+                var key = k.shift();
+                o[key] = expandObject(k, value, o[key]);
+            }
             return l ? o : value;
         };
 
@@ -279,8 +284,7 @@
             this.selectpicker.$menu.off('click', '.actions-btn').on('click', '.actions-btn', function (e) {
                 if (plugin.selectpicker.options.liveSearch) {
                     plugin.selectpicker.$searchbox.focus();
-                }
-                else {
+                } else {
                     plugin.selectpicker.$button.focus();
                 }
                 e.preventDefault();
@@ -292,8 +296,7 @@
                     plugin.$element.find('option:enabled').prop('selected', true);
                     $(plugin.selectpicker.$lis).not('.disabled').addClass('selected');
                     plugin.selectpicker.render();
-                }
-                else {
+                } else {
                     if (plugin.selectpicker.$lis === null) {
                         plugin.selectpicker.$lis = plugin.selectpicker.$menu.find('li');
                     }
@@ -454,8 +457,7 @@
                 var prefix = '[' + type.toUpperCase() + '] AjaxBootstrapSelect:';
                 if (typeof message === 'string') {
                     args.unshift(prefix + ' ' + message);
-                }
-                else {
+                } else {
                     args.unshift(message);
                     args.unshift(prefix);
                 }
@@ -504,8 +506,7 @@
                 if ((options.recursive && options.depth === false) || (options.recursive && typeof options.depth === 'number' && options.depth > 0)) {
                     plugin.replaceValue(obj[k], needle, value, options);
                 }
-            }
-            else {
+            } else {
                 if (v === needle) {
                     if (options.limit !== false && typeof options.limit === 'number') {
                         options.limit--;
@@ -768,8 +769,7 @@
         var emptyTitle = this.plugin.t('emptyTitle');
         if (!this.plugin.$element.find('option').length && emptyTitle && emptyTitle.length) {
             this.setTitle(emptyTitle);
-        }
-        else if (
+        } else if (
             this.title ||
             (
                 this.selectedTextFormat !== 'static' &&
@@ -817,8 +817,7 @@
                 if (item.hasOwnProperty('value') && seenValues.indexOf(item.value + '') === -1) {
                     seenValues.push(item.value + '');
                     processedData.push(item);
-                }
-                else {
+                } else {
                     this.plugin.log(this.plugin.LOG_DEBUG, 'Duplicate item found, ignoring.');
                 }
             }
@@ -861,8 +860,7 @@
             this.plugin.selectpicker.options.selectedTextFormat = this.selectedTextFormat;
             if (this.title) {
                 this.plugin.$element.attr('title', this.title);
-            }
-            else {
+            } else {
                 this.plugin.$element.removeAttr('title');
             }
             this.title = null;
@@ -896,8 +894,7 @@
         status = status || '';
         if (status.length) {
             this.$status.html(status).show();
-        }
-        else {
+        } else {
             this.$status.html('').hide();
         }
     };
@@ -1016,8 +1013,7 @@
             if (cache) {
                 if (cache.length) {
                     this.plugin.list.setStatus();
-                }
-                else {
+                } else {
                     this.plugin.list.destroy();
                     this.plugin.list.setStatus(this.plugin.t('statusNoResults'));
                     this.plugin.log(this.plugin.LOG_INFO, 'No results were returned.');
@@ -1112,7 +1108,7 @@
                 // Check if item is a divider. If so, ignore all other data.
                 if (item.hasOwnProperty('divider') || (item.hasOwnProperty('data') && $.isPlainObject(item.data) && item.data.divider)) {
                     this.plugin.log(this.plugin.LOG_DEBUG, 'Item is a divider, ignoring provided data.');
-                    filteredData.push({ divider: true });
+                    filteredData.push({divider: true});
                 }
                 // Ensure item has a "value" and is unique.
                 else {
@@ -1130,12 +1126,10 @@
                                 selected: false
                             }, item);
                             filteredData.push(item);
-                        }
-                        else {
+                        } else {
                             this.plugin.log(this.plugin.LOG_DEBUG, 'Duplicate item found, ignoring.');
                         }
-                    }
-                    else {
+                    } else {
                         this.plugin.log(this.plugin.LOG_DEBUG, 'Data item must have a "value" property, skipping.');
                     }
                 }
@@ -1150,8 +1144,7 @@
             if (typeof callbackResult !== 'undefined' && callbackResult !== null && callbackResult !== false) {
                 if ($.isArray(callbackResult)) {
                     processedData = callbackResult;
-                }
-                else {
+                } else {
                     this.plugin.log(this.plugin.LOG_ERROR, 'The processData callback did not return an array.', callbackResult);
                     return false;
                 }
@@ -1273,7 +1266,7 @@
         },
 
         /**
-           * @member $.fn.ajaxSelectPicker.defaults
+         * @member $.fn.ajaxSelectPicker.defaults
          * @cfg {Number} minLength = 0
          * @markdown
          * Invoke a request for empty search values.
@@ -1460,7 +1453,8 @@
          * }
          * ```
          */
-        preprocessData: function () { },
+        preprocessData: function () {
+        },
 
         /**
          * @member $.fn.ajaxSelectPicker.defaults
@@ -1488,7 +1482,8 @@
          * @markdown
          * Process the data returned after this plugin, but before the list is built.
          */
-        processData: function () { },
+        processData: function () {
+        },
 
         /**
          * @member $.fn.ajaxSelectPicker.defaults

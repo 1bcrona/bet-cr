@@ -48,7 +48,7 @@ namespace BetCR.Web.Controllers.API
                     .SelectMany(s => s.Select(s1 => s1.Exception?.ToString() ?? s1.ErrorMessage))
                     .ToList();
 
-                var combinedErrors = String.Join("/r/n", errors);
+                var combinedErrors = string.Join("/r/n", errors);
                 response.Result = combinedErrors;
 
                 return BadRequest(response);

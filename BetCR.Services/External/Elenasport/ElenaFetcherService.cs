@@ -22,7 +22,10 @@ namespace BetCR.Services.External.Elenasport
         private const string AUTH_TOKEN_KEY = "Basic NjMxN2luM2djZGRham0wbGxobWF0MHZzaTk6YzFlYXNhajFjdHAxNmw0M2k1OGc1OTJjcGtmMWU3NmRoZW1mdjdhZ2ZkZzZzOW5yZnBl";
 
         private const string ELENA_FIXTURE_DETAIL_URL = "https://football.elenasport.io/v2/fixtures/#match.ExternalId#?expand=stats,lineups,lineups.player,events,events.player1,events.player2";
-        private const string ELENA_FIXTURE_URL = "https://football.elenasport.io/v2/leagues/#league.ExternalId#?expand=current_season,current_season.next_fixtures,current_season.next_fixtures.home_team,current_season.next_fixtures.away_team,current_season.next_fixtures.stage";
+
+        private const string ELENA_FIXTURE_URL =
+            "https://football.elenasport.io/v2/leagues/#league.ExternalId#?expand=current_season,current_season.next_fixtures,current_season.next_fixtures.home_team,current_season.next_fixtures.away_team,current_season.next_fixtures.stage";
+
         private const string ELENA_STANDINGS_URL = "https://football.elenasport.io/v2/stages/#stage.ExternalId#/standing?expand=team,team.next_fixtures";
         private const string ELENA_TOKEN_URL = "https://oauth2.elenasport.io/oauth2/token";
         private static int _tryCount = 2;
@@ -50,11 +53,11 @@ namespace BetCR.Services.External.Elenasport
             var currentCount = 0;
             while (currentCount < _tryCount)
             {
-                var request = System.Net.WebRequest.Create(uri);
+                var request = WebRequest.Create(uri);
                 request.Method = "GET";
-                request.Headers.Add("Authorization", $"Bearer { authorizationToken}");
+                request.Headers.Add("Authorization", $"Bearer {authorizationToken}");
 
-                var response = (HttpWebResponse)await request.GetResponseAsync();
+                var response = (HttpWebResponse) await request.GetResponseAsync();
                 switch (response.StatusCode)
                 {
                     case HttpStatusCode.Forbidden:
@@ -62,20 +65,21 @@ namespace BetCR.Services.External.Elenasport
                         return await FetchData(uri);
 
                     case HttpStatusCode.OK:
-                        {
-                            await using var s = response.GetResponseStream();
-                            using var sr = new System.IO.StreamReader(s);
-                            var jsonResponse = await sr.ReadToEndAsync();
-                            var jsonResponseObject = JObject.Parse(jsonResponse);
-                            return new HttpJsonResult { Data = jsonResponseObject, StatusCode = HttpStatusCode.OK };
-                        }
+                    {
+                        await using var s = response.GetResponseStream();
+                        using var sr = new System.IO.StreamReader(s);
+                        var jsonResponse = await sr.ReadToEndAsync();
+                        var jsonResponseObject = JObject.Parse(jsonResponse);
+                        return new HttpJsonResult {Data = jsonResponseObject, StatusCode = HttpStatusCode.OK};
+                    }
+
                     default:
                         currentCount++;
                         break;
                 }
             }
 
-            return new HttpJsonResult { Data = null, StatusCode = HttpStatusCode.InternalServerError };
+            return new HttpJsonResult {Data = null, StatusCode = HttpStatusCode.InternalServerError};
         }
 
         public async Task GetFixtureResultsAsync()
@@ -98,7 +102,6 @@ namespace BetCR.Services.External.Elenasport
 
                 foreach (var t in data)
                 {
-
                     await using var transaction = await _unitOfWork.DbContext.Database.BeginTransactionAsync();
                     var elenaFixtureResult = t.ToObject<FixtureResult>();
 
@@ -106,7 +109,7 @@ namespace BetCR.Services.External.Elenasport
                         .FirstOrDefault() ?? new MatchEvent
                         {
                             Id = Guid.NewGuid().ToString("D"),
-                            Match = match,
+                            Match = match
                         };
 
                     matchEvent.HomeTeamScore = elenaFixtureResult?.HomeTeamRegularGoals + elenaFixtureResult?.HomeTeamExtraTimeGoals;
@@ -116,11 +119,11 @@ namespace BetCR.Services.External.Elenasport
                     matchEvent.MatchStat = new MatchStats
                     {
                         HomeTeamStats = elenaFixtureResult?.StatResults?.Where(w => w.TeamId.ToString() == match.HomeTeam.ExternalId)
-                            .Select(s => new Stat { Key = s.Type, TeamId = match.HomeTeam.Id, Value = s.Value })
+                            .Select(s => new Stat {Key = s.Type, TeamId = match.HomeTeam.Id, Value = s.Value})
                             .ToList(),
                         AwayTeamStats = elenaFixtureResult?.StatResults?.Where(w => w.TeamId.ToString() == match.AwayTeam.ExternalId)
-                            .Select(s => new Stat { Key = s.Type, TeamId = match.AwayTeam.Id, Value = s.Value })
-                            .ToList(),
+                            .Select(s => new Stat {Key = s.Type, TeamId = match.AwayTeam.Id, Value = s.Value})
+                            .ToList()
                     };
 
                     matchEvent.MatchLineup = new MatchLineups
@@ -132,7 +135,7 @@ namespace BetCR.Services.External.Elenasport
                                 Number = s.ShirtNumber,
                                 StartingXI = s.StartingXI,
                                 Position = s.Position.ToUpperInvariant(),
-                                Player = new Player { FullName = s.PlayerResult.FullName, Name = s.PlayerResult.Name }
+                                Player = new Player {FullName = s.PlayerResult.FullName, Name = s.PlayerResult.Name}
                             }).ToList(),
 
                         AwayTeamLineup = elenaFixtureResult?.LineupResults?.Where(w => w.TeamId.ToString() == match.AwayTeam.ExternalId)
@@ -142,8 +145,8 @@ namespace BetCR.Services.External.Elenasport
                                 Number = s.ShirtNumber,
                                 StartingXI = s.StartingXI,
                                 Position = s.Position.ToUpperInvariant(),
-                                Player = new Player { FullName = s.PlayerResult.FullName, Name = s.PlayerResult.Name }
-                            }).ToList(),
+                                Player = new Player {FullName = s.PlayerResult.FullName, Name = s.PlayerResult.Name}
+                            }).ToList()
                     };
 
                     matchEvent.Events = new MatchEvents
@@ -160,7 +163,7 @@ namespace BetCR.Services.External.Elenasport
                                     FullName = s.Player1Result.FullName,
                                     Name = s.Player1Result.Name
                                 },
-                                Player2 = s.Player2Result != null ? new Player { FullName = s.Player2Result.FullName, Name = s.Player2Result.Name } : null
+                                Player2 = s.Player2Result != null ? new Player {FullName = s.Player2Result.FullName, Name = s.Player2Result.Name} : null
                             }).ToList(),
 
                         AwayTeamEvents = elenaFixtureResult?.EventResults?.Where(w => w.TeamId.ToString() == match.AwayTeam.ExternalId)
@@ -175,7 +178,7 @@ namespace BetCR.Services.External.Elenasport
                                     FullName = s.Player1Result.FullName,
                                     Name = s.Player1Result.Name
                                 },
-                                Player2 = s.Player2Result != null ? new Player { FullName = s.Player2Result.FullName, Name = s.Player2Result.Name } : null
+                                Player2 = s.Player2Result != null ? new Player {FullName = s.Player2Result.FullName, Name = s.Player2Result.Name} : null
                             }).ToList()
                     };
 
@@ -189,7 +192,6 @@ namespace BetCR.Services.External.Elenasport
                     await _unitOfWork.SaveChangesAsync();
 
                     await transaction.CommitAsync();
-
                 }
             }
         }
@@ -213,7 +215,6 @@ namespace BetCR.Services.External.Elenasport
 
                 foreach (var t in data)
                 {
-
                     await using var transaction = await _unitOfWork.DbContext.Database.BeginTransactionAsync();
                     var expand = t["expand"];
                     var season = (expand?["current_season"] as JArray ?? new JArray()).FirstOrDefault();
@@ -226,7 +227,7 @@ namespace BetCR.Services.External.Elenasport
                         var elenaFixture = nf.ToObject<FixtureResult>();
 
                         if (elenaFixture.Status != "not started") continue;
-                        if (String.IsNullOrEmpty(elenaFixture.Id)) continue;
+                        if (string.IsNullOrEmpty(elenaFixture.Id)) continue;
                         var existingMatch = (await matchRepository.FindAsync(f => f.ExternalId == elenaFixture.Id)).FirstOrDefault();
                         if (existingMatch != null) continue;
 
@@ -239,9 +240,9 @@ namespace BetCR.Services.External.Elenasport
                         var elenaAwayTeam = awayTeamJsonObject.ToObject<TeamResult>();
                         var elenaStage = stageJsonObject.ToObject<StageResult>();
 
-                        if (String.IsNullOrEmpty(elenaHomeTeam.Id)) continue;
-                        if (String.IsNullOrEmpty(elenaAwayTeam.Id)) continue;
-                        if (String.IsNullOrEmpty(elenaStage.Id)) continue;
+                        if (string.IsNullOrEmpty(elenaHomeTeam.Id)) continue;
+                        if (string.IsNullOrEmpty(elenaAwayTeam.Id)) continue;
+                        if (string.IsNullOrEmpty(elenaStage.Id)) continue;
 
                         var homeTeamObject = (await teamRepository.FindAsync(f => f.ExternalId == elenaHomeTeam.Id)).FirstOrDefault() ??
                                              new Team
@@ -292,7 +293,6 @@ namespace BetCR.Services.External.Elenasport
                             };
                             await stageRepository.AddAsync(stageObject);
                             await _unitOfWork.SaveChangesAsync();
-
                         }
 
                         var match = new Match
@@ -301,7 +301,7 @@ namespace BetCR.Services.External.Elenasport
                             ExternalId = elenaFixture.Id,
                             HomeTeam = homeTeamObject,
                             AwayTeam = awayTeamObject,
-                            MatchDateEpoch = ((DateTimeOffset)elenaFixture.MatchDate).ToUnixTimeSeconds(),
+                            MatchDateEpoch = ((DateTimeOffset) elenaFixture.MatchDate).ToUnixTimeSeconds(),
                             Week = FixtureHelper.GetWeek(elenaFixture.MatchDate),
                             Stage = stageObject,
                             ResultState = 1,
@@ -337,7 +337,7 @@ namespace BetCR.Services.External.Elenasport
                     .FirstOrDefault() ?? new StageStanding
                     {
                         Id = Guid.NewGuid().ToString("D"),
-                        Stage = stage,
+                        Stage = stage
                     };
 
                 stageStanding.Standings = new List<Standing>();
@@ -378,7 +378,6 @@ namespace BetCR.Services.External.Elenasport
                 await _unitOfWork.SaveChangesAsync();
 
                 await transaction.CommitAsync();
-
             }
         }
 
@@ -388,7 +387,7 @@ namespace BetCR.Services.External.Elenasport
 
         private async Task<string> GetAuthorizationToken()
         {
-            var webRequest = System.Net.WebRequest.Create(ELENA_TOKEN_URL);
+            var webRequest = WebRequest.Create(ELENA_TOKEN_URL);
             webRequest.Method = "POST";
             webRequest.ContentType = "application/x-www-form-urlencoded";
             webRequest.Headers.Add("Authorization", AUTH_TOKEN_KEY);
@@ -400,8 +399,8 @@ namespace BetCR.Services.External.Elenasport
                 await stream.WriteAsync(data, 0, data.Length);
             }
 
-            var response = (HttpWebResponse)await webRequest.GetResponseAsync();
-            if (response.StatusCode != HttpStatusCode.OK) return String.Empty;
+            var response = (HttpWebResponse) await webRequest.GetResponseAsync();
+            if (response.StatusCode != HttpStatusCode.OK) return string.Empty;
 
             await using (var s = response.GetResponseStream())
             {

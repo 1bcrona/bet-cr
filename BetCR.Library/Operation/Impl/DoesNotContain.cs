@@ -11,14 +11,16 @@ namespace BetCR.Library.Operation.Impl
     {
         #region Private Fields
 
-        private readonly MethodInfo stringContainsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+        private readonly MethodInfo stringContainsMethod = typeof(string).GetMethod("Contains", new[] {typeof(string)});
 
         #endregion Private Fields
 
         #region Public Constructors
 
         /// <inheritdoc />
-        public DoesNotContain() : base("DoesNotContain") { }
+        public DoesNotContain() : base("DoesNotContain")
+        {
+        }
 
         #endregion Public Constructors
 
@@ -27,10 +29,10 @@ namespace BetCR.Library.Operation.Impl
         /// <inheritdoc />
         public override Expression GetExpression(Expression member, ConstantExpression constant1, ConstantExpression constant2)
         {
-            Expression constant = constant1.TrimToLower();
+            var constant = constant1.TrimToLower();
 
             return Expression.Not(Expression.Call(member.TrimToLower(), stringContainsMethod, constant))
-                   .AddNullCheck(member);
+                .AddNullCheck(member);
         }
 
         #endregion Public Methods

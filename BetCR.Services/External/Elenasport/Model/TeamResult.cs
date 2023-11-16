@@ -8,8 +8,7 @@ namespace BetCR.Services.External.Elenasport.Model
     {
         #region Public Properties
 
-        [JsonProperty("badgeURL")]
-        public string BadgeURL { get; set; }
+        [JsonProperty("badgeURL")] public string BadgeURL { get; set; }
 
         public List<FixtureResult> FixtureResult
         {
@@ -20,8 +19,7 @@ namespace BetCR.Services.External.Elenasport.Model
             }
         }
 
-        [JsonProperty("fullName")]
-        public string Name { get; set; }
+        [JsonProperty("fullName")] public string Name { get; set; }
 
         #endregion Public Properties
     }

@@ -16,6 +16,5 @@ namespace BetCR.Services.External.APIFootball.Model.MatchEvents
         [JsonProperty("type")] public string Type { get; set; }
 
         [JsonProperty("detail")] public string Detail { get; set; }
-
     }
 }

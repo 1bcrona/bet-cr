@@ -4,7 +4,7 @@ namespace BetCR.Services.External.APIFootball.Model.Fixtures
 {
     public class League
     {
-        [JsonProperty("id")] public int?Id { get; set; }
+        [JsonProperty("id")] public int? Id { get; set; }
 
         [JsonProperty("name")] public string Name { get; set; }
 
@@ -14,7 +14,7 @@ namespace BetCR.Services.External.APIFootball.Model.Fixtures
 
         [JsonProperty("flag")] public string Flag { get; set; }
 
-        [JsonProperty("season")] public int?Season { get; set; }
+        [JsonProperty("season")] public int? Season { get; set; }
 
         [JsonProperty("round")] public string Round { get; set; }
     }

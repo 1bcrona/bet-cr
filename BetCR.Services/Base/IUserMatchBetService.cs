@@ -7,6 +7,7 @@ namespace BetCR.Services.Base
         #region Public Methods
 
         public Task CalculateUserPointsAsync();
+
         #endregion Public Methods
     }
 }

@@ -13,16 +13,11 @@ namespace BetCR.Repository.Entity
         public override string Id { get; set; }
         public string LeagueName { get; set; }
 
-        [JsonIgnore]
-        [IgnoreDataMember]
-        public ICollection<Match> Matches { get; set; }
+        [JsonIgnore] [IgnoreDataMember] public ICollection<Match> Matches { get; set; }
 
-        [IgnoreDataMember]
-        public ICollection<Stage> Stages { get; set; }
+        [IgnoreDataMember] public ICollection<Stage> Stages { get; set; }
 
-        [JsonIgnore]
-        [IgnoreDataMember]
-        public ICollection<TeamLeagueRel> TeamLeagueRels { get; set; }
+        [JsonIgnore] [IgnoreDataMember] public ICollection<TeamLeagueRel> TeamLeagueRels { get; set; }
 
         #endregion Public Properties
     }

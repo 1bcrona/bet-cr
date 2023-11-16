@@ -11,7 +11,7 @@
     var awayColors = ViewData["away_colors"] as List<string> ?? new List<string>()
     {
         "#000",
-        "#fff",
+        "#fff"
     };
 
     var validEvents = ViewData["valid_events"] as Dictionary<string, string>;
@@ -50,7 +50,7 @@
                         <div class="ml-5 mr-5">
                             <div class="row">
                                 @{
-                                    if (item.Event.Item2.Player2 != null && !String.IsNullOrEmpty(item.Event.Item2.Player2.FullName))
+                                    if (item.Event.Item2.Player2 != null && !string.IsNullOrEmpty(item.Event.Item2.Player2.FullName))
                                     {
                                         switch (item.Event.Item2.EventType)
                                         {

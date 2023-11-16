@@ -11,14 +11,16 @@ namespace BetCR.Web
     {
         #region Public Methods
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder
                         .UseContentRoot(Directory.GetCurrentDirectory())
                         .UseStartup<Startup>();
                 });
+        }
 
 
         public static void Main(string[] args)

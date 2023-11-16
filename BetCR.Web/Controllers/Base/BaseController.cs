@@ -44,17 +44,16 @@ namespace BetCR.Web.Controllers.Base
 
             if (ViewBag.UserId == null) return;
 
-            ViewBag.Invitations = (await _mediator.Send(new GetUserActionQuery() { ActionStatus = UserActionStatus.WAITING_FOR_REPLY, ToUserId = ViewBag.UserId })).ToList();
-            var userTournamentResult = (await _mediator.Send(new GetUserTournamentQuery { UserId = ViewBag.UserId }));
+            ViewBag.Invitations = (await _mediator.Send(new GetUserActionQuery() {ActionStatus = UserActionStatus.WAITING_FOR_REPLY, ToUserId = ViewBag.UserId})).ToList();
+            var userTournamentResult = await _mediator.Send(new GetUserTournamentQuery {UserId = ViewBag.UserId});
             ViewBag.UserTournaments = userTournamentResult.All;
-
-
-
         }
 
         public override async void OnActionExecuted(ActionExecutedContext context)
         {
-            ViewBag.CurrentTournament = await _cache.Get<string>($"{ViewBag.UserId}_CurrentTournament", null) ?? ((ViewBag.UserTournaments as List<Tournament>) ?? new List<Tournament>()).OrderBy(f => f.TournamentEndDateEpoch).Select(s => s.Id).FirstOrDefault(); ;
+            ViewBag.CurrentTournament = await _cache.Get<string>($"{ViewBag.UserId}_CurrentTournament", null) ??
+                                        (ViewBag.UserTournaments as List<Tournament> ?? new List<Tournament>()).OrderBy(f => f.TournamentEndDateEpoch).Select(s => s.Id).FirstOrDefault();
+            ;
         }
 
         #endregion Public Methods

@@ -11,7 +11,9 @@ namespace BetCR.Library.Operation.Impl
         #region Public Constructors
 
         /// <inheritdoc />
-        public GreaterThan() : base("GreaterThan") { }
+        public GreaterThan() : base("GreaterThan")
+        {
+        }
 
         #endregion Public Constructors
 

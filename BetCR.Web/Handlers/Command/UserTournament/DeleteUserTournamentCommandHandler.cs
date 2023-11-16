@@ -37,10 +37,7 @@ namespace BetCR.Web.Handlers.Command.UserTournament
 
             var isUserRegisteredToTournament = (await repository.FindAsync(w => w.User.Id == request.UserId && w.Tournament.Id == request.TournamentId && w.Active == 1)).FirstOrDefault();
 
-            if (isUserRegisteredToTournament == null)
-            {
-                throw new ApiException() { ErrorCode = "USER_NOT_REGISTERED_TO_TOURNAMENT", ErrorMessage = "User is not registered to this tournament" };
-            }
+            if (isUserRegisteredToTournament == null) throw new ApiException() {ErrorCode = "USER_NOT_REGISTERED_TO_TOURNAMENT", ErrorMessage = "User is not registered to this tournament"};
 
             isUserRegisteredToTournament.Active = 0;
             await repository.UpdateAsync(isUserRegisteredToTournament);

@@ -9,26 +9,26 @@ namespace BetCR.Repository.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "DateOfBirth",
-                table: "User");
+                "DateOfBirth",
+                "User");
 
             migrationBuilder.RenameColumn(
-                name: "Firstname",
-                table: "User",
-                newName: "Username");
+                "Firstname",
+                "User",
+                "Username");
         }
 
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "Username",
-                table: "User",
-                newName: "Firstname");
+                "Username",
+                "User",
+                "Firstname");
 
             migrationBuilder.AddColumn<string>(
-                name: "DateOfBirth",
-                table: "User",
-                type: "TEXT",
+                "DateOfBirth",
+                "User",
+                "TEXT",
                 nullable: true);
         }
 

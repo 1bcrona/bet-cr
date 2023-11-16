@@ -43,16 +43,14 @@ namespace BetCR.Web.Controllers
         [Authorize]
         [HttpGet]
         [Route("{tournamentId}/standings")]
-
         public async Task<IActionResult> GetTournamentStandings(string tournamentId)
         {
-
-            var result = await _mediator.Send(new GetTournamentStandingsQuery() { TournamentId = tournamentId });
+            var result = await _mediator.Send(new GetTournamentStandingsQuery() {TournamentId = tournamentId});
 
             ViewBag.Title = "Standings";
             return View("Tournament/Standings", result);
-
         }
+
         #endregion Public Methods
     }
 }

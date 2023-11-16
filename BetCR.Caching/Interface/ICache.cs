@@ -7,19 +7,19 @@ namespace BetCR.Caching.Interface
     {
         #region Public Methods
 
-        Task<bool> Delete(String key);
+        Task<bool> Delete(string key);
 
-        Task<bool> Exists(String key);
+        Task<bool> Exists(string key);
 
-        Task<bool> Expire(String key, TimeSpan expiry);
+        Task<bool> Expire(string key, TimeSpan expiry);
 
         Task Flush();
 
-        Task<T> Get<T>(String key, T defaultValue = default(T));
+        Task<T> Get<T>(string key, T defaultValue = default);
 
-        Task<bool> Persist(String key);
+        Task<bool> Persist(string key);
 
-        Task<bool> Set(String key, object value, TimeSpan? expiry = null);
+        Task<bool> Set(string key, object value, TimeSpan? expiry = null);
 
         #endregion Public Methods
     }

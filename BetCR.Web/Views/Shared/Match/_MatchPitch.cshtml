@@ -14,38 +14,27 @@
             @{
                 <div class="team">
                     @{
-                        var colorPaletteHome = Model.HomeTeam.DominantColors?.Split(";").ToList();
-                        var homeDomColor1 = colorPaletteHome?.FirstOrDefault() ?? "#fff";
-                        var homeDomColor2 = colorPaletteHome?.Skip(1).FirstOrDefault() ?? "#000";
+                        var homeColors = Model.HomeTeam.DominantColors?.Split(";").ToList();
                     }
 
                     @{ await Html.RenderPartialAsync("Match/_MatchTeam", Model.MatchEvent.MatchLineup.HomeTeamLineup.Where(w => w.StartingXI), new ViewDataDictionary(ViewData)
                        {
                            {
-                               "background-color", homeDomColor1
+                               "colors", homeColors
                            },
-                           {
-                               "color", homeDomColor2
-                           }
                        }); }
                 </div>
             }
             @{
                 <div class="team away">
-
                     @{
-                        var colorPaletteAway = Model.AwayTeam.DominantColors?.Split(";").ToList();
-                        var awayDomColor1 = colorPaletteAway?.FirstOrDefault() ?? "#fff";
-                        var awayDomColor2 = colorPaletteAway?.Skip(1).FirstOrDefault() ?? "#000";
+                        var awayColors = Model.AwayTeam.DominantColors?.Split(";").ToList();
                     }
 
                     @{ await Html.RenderPartialAsync("Match/_MatchTeam", Model.MatchEvent.MatchLineup.AwayTeamLineup.Where(w => w.StartingXI), new ViewDataDictionary(ViewData)
                        {
                            {
-                               "background-color", awayDomColor1
-                           },
-                           {
-                               "color", awayDomColor2
+                               "colors", awayColors
                            }
                        }); }
                 </div>

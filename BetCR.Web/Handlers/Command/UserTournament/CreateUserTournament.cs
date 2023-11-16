@@ -46,33 +46,28 @@ namespace BetCR.Web.Handlers.Command.UserTournament
 
         public async Task<Repository.Entity.UserTournament> Handle(CreateUserTournamentCommand request, CancellationToken cancellationToken)
         {
-
             await using var transaction = await _unitOfWork.DbContext.Database.BeginTransactionAsync(cancellationToken);
             var tournamentRepository = _unitOfWork.GetRepository<Tournament, string>();
             var userTournamentRepository = _unitOfWork.GetRepository<Repository.Entity.UserTournament, string>();
-            var userRepository = _unitOfWork.GetRepository<Repository.Entity.User, string>();
+            var userRepository = _unitOfWork.GetRepository<User, string>();
 
             var tournament =
                 (await tournamentRepository.FindAsync(f =>
                     f.TournamentName == request.TournamentName && f.Active == 1)).FirstOrDefault();
 
             if (tournament != null)
-            {
                 throw new ApiException()
                 {
                     ErrorCode = "TOURNAMENT_NAME_MUST_BE_UNIQUE",
                     ErrorMessage = "Tournament Name Must Be Unique",
                     StatusCode = 500
                 };
-            }
 
             var user = await userRepository.GetAsync(request.UserId);
 
             if (user == null)
-            {
                 throw new ApiException()
-                { ErrorCode = "USER_NOT_FOUND", ErrorMessage = "Specified User Not Found", StatusCode = 500 };
-            }
+                    {ErrorCode = "USER_NOT_FOUND", ErrorMessage = "Specified User Not Found", StatusCode = 500};
 
             tournament = new Tournament()
             {
@@ -101,9 +96,6 @@ namespace BetCR.Web.Handlers.Command.UserTournament
             await transaction.CommitAsync(cancellationToken);
             return userTournament;
         }
-
-
-
 
         #endregion Public Methods
     }

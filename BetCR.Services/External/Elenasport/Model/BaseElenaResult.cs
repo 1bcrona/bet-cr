@@ -7,11 +7,9 @@ namespace BetCR.Services.External.Elenasport.Model
     {
         #region Public Properties
 
-        [JsonProperty("expand")]
-        public JToken Expand { get; set; }
+        [JsonProperty("expand")] public JToken Expand { get; set; }
 
-        [JsonProperty("id")]
-        public string Id { get; set; }
+        [JsonProperty("id")] public string Id { get; set; }
 
         #endregion Public Properties
     }

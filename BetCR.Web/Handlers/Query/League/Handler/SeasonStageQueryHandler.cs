@@ -29,7 +29,7 @@ namespace BetCR.Web.Handlers.Query.League.Handler
 
         public async Task<List<Stage>> Handle(LeagueStageQuery request, CancellationToken cancellationToken)
         {
-            var repository = _unitOfWork.GetRepository<Repository.Entity.Stage, string>();
+            var repository = _unitOfWork.GetRepository<Stage, string>();
 
             var stages = await repository.FindAsync(f => f.LeagueId == request.LeagueId);
 

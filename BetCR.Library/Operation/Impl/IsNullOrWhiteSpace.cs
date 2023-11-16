@@ -11,7 +11,9 @@ namespace BetCR.Library.Operation.Impl
         #region Public Constructors
 
         /// <inheritdoc />
-        public IsNullOrWhiteSpace() : base("IsNullOrWhiteSpace") { }
+        public IsNullOrWhiteSpace() : base("IsNullOrWhiteSpace")
+        {
+        }
 
         #endregion Public Constructors
 

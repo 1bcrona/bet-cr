@@ -74,38 +74,37 @@
         });
 
         let modalElement =
-        {
-            element: $(currentModal),
-            show: function () {
-                let img = $(currentModal).find(".img-fluid");
-                let card = $(currentModal).find(".modal-card");
-                let pb = $(currentModal).find(".modal-progress-bar");
-                $(img).removeClass("modal-img-success modal-img-error modal-img-loading");
-                $(card).removeClass("modal-card-success modal-card-error modal-card-loading");
-                $(pb).removeClass("modal-progress-bar-error modal-progress-bar-success modal-progress-bar-loading");
-                if (options.modalState === "success") {
-                    $(card).addClass("modal-card-success");
-                    $(img).addClass("modal-img-success");
-                    $(pb).addClass("modal-progress-bar-success");
-                } else if (options.modalState === "loading") {
-                    $(card).addClass("modal-card-loading");
-                    $(img).addClass("modal-img-loading");
-                    $(pb).addClass("modal-progress-bar-loading");
-                }
-                else {
-                    $(card).addClass("modal-card-error");
-                    $(img).addClass("modal-img-error");
-                    $(pb).addClass("modal-progress-bar-error");
-                }
+            {
+                element: $(currentModal),
+                show: function () {
+                    let img = $(currentModal).find(".img-fluid");
+                    let card = $(currentModal).find(".modal-card");
+                    let pb = $(currentModal).find(".modal-progress-bar");
+                    $(img).removeClass("modal-img-success modal-img-error modal-img-loading");
+                    $(card).removeClass("modal-card-success modal-card-error modal-card-loading");
+                    $(pb).removeClass("modal-progress-bar-error modal-progress-bar-success modal-progress-bar-loading");
+                    if (options.modalState === "success") {
+                        $(card).addClass("modal-card-success");
+                        $(img).addClass("modal-img-success");
+                        $(pb).addClass("modal-progress-bar-success");
+                    } else if (options.modalState === "loading") {
+                        $(card).addClass("modal-card-loading");
+                        $(img).addClass("modal-img-loading");
+                        $(pb).addClass("modal-progress-bar-loading");
+                    } else {
+                        $(card).addClass("modal-card-error");
+                        $(img).addClass("modal-img-error");
+                        $(pb).addClass("modal-progress-bar-error");
+                    }
 
-                $(currentModal).modal('show');
-            },
-            hide: function () {
-                hide = true;
-                $(currentModal).modal('show');
-                $(currentModal).modal('hide');
+                    $(currentModal).modal('show');
+                },
+                hide: function () {
+                    hide = true;
+                    $(currentModal).modal('show');
+                    $(currentModal).modal('hide');
+                }
             }
-        }
 
         return {
             modalElement

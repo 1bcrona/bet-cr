@@ -19,7 +19,6 @@ namespace BetCR.Library.Tracking.Infrastructure
 
     public interface IPublisher
     {
-
         public string Id { get; }
         public event EventHandler<object> OnPublish;
         public void Publish(object data);

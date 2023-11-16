@@ -9,16 +9,16 @@ namespace BetCR.Repository.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "UserBetPointDefault",
-                table: "UserMatchBet");
+                "UserBetPointDefault",
+                "UserMatchBet");
         }
 
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "UserBetPointDefault",
-                table: "UserMatchBet",
-                type: "INTEGER",
+                "UserBetPointDefault",
+                "UserMatchBet",
+                "INTEGER",
                 nullable: false,
                 defaultValue: 0);
         }

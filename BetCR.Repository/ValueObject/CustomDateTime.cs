@@ -24,13 +24,7 @@ namespace BetCR.Repository.ValueObject
         public static DateTime MaxDateTime => DateTime.MaxValue;
         public DateTime Inner => _inner;
 
-        public DateTime Local
-        {
-            get
-            {
-                return _inner.ToLocalTime();
-            }
-        }
+        public DateTime Local => _inner.ToLocalTime();
 
         #endregion Public Properties
 
@@ -38,7 +32,7 @@ namespace BetCR.Repository.ValueObject
 
         public static explicit operator CustomDateTime(DateTime mdt)
         {
-            return new(mdt);
+            return new CustomDateTime(mdt);
         }
 
         public static explicit operator DateTime(CustomDateTime mdt)

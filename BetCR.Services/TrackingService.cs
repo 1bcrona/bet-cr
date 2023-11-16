@@ -20,7 +20,8 @@ namespace BetCR.Services
 
         #region Public Constructors
 
-        private static JsonSerializerSettings _JsonSerializerSettings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+        private static JsonSerializerSettings _JsonSerializerSettings = new() {ReferenceLoopHandling = ReferenceLoopHandling.Ignore};
+
         public TrackingService(ISubscriber subscriber)
         {
             _subscriber = subscriber;
@@ -65,17 +66,13 @@ namespace BetCR.Services
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
-
             BeginTracking();
             await base.StartAsync(cancellationToken);
         }
 
         public override async Task StopAsync(CancellationToken cancellationToken)
         {
-            if (cancellationToken.IsCancellationRequested)
-            {
-                await base.StopAsync(cancellationToken);
-            }
+            if (cancellationToken.IsCancellationRequested) await base.StopAsync(cancellationToken);
         }
 
         #endregion Public Methods
@@ -84,15 +81,9 @@ namespace BetCR.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                await Task.Delay(2000, stoppingToken);
-            }
+            while (!stoppingToken.IsCancellationRequested) await Task.Delay(2000, stoppingToken);
 
-            if (!stoppingToken.IsCancellationRequested)
-            {
-                Console.WriteLine("Stopping");
-            }
+            if (!stoppingToken.IsCancellationRequested) Console.WriteLine("Stopping");
         }
 
         #endregion Protected Methods

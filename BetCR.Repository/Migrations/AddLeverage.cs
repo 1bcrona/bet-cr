@@ -9,21 +9,21 @@ namespace BetCR.Repository.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Leverage",
-                table: "UserMatchBet");
+                "Leverage",
+                "UserMatchBet");
 
             migrationBuilder.AlterColumn<int>(
-                name: "HomeTeamScore",
-                table: "UserMatchBet",
-                type: "INTEGER",
+                "HomeTeamScore",
+                "UserMatchBet",
+                "INTEGER",
                 nullable: true,
                 oldClrType: typeof(int),
                 oldType: "INTEGER");
 
             migrationBuilder.AlterColumn<int>(
-                name: "AwayTeamScore",
-                table: "UserMatchBet",
-                type: "INTEGER",
+                "AwayTeamScore",
+                "UserMatchBet",
+                "INTEGER",
                 nullable: true,
                 oldClrType: typeof(int),
                 oldType: "INTEGER");
@@ -32,9 +32,9 @@ namespace BetCR.Repository.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<int>(
-                name: "HomeTeamScore",
-                table: "UserMatchBet",
-                type: "INTEGER",
+                "HomeTeamScore",
+                "UserMatchBet",
+                "INTEGER",
                 nullable: false,
                 defaultValue: 0,
                 oldClrType: typeof(int),
@@ -42,9 +42,9 @@ namespace BetCR.Repository.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<int>(
-                name: "AwayTeamScore",
-                table: "UserMatchBet",
-                type: "INTEGER",
+                "AwayTeamScore",
+                "UserMatchBet",
+                "INTEGER",
                 nullable: false,
                 defaultValue: 0,
                 oldClrType: typeof(int),
@@ -52,9 +52,9 @@ namespace BetCR.Repository.Migrations
                 oldNullable: true);
 
             migrationBuilder.AddColumn<int>(
-                name: "Leverage",
-                table: "UserMatchBet",
-                type: "INTEGER",
+                "Leverage",
+                "UserMatchBet",
+                "INTEGER",
                 nullable: false,
                 defaultValue: 0);
         }

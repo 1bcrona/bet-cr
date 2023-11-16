@@ -11,7 +11,9 @@ namespace BetCR.Library.Operation.Impl
         #region Public Constructors
 
         /// <inheritdoc />
-        public IsNull() : base("IsNull") { }
+        public IsNull() : base("IsNull")
+        {
+        }
 
         #endregion Public Constructors
 

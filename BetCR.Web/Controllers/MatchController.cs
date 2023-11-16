@@ -26,7 +26,7 @@ namespace BetCR.Web.Controllers
 
         #region Public Constructors
 
-        public MatchController(IMediator mediator, ILogger<MatchController> logger, IHttpContextAccessor accessor,ICache cache) : base(accessor, mediator,cache)
+        public MatchController(IMediator mediator, ILogger<MatchController> logger, IHttpContextAccessor accessor, ICache cache) : base(accessor, mediator, cache)
         {
             _mediator = mediator;
             _logger = logger;
@@ -43,7 +43,7 @@ namespace BetCR.Web.Controllers
         [Route("Details/{id?}")]
         public async Task<IActionResult> Details(string id)
         {
-            var result = await _mediator.Send(new MatchDetailQuery { MatchId = id });
+            var result = await _mediator.Send(new MatchDetailQuery {MatchId = id});
             return PartialView("Match/_MatchDetails", result);
         }
 
@@ -52,7 +52,7 @@ namespace BetCR.Web.Controllers
         [Route("{id?}")]
         public async Task<IActionResult> Index(string id)
         {
-            var result = await _mediator.Send(new MatchDetailQuery { MatchId = id });
+            var result = await _mediator.Send(new MatchDetailQuery {MatchId = id});
 
             var userId = _accessor.HttpContext?.User.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
 
@@ -67,7 +67,7 @@ namespace BetCR.Web.Controllers
         [Route("Pitch/{id?}")]
         public async Task<IActionResult> Pitch(string id)
         {
-            var result = await _mediator.Send(new MatchDetailQuery { MatchId = id });
+            var result = await _mediator.Send(new MatchDetailQuery {MatchId = id});
             return PartialView("Match/_MatchPitch", result);
         }
 

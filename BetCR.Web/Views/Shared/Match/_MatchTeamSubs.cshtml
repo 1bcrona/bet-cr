@@ -1,0 +1,20 @@
+﻿@model IEnumerable<BetCR.Repository.ValueObject.Lineup>         
+
+@{
+    var colors = ViewData["colors"] as List<string> ?? new List<string>()
+    {
+        "#fff",
+        "#000"
+    };
+    var color = colors.FirstOrDefault();
+    var backgroundColor = colors.LastOrDefault();
+
+    <div class="card">
+        <h5 class="card-header text-center" style="background-color: @backgroundColor; color: @color">
+            SUBS
+        </h5>
+        <div class="card-body">
+            @{ await Html.RenderPartialAsync("Match/_LineupTable", Model.Where(w => !w.StartingXI), ViewData); }
+        </div>
+    </div>
+}

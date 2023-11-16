@@ -27,7 +27,7 @@ namespace BetCR.Web.Controllers.API
         #region Private Fields
 
         private readonly IHttpContextAccessor _accessor;
-        private readonly ILogger<API.UserController> _logger;
+        private readonly ILogger<UserController> _logger;
         private readonly IMediator _mediator;
         private IUserService _userService;
 
@@ -35,7 +35,7 @@ namespace BetCR.Web.Controllers.API
 
         #region Public Constructors
 
-        public UserController(ILogger<API.UserController> logger, IUserService userService, IMediator mediator, IHttpContextAccessor accessor)
+        public UserController(ILogger<UserController> logger, IUserService userService, IMediator mediator, IHttpContextAccessor accessor)
         {
             _logger = logger;
             _userService = userService;
@@ -60,7 +60,7 @@ namespace BetCR.Web.Controllers.API
                     .SelectMany(s => s.Select(s1 => s1.Exception?.ToString() ?? s1.ErrorMessage))
                     .ToList();
 
-                var combinedErrors = String.Join("/r/n", errors);
+                var combinedErrors = string.Join("/r/n", errors);
                 response.Result = combinedErrors;
                 response.Result = combinedErrors;
 
@@ -72,35 +72,31 @@ namespace BetCR.Web.Controllers.API
             var isUser = await _userService.GetUser(model.Email);
 
             if (isUser == null)
-            {
                 throw new ApiException()
                 {
                     ErrorCode = "USER_PASSWORD_INCORRECT",
                     ErrorMessage = "Username or Password is not correct",
                     StatusCode = 500
                 };
-            }
 
             if (isUser.Password != EncryptionHelper.MD5Hash(model.Password))
-            {
                 throw new ApiException()
                 {
                     ErrorCode = "USER_PASSWORD_INCORRECT",
                     ErrorMessage = "Username or Password is not correct",
                     StatusCode = 500
                 };
-            }
 
 
-            List<Claim> userClaims = new List<Claim>
-                {
-                    new(ClaimTypes.NameIdentifier, isUser.Id),
-                    new(ClaimTypes.Name, String.Join(" ", isUser.Firstname, isUser.Surname)),
-                    new(ClaimTypes.GivenName, isUser.Firstname),
-                    new(ClaimTypes.Surname, isUser.Surname),
-                    new(ClaimTypes.Email, isUser.Email),
-                    new (ClaimTypes.IsPersistent, model.IsRememberMe.ToString())
-                };
+            var userClaims = new List<Claim>
+            {
+                new(ClaimTypes.NameIdentifier, isUser.Id),
+                new(ClaimTypes.Name, string.Join(" ", isUser.Firstname, isUser.Surname)),
+                new(ClaimTypes.GivenName, isUser.Firstname),
+                new(ClaimTypes.Surname, isUser.Surname),
+                new(ClaimTypes.Email, isUser.Email),
+                new(ClaimTypes.IsPersistent, model.IsRememberMe.ToString())
+            };
 
             var claimsIdentity = new ClaimsIdentity(userClaims, CookieAuthenticationDefaults.AuthenticationScheme);
 
@@ -130,7 +126,7 @@ namespace BetCR.Web.Controllers.API
                     .SelectMany(s => s.Select(s1 => s1.Exception?.ToString() ?? s1.ErrorMessage))
                     .ToList();
 
-                var combinedErrors = String.Join("/r/n", errors);
+                var combinedErrors = string.Join("/r/n", errors);
                 response.Result = combinedErrors;
                 response.Result = combinedErrors;
 
@@ -141,14 +137,12 @@ namespace BetCR.Web.Controllers.API
             var existingUser = await _userService.GetUser(model.Email);
 
             if (existingUser != null)
-            {
                 throw new ApiException()
                 {
                     ErrorMessage = "Existing user found with this mail address",
                     StatusCode = 500,
                     ErrorCode = "USER_ALREADY_FOUND"
                 };
-            }
 
             existingUser = new User
             {
@@ -160,7 +154,7 @@ namespace BetCR.Web.Controllers.API
             };
             await _userService.SaveUser(existingUser);
 
-            await Login(new LoginModel { Email = existingUser.Email, IsRememberMe = true, Password = model.Password });
+            await Login(new LoginModel {Email = existingUser.Email, IsRememberMe = true, Password = model.Password});
             response.Result = "User registration successful.";
             response.ReturnUrl = "/";
             return Ok(response);

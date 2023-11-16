@@ -42,7 +42,7 @@ namespace BetCR.Web.Handlers.Query.Tournament
         {
             var betRepository = _unitOfWork.GetRepository<UserMatchBet, string>();
             var tournamentRepository = _unitOfWork.GetRepository<Repository.Entity.Tournament, string>();
-            var userRepository = _unitOfWork.GetRepository<Repository.Entity.User, string>();
+            var userRepository = _unitOfWork.GetRepository<User, string>();
             var tournament = await tournamentRepository.GetAsync(request.TournamentId);
 
             var bets = await betRepository.FindAsync(f =>
@@ -53,16 +53,16 @@ namespace BetCR.Web.Handlers.Query.Tournament
             var groupedBets = bets.GroupBy(g => g.User.Id);
 
             var userBetPoints = groupedBets.Select(userBet => new TournamentStandingsModel()
-            {
-                User = userBet.First().User,
-                WinCount = userBet.Count(w => w.UserBetPoint > 0),
-                LossCount = userBet.Count(w => w.UserBetPoint < 0),
-                WinMatchCount = userBet.Where(w => w.UserBetPointDefault == UserBetPoint.WinMatch).Sum(w => w.UserBetPoint).Value,
-                WinDifferenceCount = userBet.Where(w => w.UserBetPointDefault == UserBetPoint.WinDifference).Sum(w => w.UserBetPoint).Value,
-                WinMatchScoreCount = userBet.Where(w => w.UserBetPointDefault == UserBetPoint.WinMatchScore).Sum(w => w.UserBetPoint).Value,
-                LossMatchCount = userBet.Where(w => w.UserBetPointDefault == UserBetPoint.LossMatch).Sum(w => w.UserBetPoint).Value,
-                TotalPoints = userBet.Sum(s => s.UserBetPoint ?? 0)
-            })
+                {
+                    User = userBet.First().User,
+                    WinCount = userBet.Count(w => w.UserBetPoint > 0),
+                    LossCount = userBet.Count(w => w.UserBetPoint < 0),
+                    WinMatchCount = userBet.Where(w => w.UserBetPointDefault == UserBetPoint.WinMatch).Sum(w => w.UserBetPoint).Value,
+                    WinDifferenceCount = userBet.Where(w => w.UserBetPointDefault == UserBetPoint.WinDifference).Sum(w => w.UserBetPoint).Value,
+                    WinMatchScoreCount = userBet.Where(w => w.UserBetPointDefault == UserBetPoint.WinMatchScore).Sum(w => w.UserBetPoint).Value,
+                    LossMatchCount = userBet.Where(w => w.UserBetPointDefault == UserBetPoint.LossMatch).Sum(w => w.UserBetPoint).Value,
+                    TotalPoints = userBet.Sum(s => s.UserBetPoint ?? 0)
+                })
                 .ToList();
 
             var tournamentUsers = await userRepository.FindAsync(f =>

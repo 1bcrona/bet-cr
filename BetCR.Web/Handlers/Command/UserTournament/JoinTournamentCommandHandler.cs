@@ -31,31 +31,24 @@ namespace BetCR.Web.Handlers.Command.UserTournament
 
         public async Task<Tournament> Handle(JoinTournamentCommand request, CancellationToken cancellationToken)
         {
-
             await using var transaction = await _unitOfWork.DbContext.Database.BeginTransactionAsync(cancellationToken);
             var userTournamentRepository = _unitOfWork.GetRepository<Repository.Entity.UserTournament, string>();
-            var tournamentRepository = _unitOfWork.GetRepository<Repository.Entity.Tournament, string>();
-            var userRepository = _unitOfWork.GetRepository<Repository.Entity.User, string>();
+            var tournamentRepository = _unitOfWork.GetRepository<Tournament, string>();
+            var userRepository = _unitOfWork.GetRepository<User, string>();
             var isExisting = await userTournamentRepository.FindAsync(f => f.Active == 1 && f.User.Id == request.UserId && f.Tournament.Id == request.TournamentId);
 
             if (isExisting.Any())
             {
-                throw new ApiException() { ErrorCode = "USER_ALREADY_JOINED", ErrorMessage = "User has already joined to this tournament", StatusCode = 500 };
+                throw new ApiException() {ErrorCode = "USER_ALREADY_JOINED", ErrorMessage = "User has already joined to this tournament", StatusCode = 500};
             }
             else
             {
                 var user = await userRepository.GetAsync(request.UserId);
 
-                if (user == null)
-                {
-                    throw new ApiException() { ErrorCode = "USER_NOT_FOUND", ErrorMessage = "User cannot be found", StatusCode = 500 };
-                }
+                if (user == null) throw new ApiException() {ErrorCode = "USER_NOT_FOUND", ErrorMessage = "User cannot be found", StatusCode = 500};
 
                 var tournament = await tournamentRepository.GetAsync(request.TournamentId);
-                if (tournament == null)
-                {
-                    throw new ApiException() { ErrorCode = "TOURNAMENT_NOT_FOUND", ErrorMessage = "Tournament cannot be found", StatusCode = 500 };
-                }
+                if (tournament == null) throw new ApiException() {ErrorCode = "TOURNAMENT_NOT_FOUND", ErrorMessage = "Tournament cannot be found", StatusCode = 500};
 
                 var userTournament = new Repository.Entity.UserTournament
                 {

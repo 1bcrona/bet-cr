@@ -1,247 +1,247 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\lib\" />
-    <Folder Include="wwwroot\static\" />
-  </ItemGroup>
+    <ItemGroup>
+        <Folder Include="wwwroot\lib\"/>
+        <Folder Include="wwwroot\static\"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="10.2.3" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="10.2.3" />
-    <PackageReference Include="MediatR" Version="9.0.0" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.7" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.8.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.7">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="FluentValidation" Version="10.2.3"/>
+        <PackageReference Include="FluentValidation.AspNetCore" Version="10.2.3"/>
+        <PackageReference Include="MediatR" Version="9.0.0"/>
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.7"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.8.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.7">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1"/>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BetCR.Caching\BetCR.Caching.csproj" />
-    <ProjectReference Include="..\BetCR.Repository\BetCR.Repository.csproj" />
-    <ProjectReference Include="..\BetCR.Services\BetCR.Services.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\BetCR.Caching\BetCR.Caching.csproj"/>
+        <ProjectReference Include="..\BetCR.Repository\BetCR.Repository.csproj"/>
+        <ProjectReference Include="..\BetCR.Services\BetCR.Services.csproj"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\images\change.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\change.svg" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\checkmark.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\error.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\goal.svg" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\loading.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\own_goal.svg" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\pen_missed.svg" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\pen_scored.svg" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\r_card.svg" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\subst.svg" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\1.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\101.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\1012.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\1017.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\10296.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\1034.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\105.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\1057.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\1067.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\11.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\12090.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\12116.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\12120.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\12327.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\129.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\13.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\139.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\142.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\15577.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\15659.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\157.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\170.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\176.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\181.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\182.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\187.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\189.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\19.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\194.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\2.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\20.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\200.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\2005.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\2064.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\21.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\211.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\214.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\2162.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\218.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\226.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\2268.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\246.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\249.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\260.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\265.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\269.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\277.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\2815.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\2836.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\286.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\2890.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\3.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\3089.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\3238.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\3289.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\3307.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\3379.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\351.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\355.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\36.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\363.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\365.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\373.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\378.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\380.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\381.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\388.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\3897.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\397.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\4.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\407.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\408.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\4117.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\414.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\4167.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\4172.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\4182.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\42.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\4202.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\422.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\4228.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\4257.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\433.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\435.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\439.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\445.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\448.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\454.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\4547.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\455.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\46.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\464.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\467.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\4995.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\5028.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\505.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\506.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\508.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\510.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\524.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\5297.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\535.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\537.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\5396.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\542.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\555.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\5575.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\562.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\565.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\5685.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\578.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\584.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\5847.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\586.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\589.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\5918.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\593.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\596.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\605.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\606.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\609.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\611.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\625.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\6275.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\628.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\634.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\6477.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\656.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\659.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\6597.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\665.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\6652.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\6693.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\6719.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\674.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\678.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\681.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\692.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\6981.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\6997.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7023.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\704.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7051.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\708.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\711.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\719.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7385.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\74.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7444.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\745.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7450.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7539.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\773.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\78.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7832.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7833.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7842.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7855.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7857.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7879.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7885.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7955.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7957.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7959.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7961.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7991.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7995.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\806.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\812.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\82.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\8231.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\840.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\849.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\86.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\891.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\90.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\925.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\93.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\955.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\958.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\968.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\985.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\987.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\epl.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\laliga.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\seriea.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\superlig.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\team_blank.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\images\y_card.svg" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\helper.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\modal.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\site.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\vendor\ajax-bootstrap-select.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\vendor\jbvalidator.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\static\css\vendor\soccerfield\fifa_soccer_field_1.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\static\css\vendor\soccerfield\soccerfield.3d.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\static\css\vendor\soccerfield\soccerfield.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\static\css\vendor\soccerfield\soccerfield.default.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\static\css\vendor\soccerfield\soccerfield_green.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\static\css\vendor\soccerfield\soccerfield_new.jpg" />
-  </ItemGroup>
+    <ItemGroup>
+        <_ContentIncludedByDefault Remove="wwwroot\images\change.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\change.svg"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\checkmark.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\error.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\goal.svg"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\loading.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\own_goal.svg"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\pen_missed.svg"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\pen_scored.svg"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\r_card.svg"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\subst.svg"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\1.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\101.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\1012.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\1017.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\10296.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\1034.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\105.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\1057.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\1067.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\11.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\12090.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\12116.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\12120.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\12327.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\129.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\13.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\139.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\142.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\15577.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\15659.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\157.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\170.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\176.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\181.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\182.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\187.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\189.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\19.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\194.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\2.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\20.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\200.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\2005.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\2064.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\21.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\211.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\214.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\2162.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\218.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\226.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\2268.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\246.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\249.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\260.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\265.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\269.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\277.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\2815.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\2836.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\286.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\2890.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\3.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\3089.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\3238.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\3289.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\3307.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\3379.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\351.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\355.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\36.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\363.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\365.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\373.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\378.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\380.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\381.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\388.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\3897.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\397.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\4.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\407.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\408.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\4117.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\414.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\4167.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\4172.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\4182.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\42.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\4202.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\422.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\4228.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\4257.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\433.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\435.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\439.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\445.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\448.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\454.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\4547.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\455.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\46.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\464.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\467.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\4995.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\5028.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\505.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\506.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\508.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\510.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\524.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\5297.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\535.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\537.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\5396.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\542.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\555.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\5575.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\562.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\565.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\5685.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\578.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\584.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\5847.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\586.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\589.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\5918.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\593.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\596.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\605.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\606.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\609.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\611.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\625.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\6275.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\628.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\634.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\6477.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\656.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\659.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\6597.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\665.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\6652.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\6693.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\6719.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\674.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\678.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\681.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\692.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\6981.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\6997.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7023.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\704.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7051.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\708.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\711.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\719.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7385.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\74.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7444.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\745.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7450.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7539.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\773.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\78.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7832.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7833.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7842.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7855.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7857.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7879.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7885.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7955.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7957.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7959.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7961.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7991.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\7995.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\806.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\812.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\82.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\8231.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\840.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\849.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\86.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\891.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\90.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\925.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\93.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\955.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\958.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\968.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\985.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\987.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\epl.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\laliga.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\seriea.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\superlig.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\team_logos\team_blank.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\y_card.svg"/>
+        <_ContentIncludedByDefault Remove="wwwroot\js\helper.js"/>
+        <_ContentIncludedByDefault Remove="wwwroot\js\modal.js"/>
+        <_ContentIncludedByDefault Remove="wwwroot\js\site.js"/>
+        <_ContentIncludedByDefault Remove="wwwroot\js\vendor\ajax-bootstrap-select.js"/>
+        <_ContentIncludedByDefault Remove="wwwroot\js\vendor\jbvalidator.js"/>
+        <_ContentIncludedByDefault Remove="wwwroot\static\css\vendor\soccerfield\fifa_soccer_field_1.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\static\css\vendor\soccerfield\soccerfield.3d.css"/>
+        <_ContentIncludedByDefault Remove="wwwroot\static\css\vendor\soccerfield\soccerfield.css"/>
+        <_ContentIncludedByDefault Remove="wwwroot\static\css\vendor\soccerfield\soccerfield.default.css"/>
+        <_ContentIncludedByDefault Remove="wwwroot\static\css\vendor\soccerfield\soccerfield_green.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\static\css\vendor\soccerfield\soccerfield_new.jpg"/>
+    </ItemGroup>
 
 </Project>

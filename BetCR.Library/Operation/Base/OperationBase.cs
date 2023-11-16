@@ -22,7 +22,7 @@ namespace BetCR.Library.Operation.Base
 
         #region Public Methods
 
-        public abstract System.Linq.Expressions.Expression GetExpression(Expression member, ConstantExpression constant1, ConstantExpression constant2);
+        public abstract Expression GetExpression(Expression member, ConstantExpression constant1, ConstantExpression constant2);
 
         #endregion Public Methods
     }

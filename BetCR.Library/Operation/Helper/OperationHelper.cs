@@ -35,12 +35,9 @@ namespace BetCR.Library.Operation.Helper
                 .Where(a => a.DefinedTypes.Any(t => t.Namespace == "BetCR.Library.Operation.Impl"))
                 .SelectMany(s => s.GetTypes())
                 .Where(p => @interface.IsAssignableFrom(p) && p.IsClass && !p.IsAbstract)
-                .Select(t => (IOperation)Activator.CreateInstance(t));
+                .Select(t => (IOperation) Activator.CreateInstance(t));
 
-            foreach (var operation in operationsFound)
-            {
-                _operations[operation.Name] = operation;
-            }
+            foreach (var operation in operationsFound) _operations[operation.Name] = operation;
         }
 
         public IOperation GetOperationByName(string operationName)

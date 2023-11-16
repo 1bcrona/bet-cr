@@ -34,11 +34,7 @@ namespace BetCR.Repository.Entity
 
         public bool IsPrivate { get; set; }
 
-        [NotMapped]
-        public bool IsStill
-        {
-            get { return TournamentEndDateEpoch > DateTimeOffset.UtcNow.ToUnixTimeSeconds(); }
-        }
+        [NotMapped] public bool IsStill => TournamentEndDateEpoch > DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
         [ForeignKey("OwnerUserId")]
         public User Owner
@@ -53,7 +49,7 @@ namespace BetCR.Repository.Entity
             {
                 var dt = DateTimeOffset.FromUnixTimeSeconds(TournamentEndDateEpoch).DateTime;
                 DateTime.SpecifyKind(dt, DateTimeKind.Utc);
-                return (CustomDateTime)dt;
+                return (CustomDateTime) dt;
             }
         }
 
@@ -68,14 +64,13 @@ namespace BetCR.Repository.Entity
             {
                 var dt = DateTimeOffset.FromUnixTimeSeconds(TournameStartDateEpoch).DateTime;
                 DateTime.SpecifyKind(dt, DateTimeKind.Utc);
-                return (CustomDateTime)dt;
+                return (CustomDateTime) dt;
             }
         }
 
         public long TournameStartDateEpoch { get; set; }
 
-        [IgnoreDataMember]
-        public ICollection<UserTournament> UserTournameRels { get; set; }
+        [IgnoreDataMember] public ICollection<UserTournament> UserTournameRels { get; set; }
 
         #endregion Public Properties
     }

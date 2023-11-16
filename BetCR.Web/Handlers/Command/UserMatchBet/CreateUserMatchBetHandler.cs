@@ -31,7 +31,6 @@ namespace BetCR.Web.Handlers.Command.UserMatchBet
 
         public async Task<Match> Handle(CreateUserMatchBetCommand request, CancellationToken cancellationToken)
         {
-
             await using var transaction = await _unitOfWork.DbContext.Database.BeginTransactionAsync(cancellationToken);
 
             var userMatchBetRepository = _unitOfWork.GetRepository<Repository.Entity.UserMatchBet, string>();
@@ -39,10 +38,7 @@ namespace BetCR.Web.Handlers.Command.UserMatchBet
             var isBetExist = await userMatchBetRepository.FindAsync(w =>
                 w.User.Id == request.UserId && w.Match.Id == request.MatchId && w.Active == 1);
 
-            if (isBetExist.Any())
-            {
-                throw new ApiException() { ErrorCode = "USER_ALREADY_BET", StatusCode = 500, ErrorMessage = "User has already bet for this match" };
-            }
+            if (isBetExist.Any()) throw new ApiException() {ErrorCode = "USER_ALREADY_BET", StatusCode = 500, ErrorMessage = "User has already bet for this match"};
 
             var userRepository = _unitOfWork.GetRepository<User, string>();
             var matchRepository = _unitOfWork.GetRepository<Match, string>();
@@ -59,7 +55,7 @@ namespace BetCR.Web.Handlers.Command.UserMatchBet
                 Active = 1,
                 HomeTeamScore = request.HomeTeamScore,
                 Leverage = request.Leverage,
-                ProcessState = 1,
+                ProcessState = 1
             });
 
             await _unitOfWork.SaveChangesAsync();

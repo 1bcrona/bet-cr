@@ -29,30 +29,17 @@ namespace BetCR.Web.Handlers.Query.UserAction
 
         public async Task<List<Repository.Entity.UserAction>> Handle(GetUserActionQuery request, CancellationToken cancellationToken)
         {
-
             var userActionRepository = _unitOfWork.GetRepository<Repository.Entity.UserAction, string>();
 
 
             var predicate = PredicateBuilder.True<Repository.Entity.UserAction>();
-            if (request.FromUserId != null)
-            {
-                predicate = predicate.And(p => p.FromUser.Id == request.FromUserId);
-            }
+            if (request.FromUserId != null) predicate = predicate.And(p => p.FromUser.Id == request.FromUserId);
 
-            if (request.ToUserId != null)
-            {
-                predicate = predicate.And(p => p.ToUser.Id == request.ToUserId);
-            }
+            if (request.ToUserId != null) predicate = predicate.And(p => p.ToUser.Id == request.ToUserId);
 
-            if (request.ActionType != null)
-            {
-                predicate = predicate.And(p => p.ActionType == request.ActionType);
-            }
+            if (request.ActionType != null) predicate = predicate.And(p => p.ActionType == request.ActionType);
 
-            if (request.ActionStatus != null)
-            {
-                predicate = predicate.And(p => p.ActionStatus == request.ActionStatus);
-            }
+            if (request.ActionStatus != null) predicate = predicate.And(p => p.ActionStatus == request.ActionStatus);
             predicate = predicate.And(p => p.Active == 1);
 
             var userActions = await userActionRepository.FindAsync(predicate);

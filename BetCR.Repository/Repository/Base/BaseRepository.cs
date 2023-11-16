@@ -22,18 +22,11 @@ namespace BetCR.Repository.Repository.Base
 
         public BaseRepository(DbContext context)
         {
-            this._dbContext = context;
-            this._dbSet = context.Set<T>();
+            _dbContext = context;
+            _dbSet = context.Set<T>();
         }
 
-        public SQLiteDbContext DbContext
-
-        {
-            get
-            {
-                return _dbContext as SQLiteDbContext;
-            }
-        }
+        public SQLiteDbContext DbContext => _dbContext as SQLiteDbContext;
 
         #endregion Public Constructors
 
@@ -59,10 +52,7 @@ namespace BetCR.Repository.Repository.Base
         {
             var existing = (await FindAsync(f => Equals(f.Id, id))).FirstOrDefault();
 
-            if (existing != null)
-            {
-                await DeleteAsync(existing);
-            }
+            if (existing != null) await DeleteAsync(existing);
         }
 
         public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
@@ -80,13 +70,9 @@ namespace BetCR.Repository.Repository.Base
         {
             List<T> items;
             if (pageSize != null && pageIndex != null)
-            {
                 items = await _dbSet.Skip(pageSize.Value * pageIndex.Value).Take(pageSize.Value).ToListAsync();
-            }
             else
-            {
                 items = await _dbSet.ToListAsync();
-            }
 
             return items;
         }
@@ -114,13 +100,9 @@ namespace BetCR.Repository.Repository.Base
             var existing = await GetAsync(entity.Id);
 
             if (existing == null)
-            {
                 await AddAsync(entity);
-            }
             else
-            {
                 await UpdateAsync(entity);
-            }
 
             return entity;
         }

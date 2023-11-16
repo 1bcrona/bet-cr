@@ -22,7 +22,7 @@ namespace BetCR.Library
                 Expression<Func<T, bool>> groupExp = null;
                 foreach (var condition in group)
                 {
-                    String[] columNames = condition.ColumnName.Split('.');
+                    var columNames = condition.ColumnName.Split('.');
                     var con = GetExpression(param, condition, condition.ColumnName) as Expression<Func<T, bool>>;
 
                     if (groupExp == null)
@@ -35,6 +35,7 @@ namespace BetCR.Library
                         groupExp = Expression.Lambda<Func<T, bool>>(body, groupExp.Parameters[0]);
                     }
                 }
+
                 if (exp != null)
                 {
                     var body = Expression.AndAlso(groupExp.Body, exp.Body);
@@ -45,6 +46,7 @@ namespace BetCR.Library
                     exp = groupExp;
                 }
             }
+
             return exp;
         }
 
@@ -69,6 +71,7 @@ namespace BetCR.Library
                 {
                     parameterExpression = parameter;
                 }
+
                 var innerProperties = columName.Substring(innerProperty + 1);
                 expression = GetExpression(parameterExpression, condition, innerProperties);
                 if (isCollection)
@@ -95,10 +98,7 @@ namespace BetCR.Library
         public static Expression GetExpression(Expression ex, Condition.Condition condition)
         {
             var operation = Operation.Impl.Operation.ByName(condition.Type);
-            if (operation == null)
-            {
-                throw new Exception("OPERATION_NOT_FOUND");
-            }
+            if (operation == null) throw new Exception("OPERATION_NOT_FOUND");
 
             var con = operation.GetExpression(ex,
                 Expression.Constant(condition.Values[0]),
@@ -108,10 +108,7 @@ namespace BetCR.Library
 
         public static Expression<Func<T, bool>> ToExpression<T>(this List<Condition.Condition> query)
         {
-            if (query == null || query.Count == 0)
-            {
-                return GetTrueExpression(typeof(T)) as Expression<Func<T, bool>>;
-            }
+            if (query == null || query.Count == 0) return GetTrueExpression(typeof(T)) as Expression<Func<T, bool>>;
             return CreateExpression<T>(query);
         }
 
@@ -129,7 +126,7 @@ namespace BetCR.Library
             var resultParameterVisitor = new ParameterVisitor();
             resultParameterVisitor.Visit(parameter);
             var resultParameter = resultParameterVisitor.Parameter;
-            return Expression.Lambda(predicate, (ParameterExpression)resultParameter);
+            return Expression.Lambda(predicate, (ParameterExpression) resultParameter);
         }
 
         #endregion Private Methods
@@ -140,11 +137,7 @@ namespace BetCR.Library
         {
             #region Public Properties
 
-            public Expression Parameter
-            {
-                get;
-                private set;
-            }
+            public Expression Parameter { get; private set; }
 
             #endregion Public Properties
 

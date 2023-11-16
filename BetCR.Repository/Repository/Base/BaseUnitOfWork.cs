@@ -30,10 +30,10 @@ namespace BetCR.Repository.Repository.Base
 
         public BaseUnitOfWork(DataContext context, IPublisher publisher)
         {
-            this._dbContext = context;
+            _dbContext = context;
             _publisher = publisher;
 
-            this._id = Guid.NewGuid().ToString("D");
+            _id = Guid.NewGuid().ToString("D");
         }
 
         #endregion Public Constructors
@@ -52,7 +52,7 @@ namespace BetCR.Repository.Repository.Base
 
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -72,23 +72,20 @@ namespace BetCR.Repository.Repository.Base
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
-            {
+            if (!disposed)
                 if (disposing)
                 {
-                    this.disposed = true;
-                    this.DbContext.ChangeTracker.StateChanged -= ChangeTracker_StateChanged;
+                    disposed = true;
+                    DbContext.ChangeTracker.StateChanged -= ChangeTracker_StateChanged;
                 }
 
-            }
-
-            this.disposed = true;
+            disposed = true;
         }
 
         public void EnableTracking()
         {
-            this.DbContext.ChangeTracker.DetectChanges();
-            this.DbContext.ChangeTracker.StateChanged += ChangeTracker_StateChanged;
+            DbContext.ChangeTracker.DetectChanges();
+            DbContext.ChangeTracker.StateChanged += ChangeTracker_StateChanged;
         }
 
 
@@ -99,13 +96,13 @@ namespace BetCR.Repository.Repository.Base
 
             var context = (sender as Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker)?.Context;
             var entityId = e.Entry.Entity.GetType().GetProperty("Id")?.GetValue(e.Entry.Entity)?.ToString();
-            var entityChangeModel = new EntityChangeModel { EntityId = entityId, Entity = e.Entry.Entity, Context = context };
+            var entityChangeModel = new EntityChangeModel {EntityId = entityId, Entity = e.Entry.Entity, Context = context};
 
             entityChangeModel.EventType = e.NewState switch
             {
-                EntityState.Deleted => String.Join(".", e.Entry.Entity.GetType().Name.ToLowerInvariant(), "deleted"),
-                EntityState.Unchanged when e.OldState == EntityState.Modified => String.Join(".", e.Entry.Entity.GetType().Name.ToLowerInvariant(), "updated"),
-                EntityState.Unchanged when e.OldState == EntityState.Added => String.Join(".",
+                EntityState.Deleted => string.Join(".", e.Entry.Entity.GetType().Name.ToLowerInvariant(), "deleted"),
+                EntityState.Unchanged when e.OldState == EntityState.Modified => string.Join(".", e.Entry.Entity.GetType().Name.ToLowerInvariant(), "updated"),
+                EntityState.Unchanged when e.OldState == EntityState.Added => string.Join(".",
                     e.Entry.Entity.GetType().Name.ToLowerInvariant(), "added"),
                 _ => entityChangeModel.EventType
             };
@@ -115,6 +112,4 @@ namespace BetCR.Repository.Repository.Base
 
         #endregion Protected Methods
     }
-
-
 }

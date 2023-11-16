@@ -1,0 +1,37 @@
+﻿@model IEnumerable<BetCR.Repository.ValueObject.Lineup>
+@{
+    var colors = ViewData["colors"] as List<string> ?? new List<string>()
+    {
+        "#fff",
+        "#000"
+    };
+    var color = colors.FirstOrDefault();
+    var backgroundColor = colors.LastOrDefault();
+
+    <div class="table-responsive " style="overflow:hidden">
+        <table class="table table-borderless no-cellpadding" style="word-wrap: break-word;table-layout: fixed">
+            <tbody>
+            @{
+                var numbers = Model.OrderBy(o => o.Number);
+                foreach (var item in numbers)
+                {
+                    <tr>
+                        <td>
+                            <button type="button" class="rounded-button" data-bs-color="dark" style="background-color : @backgroundColor; color: @color; width: 50px;height: 50px">@item.Number</button>
+                        </td>
+
+                        <td class="d-s-none d-xs-none d-md-none d-lg-table-cell align-middle">
+                            <span>
+                                <span>
+                                    <small class="text-uppercase">@item.Player.FullName</small>
+                                </span>
+                            </span>
+                        </td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+
+}

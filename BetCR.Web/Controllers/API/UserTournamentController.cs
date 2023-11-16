@@ -56,7 +56,7 @@ namespace BetCR.Web.Controllers.API
                     .SelectMany(s => s.Select(s1 => s1.Exception?.ToString() ?? s1.ErrorMessage))
                     .ToList();
 
-                var combinedErrors = String.Join("/r/n", errors);
+                var combinedErrors = string.Join("/r/n", errors);
                 response.Result = combinedErrors;
                 response.Result = combinedErrors;
 
@@ -65,7 +65,7 @@ namespace BetCR.Web.Controllers.API
 
             var userId = _accessor.HttpContext?.User.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            await _mediator.Send(new DeleteUserTournamentCommand { TournamentId = tournamentId, UserId = userId });
+            await _mediator.Send(new DeleteUserTournamentCommand {TournamentId = tournamentId, UserId = userId});
             response.Data = "Tournament Leave Operation Successfull";
             response.Result = "Tournament Delete Operation Successful";
 
@@ -92,7 +92,7 @@ namespace BetCR.Web.Controllers.API
                     .SelectMany(s => s.Select(s1 => s1.Exception?.ToString() ?? s1.ErrorMessage))
                     .ToList();
 
-                var combinedErrors = String.Join("/r/n", errors);
+                var combinedErrors = string.Join("/r/n", errors);
                 response.Result = combinedErrors;
 
                 return BadRequest(response);
@@ -126,7 +126,7 @@ namespace BetCR.Web.Controllers.API
                     .SelectMany(s => s.Select(s1 => s1.Exception?.ToString() ?? s1.ErrorMessage))
                     .ToList();
 
-                var combinedErrors = String.Join("/r/n", errors);
+                var combinedErrors = string.Join("/r/n", errors);
                 response.Result = combinedErrors;
 
                 return BadRequest(response);
@@ -170,7 +170,7 @@ namespace BetCR.Web.Controllers.API
                     .SelectMany(s => s.Select(s1 => s1.Exception?.ToString() ?? s1.ErrorMessage))
                     .ToList();
 
-                var combinedErrors = String.Join("/r/n", errors);
+                var combinedErrors = string.Join("/r/n", errors);
                 response.Result = combinedErrors;
 
                 return BadRequest(response);
@@ -179,23 +179,19 @@ namespace BetCR.Web.Controllers.API
             UserAction action = null;
 
             if (model.Response)
-            {
                 await _mediator.Send(new JoinTournamentCommand()
                 {
                     InviteId = model.InvitationId,
                     TournamentId = model.TournamentId,
                     UserId = userId
                 });
-            }
             else
-            {
                 action = await _mediator.Send(new UpdateUserActionCommand()
                 {
                     ActionResult = model.Response.ToString().ToUpperInvariant(),
                     ActionStatus = UserActionStatus.RESPOND,
                     Id = model.InvitationId
                 });
-            }
 
             response.Result = $"Operation Completed";
             response.Data = action;
@@ -217,13 +213,13 @@ namespace BetCR.Web.Controllers.API
                     .SelectMany(s => s.Select(s1 => s1.Exception?.ToString() ?? s1.ErrorMessage))
                     .ToList();
 
-                var combinedErrors = String.Join("/r/n", errors);
+                var combinedErrors = string.Join("/r/n", errors);
                 response.Result = combinedErrors;
 
                 return BadRequest(response);
             }
 
-            var result = await _mediator.Send(new GetUserTournamentSearchUserQuery() { Email = model.Email, TournamentId = model.TournamentId, Id = model.Id });
+            var result = await _mediator.Send(new GetUserTournamentSearchUserQuery() {Email = model.Email, TournamentId = model.TournamentId, Id = model.Id});
 
             response.Data = result;
             response.Result = "Success";

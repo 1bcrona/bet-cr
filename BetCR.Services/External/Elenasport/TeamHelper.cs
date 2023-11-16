@@ -12,7 +12,7 @@ namespace BetCR.Services.External.Elenasport
 
         public static string GetColorsOfLogo(string uri)
         {
-            if (string.IsNullOrEmpty(uri)) return String.Join(";", "blue", "white");
+            if (string.IsNullOrEmpty(uri)) return string.Join(";", "blue", "white");
             var colorThief = new ColorThief();
             var image = GetImage(uri);
             var color = colorThief.GetPalette(image, 8);
@@ -21,7 +21,7 @@ namespace BetCR.Services.External.Elenasport
 
         public static string GetColorsOfTeam(TeamResult team)
         {
-            return team.BadgeURL == null ? String.Join(";", "blue", "white") : GetColorsOfLogo((team.BadgeURL));
+            return team.BadgeURL == null ? string.Join(";", "blue", "white") : GetColorsOfLogo(team.BadgeURL);
         }
 
         #endregion Public Methods

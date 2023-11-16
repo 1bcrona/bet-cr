@@ -68,7 +68,7 @@ namespace BetCR.Web
             var path = Path.Combine(env.ContentRootPath, "wwwroot");
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new PhysicalFileProvider(path),
+                FileProvider = new PhysicalFileProvider(path)
             });
 
             app.UseRouting();
@@ -94,7 +94,7 @@ namespace BetCR.Web
                         default:
                             response.Result = "UNKNWN";
                             response.ErrorMessage = "An error occured";
-                            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                            context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                             break;
                     }
 
@@ -105,16 +105,16 @@ namespace BetCR.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "id",
-                    pattern: "{controller}/{id}");
+                    "id",
+                    "{controller}/{id}");
 
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    "default",
+                    "{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapControllerRoute(
-                    name: "api",
-                    pattern: "api/{controller=Home}/{action=Index}/{id?}");
+                    "api",
+                    "api/{controller=Home}/{action=Index}/{id?}");
             });
         }
 
@@ -133,17 +133,14 @@ namespace BetCR.Web
             services.AddScoped<DataContext, SQLiteDbContext>();
 
             services.AddSingleton<ICache, InMemoryCache>();
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
-            {
-                options.LoginPath = new PathString("/User/Login/");
-            });
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => { options.LoginPath = new PathString("/User/Login/"); });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddMediatR(Assembly.GetAssembly(GetType()));
             services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginModelValidator>());
             services.AddControllersWithViews();
             services.AddControllers().AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             );
 
             services.AddHostedService<TrackingService>();

@@ -8,38 +8,27 @@ namespace BetCR.Services.External.Elenasport.Model
     {
         #region Public Properties
 
-        [JsonProperty("d")]
-        public int Draw { get; set; }
+        [JsonProperty("d")] public int Draw { get; set; }
 
-        [JsonProperty("ga")]
-        public int GoalAgainst { get; set; }
+        [JsonProperty("ga")] public int GoalAgainst { get; set; }
 
-        [JsonProperty("gd")]
-        public int GoalDifference { get; set; }
+        [JsonProperty("gd")] public int GoalDifference { get; set; }
 
-        [JsonProperty("gf")]
-        public int GoalFor { get; set; }
+        [JsonProperty("gf")] public int GoalFor { get; set; }
 
-        [JsonProperty("l")]
-        public int Lost { get; set; }
+        [JsonProperty("l")] public int Lost { get; set; }
 
-        [JsonProperty("p")]
-        public int Played { get; set; }
+        [JsonProperty("p")] public int Played { get; set; }
 
-        [JsonProperty("pts")]
-        public int Point { get; set; }
+        [JsonProperty("pts")] public int Point { get; set; }
 
-        [JsonProperty("pos")]
-        public int Position { get; set; }
+        [JsonProperty("pos")] public int Position { get; set; }
 
-        [JsonIgnore]
-        public string SerializedObject { get; set; }
+        [JsonIgnore] public string SerializedObject { get; set; }
 
-        [JsonProperty("idTeam")]
-        public string TeamId { get; set; }
+        [JsonProperty("idTeam")] public string TeamId { get; set; }
 
-        [JsonProperty("teamName")]
-        public string TeamName { get; set; }
+        [JsonProperty("teamName")] public string TeamName { get; set; }
 
         public TeamResult TeamResult
         {
@@ -50,8 +39,7 @@ namespace BetCR.Services.External.Elenasport.Model
             }
         }
 
-        [JsonProperty("w")]
-        public int Win { get; set; }
+        [JsonProperty("w")] public int Win { get; set; }
 
         #endregion Public Properties
     }

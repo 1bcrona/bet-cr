@@ -17,18 +17,15 @@ namespace BetCR.Library.Operation.Impl
 
         #region Public Methods
 
-        public override System.Linq.Expressions.Expression GetExpression(Expression member, ConstantExpression constant1, ConstantExpression constant2)
+        public override Expression GetExpression(Expression member, ConstantExpression constant1, ConstantExpression constant2)
         {
             var isCollection = typeof(IEnumerable).IsAssignableFrom(member.Type);
-            if (!isCollection)
-            {
-                throw new ArgumentException("The 'IArrayContainsn' operation only supports List Properties.");
-            }
+            if (!isCollection) throw new ArgumentException("The 'IArrayContainsn' operation only supports List Properties.");
 
-            var arrayContainsMethod = member.Type.GetMethod("Contains", new[] { member.Type.GetGenericArguments()[0] });
+            var arrayContainsMethod = member.Type.GetMethod("Contains", new[] {member.Type.GetGenericArguments()[0]});
 
-            return System.Linq.Expressions.Expression.Call(member, arrayContainsMethod, constant1)
-                   .AddNullCheck(member);
+            return Expression.Call(member, arrayContainsMethod, constant1)
+                .AddNullCheck(member);
         }
 
         #endregion Public Methods

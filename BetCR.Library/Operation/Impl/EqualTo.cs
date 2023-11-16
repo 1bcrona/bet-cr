@@ -21,12 +21,9 @@ namespace BetCR.Library.Operation.Impl
             Expression constant = constant1;
 
             if (member.Type == typeof(string))
-            {
                 //constant = constant1.TrimToLower();
-
                 return Expression.Equal(member, constant)
-                       .AddNullCheck(member);
-            }
+                    .AddNullCheck(member);
 
             return Expression.Equal(member, constant);
         }

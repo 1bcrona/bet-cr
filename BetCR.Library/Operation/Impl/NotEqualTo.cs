@@ -11,7 +11,9 @@ namespace BetCR.Library.Operation.Impl
         #region Public Constructors
 
         /// <inheritdoc />
-        public NotEqualTo() : base("NotEqualTo") { }
+        public NotEqualTo() : base("NotEqualTo")
+        {
+        }
 
         #endregion Public Constructors
 
@@ -27,7 +29,7 @@ namespace BetCR.Library.Operation.Impl
                 constant = constant1.TrimToLower();
 
                 return Expression.NotEqual(member.TrimToLower(), constant)
-                       .AddNullCheck(member);
+                    .AddNullCheck(member);
             }
 
             return Expression.NotEqual(member, constant);

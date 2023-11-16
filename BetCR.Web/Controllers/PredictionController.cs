@@ -43,7 +43,7 @@ namespace BetCR.Web.Controllers
         public async Task<IActionResult> Index([FromRoute] string week)
         {
             week = string.IsNullOrEmpty(week) ? FixtureHelper.GetWeek(DateTime.Now) : week;
-            var result = await _mediator.Send(new PredictionDetailQuery { Week = week });
+            var result = await _mediator.Send(new PredictionDetailQuery {Week = week});
             ViewBag.Title = "prediction";
             return View(result.ToList());
         }

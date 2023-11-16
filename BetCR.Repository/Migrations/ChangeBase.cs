@@ -9,215 +9,215 @@ namespace BetCR.Repository.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "UpsertDateEpoch",
-                table: "UserMatchBet");
+                "UpsertDateEpoch",
+                "UserMatchBet");
 
             migrationBuilder.DropColumn(
-                name: "UpsertDateEpoch",
-                table: "User");
+                "UpsertDateEpoch",
+                "User");
 
             migrationBuilder.DropColumn(
-                name: "UpsertDateEpoch",
-                table: "Tournament");
+                "UpsertDateEpoch",
+                "Tournament");
 
             migrationBuilder.DropColumn(
-                name: "UpsertDateEpoch",
-                table: "TeamLeagueRel");
+                "UpsertDateEpoch",
+                "TeamLeagueRel");
 
             migrationBuilder.DropColumn(
-                name: "UpsertDateEpoch",
-                table: "Team");
+                "UpsertDateEpoch",
+                "Team");
 
             migrationBuilder.DropColumn(
-                name: "UpsertDateEpoch",
-                table: "StageStanding");
+                "UpsertDateEpoch",
+                "StageStanding");
 
             migrationBuilder.DropColumn(
-                name: "UpsertDateEpoch",
-                table: "Stage");
+                "UpsertDateEpoch",
+                "Stage");
 
             migrationBuilder.DropColumn(
-                name: "UpsertDateEpoch",
-                table: "MatchEvent");
+                "UpsertDateEpoch",
+                "MatchEvent");
 
             migrationBuilder.DropColumn(
-                name: "UpsertDateEpoch",
-                table: "Match");
+                "UpsertDateEpoch",
+                "Match");
 
             migrationBuilder.DropColumn(
-                name: "UpsertDateEpoch",
-                table: "League");
+                "UpsertDateEpoch",
+                "League");
 
             migrationBuilder.RenameColumn(
-                name: "Active",
-                table: "UserMatchBet",
-                newName: "ACTIVE");
+                "Active",
+                "UserMatchBet",
+                "ACTIVE");
 
             migrationBuilder.RenameColumn(
-                name: "Active",
-                table: "User",
-                newName: "ACTIVE");
+                "Active",
+                "User",
+                "ACTIVE");
 
             migrationBuilder.RenameColumn(
-                name: "Active",
-                table: "Tournament",
-                newName: "ACTIVE");
+                "Active",
+                "Tournament",
+                "ACTIVE");
 
             migrationBuilder.RenameColumn(
-                name: "Active",
-                table: "TeamLeagueRel",
-                newName: "ACTIVE");
+                "Active",
+                "TeamLeagueRel",
+                "ACTIVE");
 
             migrationBuilder.RenameColumn(
-                name: "Active",
-                table: "Team",
-                newName: "ACTIVE");
+                "Active",
+                "Team",
+                "ACTIVE");
 
             migrationBuilder.RenameColumn(
-                name: "Active",
-                table: "StageStanding",
-                newName: "ACTIVE");
+                "Active",
+                "StageStanding",
+                "ACTIVE");
 
             migrationBuilder.RenameColumn(
-                name: "Active",
-                table: "Stage",
-                newName: "ACTIVE");
+                "Active",
+                "Stage",
+                "ACTIVE");
 
             migrationBuilder.RenameColumn(
-                name: "Active",
-                table: "MatchEvent",
-                newName: "ACTIVE");
+                "Active",
+                "MatchEvent",
+                "ACTIVE");
 
             migrationBuilder.RenameColumn(
-                name: "Active",
-                table: "Match",
-                newName: "ACTIVE");
+                "Active",
+                "Match",
+                "ACTIVE");
 
             migrationBuilder.RenameColumn(
-                name: "Active",
-                table: "League",
-                newName: "ACTIVE");
+                "Active",
+                "League",
+                "ACTIVE");
         }
 
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "ACTIVE",
-                table: "UserMatchBet",
-                newName: "Active");
+                "ACTIVE",
+                "UserMatchBet",
+                "Active");
 
             migrationBuilder.RenameColumn(
-                name: "ACTIVE",
-                table: "User",
-                newName: "Active");
+                "ACTIVE",
+                "User",
+                "Active");
 
             migrationBuilder.RenameColumn(
-                name: "ACTIVE",
-                table: "Tournament",
-                newName: "Active");
+                "ACTIVE",
+                "Tournament",
+                "Active");
 
             migrationBuilder.RenameColumn(
-                name: "ACTIVE",
-                table: "TeamLeagueRel",
-                newName: "Active");
+                "ACTIVE",
+                "TeamLeagueRel",
+                "Active");
 
             migrationBuilder.RenameColumn(
-                name: "ACTIVE",
-                table: "Team",
-                newName: "Active");
+                "ACTIVE",
+                "Team",
+                "Active");
 
             migrationBuilder.RenameColumn(
-                name: "ACTIVE",
-                table: "StageStanding",
-                newName: "Active");
+                "ACTIVE",
+                "StageStanding",
+                "Active");
 
             migrationBuilder.RenameColumn(
-                name: "ACTIVE",
-                table: "Stage",
-                newName: "Active");
+                "ACTIVE",
+                "Stage",
+                "Active");
 
             migrationBuilder.RenameColumn(
-                name: "ACTIVE",
-                table: "MatchEvent",
-                newName: "Active");
+                "ACTIVE",
+                "MatchEvent",
+                "Active");
 
             migrationBuilder.RenameColumn(
-                name: "ACTIVE",
-                table: "Match",
-                newName: "Active");
+                "ACTIVE",
+                "Match",
+                "Active");
 
             migrationBuilder.RenameColumn(
-                name: "ACTIVE",
-                table: "League",
-                newName: "Active");
+                "ACTIVE",
+                "League",
+                "Active");
 
             migrationBuilder.AddColumn<long>(
-                name: "UpsertDateEpoch",
-                table: "UserMatchBet",
-                type: "INTEGER",
+                "UpsertDateEpoch",
+                "UserMatchBet",
+                "INTEGER",
                 nullable: false,
                 defaultValue: 0L);
 
             migrationBuilder.AddColumn<long>(
-                name: "UpsertDateEpoch",
-                table: "User",
-                type: "INTEGER",
+                "UpsertDateEpoch",
+                "User",
+                "INTEGER",
                 nullable: false,
                 defaultValue: 0L);
 
             migrationBuilder.AddColumn<long>(
-                name: "UpsertDateEpoch",
-                table: "Tournament",
-                type: "INTEGER",
+                "UpsertDateEpoch",
+                "Tournament",
+                "INTEGER",
                 nullable: false,
                 defaultValue: 0L);
 
             migrationBuilder.AddColumn<long>(
-                name: "UpsertDateEpoch",
-                table: "TeamLeagueRel",
-                type: "INTEGER",
+                "UpsertDateEpoch",
+                "TeamLeagueRel",
+                "INTEGER",
                 nullable: false,
                 defaultValue: 0L);
 
             migrationBuilder.AddColumn<long>(
-                name: "UpsertDateEpoch",
-                table: "Team",
-                type: "INTEGER",
+                "UpsertDateEpoch",
+                "Team",
+                "INTEGER",
                 nullable: false,
                 defaultValue: 0L);
 
             migrationBuilder.AddColumn<long>(
-                name: "UpsertDateEpoch",
-                table: "StageStanding",
-                type: "INTEGER",
+                "UpsertDateEpoch",
+                "StageStanding",
+                "INTEGER",
                 nullable: false,
                 defaultValue: 0L);
 
             migrationBuilder.AddColumn<long>(
-                name: "UpsertDateEpoch",
-                table: "Stage",
-                type: "INTEGER",
+                "UpsertDateEpoch",
+                "Stage",
+                "INTEGER",
                 nullable: false,
                 defaultValue: 0L);
 
             migrationBuilder.AddColumn<long>(
-                name: "UpsertDateEpoch",
-                table: "MatchEvent",
-                type: "INTEGER",
+                "UpsertDateEpoch",
+                "MatchEvent",
+                "INTEGER",
                 nullable: false,
                 defaultValue: 0L);
 
             migrationBuilder.AddColumn<long>(
-                name: "UpsertDateEpoch",
-                table: "Match",
-                type: "INTEGER",
+                "UpsertDateEpoch",
+                "Match",
+                "INTEGER",
                 nullable: false,
                 defaultValue: 0L);
 
             migrationBuilder.AddColumn<long>(
-                name: "UpsertDateEpoch",
-                table: "League",
-                type: "INTEGER",
+                "UpsertDateEpoch",
+                "League",
+                "INTEGER",
                 nullable: false,
                 defaultValue: 0L);
         }

@@ -52,7 +52,7 @@ namespace BetCR.Services.External.APIFootball
 
         static ApiFootballFetcher()
         {
-            _eventDictionary = new()
+            _eventDictionary = new List<Tuple<Func<Model.MatchEvents.Event, bool>, string>>
             {
                 new Tuple<Func<Model.MatchEvents.Event, bool>, string>(@event => @event.Type == "Goal" && @event.Detail == "Normal Goal", "GOAL"),
                 new Tuple<Func<Model.MatchEvents.Event, bool>, string>(@event => @event.Type == "Goal" && @event.Detail == "Penalty", "PEN_SCORED"),
@@ -130,7 +130,7 @@ namespace BetCR.Services.External.APIFootball
                         .FirstOrDefault() ?? new MatchEvent
                         {
                             Id = Guid.NewGuid().ToString("D"),
-                            Match = match,
+                            Match = match
                         };
 
                     matchEvent.HomeTeamScore = fixtureResult?.Goals.Home;
@@ -170,7 +170,7 @@ namespace BetCR.Services.External.APIFootball
                                     _ => "NONE"
                                 },
                                 Player = new Player {FullName = s.Player.Name, Name = s.Player.Name}
-                            }).ToList(),
+                            }).ToList()
                     };
 
 
@@ -191,10 +191,7 @@ namespace BetCR.Services.External.APIFootball
                             Player = new Player {FullName = s.Player.Name, Name = s.Player.Name}
                         }).ToList();
 
-                    if (homeSubs != null)
-                    {
-                        matchEvent.MatchLineup.HomeTeamLineup?.AddRange(homeSubs);
-                    }
+                    if (homeSubs != null) matchEvent.MatchLineup.HomeTeamLineup?.AddRange(homeSubs);
 
                     var awaySubs = fixtureResult?.Lineups?.Where(w => w.Team.Id.ToString() == match.AwayTeam.ExternalId).SelectMany(s => s.Substitutes)
                         .Select(s => new Lineup
@@ -213,10 +210,7 @@ namespace BetCR.Services.External.APIFootball
                             Player = new Player {FullName = s.Player.Name, Name = s.Player.Name}
                         }).ToList();
 
-                    if (awaySubs != null)
-                    {
-                        matchEvent.MatchLineup.AwayTeamLineup?.AddRange(awaySubs);
-                    }
+                    if (awaySubs != null) matchEvent.MatchLineup.AwayTeamLineup?.AddRange(awaySubs);
 
                     matchEvent.MatchLineup.AwayTeamLineup?.AddRange(awaySubs);
 
@@ -255,7 +249,7 @@ namespace BetCR.Services.External.APIFootball
                                     Name = s.Player.Name
                                 },
                                 Player2 = s.Assist != null ? new Player {FullName = s.Assist?.Name, Name = s.Assist?.Name} : null
-                            }).ToList(),
+                            }).ToList()
                     };
 
                     match.ResultState = fixtureResult?.Fixture.Status.Short == "FT" ? 2 : 1;
@@ -295,7 +289,7 @@ namespace BetCR.Services.External.APIFootball
                 {
                     await using var transaction = await _unitOfWork.DbContext.Database.BeginTransactionAsync();
                     var fixtureResult = t.ToObject<FixturesResult>(_serializer);
-                    if (String.IsNullOrEmpty(fixtureResult.Fixture.Id)) continue;
+                    if (string.IsNullOrEmpty(fixtureResult.Fixture.Id)) continue;
                     var existingMatch = (await matchRepository.FindAsync(f => f.ExternalId == fixtureResult.Fixture.Id)).FirstOrDefault();
                     if (existingMatch != null) continue;
 
@@ -391,7 +385,7 @@ namespace BetCR.Services.External.APIFootball
                     .FirstOrDefault() ?? new StageStanding
                     {
                         Id = Guid.NewGuid().ToString("D"),
-                        Stage = stage,
+                        Stage = stage
                     };
                 stageStanding.Standings = new List<Standing>();
                 var standings = data[0]["league"]?["standings"]?.FirstOrDefault();

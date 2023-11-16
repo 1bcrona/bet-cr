@@ -15,7 +15,7 @@ namespace BetCR.Library.Tracking
 
         public Subscriber(IPublisher<T> publisher)
         {
-            this._Publisher = publisher;
+            _Publisher = publisher;
         }
 
         #endregion Public Constructors
@@ -62,7 +62,7 @@ namespace BetCR.Library.Tracking
 
         public Subscriber(IPublisher publisher)
         {
-            this._Publisher = publisher;
+            _Publisher = publisher;
         }
 
         #endregion Public Constructors

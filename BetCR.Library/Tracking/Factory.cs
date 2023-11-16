@@ -13,13 +13,9 @@ namespace BetCR.Library.Tracking
         {
             s_Publishers.TryGetValue(name, out var publisher);
 
-            if (publisher == null)
-            {
-                s_Publishers[name] = new Publisher(name);
-            }
+            if (publisher == null) s_Publishers[name] = new Publisher(name);
 
             return s_Publishers[name];
-
         }
     }
 }

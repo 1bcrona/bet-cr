@@ -6,11 +6,9 @@ namespace BetCR.Services.External.Elenasport.Model
     {
         #region Public Properties
 
-        [JsonProperty("fullName")]
-        public string FullName { get; set; }
+        [JsonProperty("fullName")] public string FullName { get; set; }
 
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        [JsonProperty("name")] public string Name { get; set; }
 
         #endregion Public Properties
     }

@@ -32,10 +32,10 @@ namespace BetCR.Services
             var repository = _unitOfWork.GetRepository<UserMatchBet, string>();
 
             var bets = await repository.FindAsync(f =>
-                                                        f.ProcessState == 1
-                                                       && f.Match.ResultState == 2
-                                                       && f.Active == 1
-                                                       && f.Match.Active == 1);
+                f.ProcessState == 1
+                && f.Match.ResultState == 2
+                && f.Active == 1
+                && f.Match.Active == 1);
 
             foreach (var bet in bets)
             {
@@ -47,7 +47,7 @@ namespace BetCR.Services
             }
         }
 
-          #endregion Public Methods
+        #endregion Public Methods
 
         #region Private Methods
 
@@ -57,14 +57,11 @@ namespace BetCR.Services
             var matchDiff = matchHomeScore - matchAwayScore;
             var userDiff = userBetHomeScore - userBetAwayScore;
 
-            if ((matchDiff * userDiff <= 0) && (matchDiff != 0 || userDiff != 0)) return point;
+            if (matchDiff * userDiff <= 0 && (matchDiff != 0 || userDiff != 0)) return point;
             point = UserBetPoint.WinMatch;
             if (userDiff != matchDiff) return point;
             point = UserBetPoint.WinDifference;
-            if (userBetHomeScore == matchHomeScore)
-            {
-                point = UserBetPoint.WinMatchScore;
-            }
+            if (userBetHomeScore == matchHomeScore) point = UserBetPoint.WinMatchScore;
 
             return point;
         }

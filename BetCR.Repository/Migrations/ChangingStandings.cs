@@ -9,26 +9,26 @@ namespace BetCR.Repository.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Serialized",
-                table: "StageStanding");
+                "Serialized",
+                "StageStanding");
 
             migrationBuilder.RenameColumn(
-                name: "Standings",
-                table: "StageStanding",
-                newName: "Data");
+                "Standings",
+                "StageStanding",
+                "Data");
         }
 
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "Data",
-                table: "StageStanding",
-                newName: "Standings");
+                "Data",
+                "StageStanding",
+                "Standings");
 
             migrationBuilder.AddColumn<string>(
-                name: "Serialized",
-                table: "StageStanding",
-                type: "TEXT",
+                "Serialized",
+                "StageStanding",
+                "TEXT",
                 nullable: true);
         }
 

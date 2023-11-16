@@ -23,12 +23,12 @@
     public class UserBetPoint
     {
         #region Public Fields
+
         public const int WinDifference = 2;
         public const int WinMatch = 1;
         public const int LossMatch = -1;
         public const int WinMatchScore = 5;
 
         #endregion Public Fields
-
     }
 }

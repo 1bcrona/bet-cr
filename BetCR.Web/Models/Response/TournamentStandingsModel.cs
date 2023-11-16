@@ -4,7 +4,6 @@ namespace BetCR.Web.Models.Response
 {
     public class TournamentStandingsModel
     {
-
         public User User { get; set; }
 
         public int WinCount { get; set; }
