@@ -1,11 +1,10 @@
-﻿@using BetCR.Repository.ValueObject
-@model IEnumerable<BetCR.Repository.ValueObject.Lineup>
+﻿@model IEnumerable<BetCR.Repository.ValueObject.Lineup>
 
 <head>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css"
           rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/football/player.css" type="text/css"/>
+    <link rel="stylesheet" href="/static/css/football/player.css" type="text/css"/><title>Team Positions</title>
 </head>
 
 
@@ -14,8 +13,8 @@
         var goalKeeper = Model.FirstOrDefault(w => w.Position == "GOALKEEPER");
         <div class="player-view">
             <div class="player" style="background-color: @ViewData["background-color"].ToString(); border-color: @ViewData["color"].ToString();">
-                <div class="number" style="color: @ViewData["color"].ToString();">@goalKeeper.Number</div>
-                <div class="name  d-none d-lg-block">@goalKeeper.Player.Name</div>
+                <div class="number" style="color: @ViewData["color"].ToString();">@goalKeeper?.Number</div>
+                <div class="name  d-none d-lg-block">@goalKeeper?.Player.Name</div>
             </div>
         </div>
     }

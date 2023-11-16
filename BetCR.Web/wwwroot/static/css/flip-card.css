@@ -4,18 +4,6 @@
     min-height: 450px;
 }
 
-/*@media screen and (max-width: 992px) {
-    .flip-card {
-        min-height: 500px;
-    }
-}*/
-
-/*@media screen and (max-width: 576px) {
-    .flip-card {
-        min-height: 600px;
-    }
-}*/
-
 .flip-card-inner {
     position: relative;
     width: 100%;
@@ -23,12 +11,9 @@
     text-align: center;
     transition: transform 0.6s;
     transform-style: preserve-3d;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
-/*.flip {
-    transform: rotate(-180deg);
-}*/
 
 .flip-card .flip {
     transform: rotateY(180deg);

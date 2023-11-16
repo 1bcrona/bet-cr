@@ -3,27 +3,31 @@
 <head>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css"
-          rel="stylesheet" />
+          rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/football/player.css" type="text/css" />
+    <link rel="stylesheet" href="/static/css/football/player.css" type="text/css"/><title>Pitch</title>
 </head>
 
 <div>
-
     <div class="pitch responsive" style="background-color: #588f58; background-image: url('/static/css/football/img/pitch.png'), url('/static/css/football/img/lines.png')">
-
         <div class="teams">
             @{
-
                 <div class="team">
-
                     @{
                         var colorPaletteHome = Model.HomeTeam.DominantColors?.Split(";").ToList();
                         var homeDomColor1 = colorPaletteHome?.FirstOrDefault() ?? "#fff";
                         var homeDomColor2 = colorPaletteHome?.Skip(1).FirstOrDefault() ?? "#000";
                     }
 
-                    @{ await Html.RenderPartialAsync("Match/_MatchTeam", Model.MatchEvent.MatchLineup.HomeTeamLineup.Where(w => w.StartingXI), new ViewDataDictionary(ViewData) { { "background-color", homeDomColor1 }, { "color", homeDomColor2 } });}
+                    @{ await Html.RenderPartialAsync("Match/_MatchTeam", Model.MatchEvent.MatchLineup.HomeTeamLineup.Where(w => w.StartingXI), new ViewDataDictionary(ViewData)
+                       {
+                           {
+                               "background-color", homeDomColor1
+                           },
+                           {
+                               "color", homeDomColor2
+                           }
+                       }); }
                 </div>
             }
             @{
@@ -35,7 +39,15 @@
                         var awayDomColor2 = colorPaletteAway?.Skip(1).FirstOrDefault() ?? "#000";
                     }
 
-                    @{ await Html.RenderPartialAsync("Match/_MatchTeam", Model.MatchEvent.MatchLineup.AwayTeamLineup.Where(w => w.StartingXI), new ViewDataDictionary(ViewData) { { "background-color", awayDomColor1 }, { "color", awayDomColor2 } });}
+                    @{ await Html.RenderPartialAsync("Match/_MatchTeam", Model.MatchEvent.MatchLineup.AwayTeamLineup.Where(w => w.StartingXI), new ViewDataDictionary(ViewData)
+                       {
+                           {
+                               "background-color", awayDomColor1
+                           },
+                           {
+                               "color", awayDomColor2
+                           }
+                       }); }
                 </div>
             }
         </div>

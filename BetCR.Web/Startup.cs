@@ -69,7 +69,6 @@ namespace BetCR.Web
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(path),
-                RequestPath = "/static"
             });
 
             app.UseRouting();

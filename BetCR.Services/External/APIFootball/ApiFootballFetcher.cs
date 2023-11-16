@@ -212,12 +212,12 @@ namespace BetCR.Services.External.APIFootball
                             },
                             Player = new Player {FullName = s.Player.Name, Name = s.Player.Name}
                         }).ToList();
-                    
+
                     if (awaySubs != null)
                     {
                         matchEvent.MatchLineup.AwayTeamLineup?.AddRange(awaySubs);
                     }
-                    
+
                     matchEvent.MatchLineup.AwayTeamLineup?.AddRange(awaySubs);
 
 
@@ -226,7 +226,7 @@ namespace BetCR.Services.External.APIFootball
                         HomeTeamEvents = fixtureResult?.Events?.Where(w => w.Team.Id.ToString() == match.HomeTeam.ExternalId)
                             .Select(s => new Event
                             {
-                                Elapsed = s.Time.Elapsed,
+                                Elapsed = Math.Abs(s.Time.Elapsed),
                                 ElapsedPlus = s.Time.Extra ?? 0,
                                 TeamId = match.HomeTeam.Id,
                                 EventType = (from e in _eventDictionary
@@ -243,7 +243,7 @@ namespace BetCR.Services.External.APIFootball
                         AwayTeamEvents = fixtureResult?.Events?.Where(w => w.Team.Id.ToString() == match.AwayTeam.ExternalId)
                             .Select(s => new Event
                             {
-                                Elapsed = s.Time.Elapsed,
+                                Elapsed = Math.Abs(s.Time.Elapsed),
                                 ElapsedPlus = s.Time.Extra ?? 0,
                                 TeamId = match.HomeTeam.Id,
                                 EventType = (from e in _eventDictionary
@@ -386,17 +386,15 @@ namespace BetCR.Services.External.APIFootball
                     .Replace("#season_external_id#", stage.ExternalId);
                 var result = await FetchData(uri);
 
-                if (result.Data?["response"]?["standings"] is not JArray data) continue;
-
+                if (result.Data?["response"] is not JArray data) continue;
                 var stageStanding = (await stageStandingRepository.FindAsync(f => f.Stage.Id == stage.Id))
                     .FirstOrDefault() ?? new StageStanding
                     {
                         Id = Guid.NewGuid().ToString("D"),
                         Stage = stage,
                     };
-
                 stageStanding.Standings = new List<Standing>();
-                var standings = data.FirstOrDefault();
+                var standings = data[0]["league"]?["standings"]?.FirstOrDefault();
                 if (standings == null) continue;
 
                 foreach (var t in standings)

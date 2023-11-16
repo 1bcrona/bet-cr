@@ -10,24 +10,25 @@
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @{
-    var userBet = ViewData["UserBet"] as UserMatchBet ?? Model.UserMatchBets.FirstOrDefault(w => w.User.Id == HttpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(w => w.Type == ClaimTypes.NameIdentifier)?.Value);
+    var userBet = ViewData["UserBet"] as UserMatchBet ?? Model.UserMatchBets.FirstOrDefault(w => w.User.Id == HttpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value);
     var matchExpire = DateTimeOffset.UtcNow.ToUnixTimeSeconds() > Model.MatchDateEpoch;
 }
 
-<form class="match-form" data-match-id="@Model.Id" data-home-team="@Model.HomeTeam.Id" data-away-team="@Model.HomeTeam.Id" data-bet-leverage="1" data-action-url="@Url.RouteUrl("id", new { controller="Match",  id = Model.Id })">
+<form class="match-form" data-match-id="@Model.Id" data-home-team="@Model.HomeTeam.Id" data-away-team="@Model.HomeTeam.Id" data-bet-leverage="1" data-action-url="@Url.RouteUrl("id", new { controller = "Match", id = Model.Id })">
 
     <div class="card border shadow-0  match-row">
         <div class="card-header">
             <div class="row justify-content-center">
                 <div class="col-md-4">
 
-                    <div class="d-none d-md-block rounded-button" style=" border: 2px solid!important; border-color: #EEEEEE!important; background-color: transparent">
+                    <div class="d-none d-md-block rounded-button" style=" border: 2px solid #EEEEEE !important;background-color: transparent">
                         <div class="bg-image hover-overlay ripple" data-bs-ripple-color="light">
                             <img src='@(Model.HomeTeam.TeamLogo)'
                                  class="team-logo pred-home-team-logo img-fluid"
                                  data-logo-type="HOME_TEAM_LOGO"
                                  data-team-name="@Model.HomeTeam.Name" data-toggle="tooltip" data-placement="bottom"
-                                 title="@Model.HomeTeam.Name" />
+                                 title="@Model.HomeTeam.Name"
+                                 alt="@Model.HomeTeam.Name"/>
                             <a href="#!" data-toggle="tooltip" data-placement="bottom"
                                title="@Model.HomeTeam.Name">
                                 <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
@@ -35,7 +36,9 @@
                         </div>
                     </div>
                     <div class="d-md-none text-muted text-uppercase mb-0 text-center">
-                        <h7><strong>@Model.HomeTeam.Name</strong></h7>
+                        <h7>
+                            <strong>@Model.HomeTeam.Name</strong>
+                        </h7>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -50,7 +53,7 @@
                         @{
                             if (Model.MatchEvent != null)
                             {
-                                <label data-fancybox data-options='{"type" : "iframe", "iframe" : {"preload" : false, "css" : {}}}' data-src="/match/details/@Model.Id" href="javascript:;" class="btn-link  btn-outline-primary  text-center match_result" style="padding: 0px;">
+                                <label data-fancybox data-options='{"type" : "iframe", "iframe" : {"preload" : false, "css" : {}}}' data-src="/match/details/@Model.Id" href="javascript:;" class="btn-link  btn-outline-primary  text-center match_result" style="padding: 0;">
                                     @Model.MatchEvent.HomeTeamScore - @Model.MatchEvent.AwayTeamScore
                                 </label>
                             }
@@ -58,13 +61,14 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="d-none d-md-block rounded-button" style=" border: 2px solid!important; border-color: #EEEEEE!important; background-color: transparent">
+                    <div class="d-none d-md-block rounded-button" style=" border: 2px solid #EEEEEE !important;background-color: transparent">
                         <div class="bg-image hover-overlay ripple" data-bs-ripple-color="light">
                             <img src='@Model.AwayTeam.TeamLogo'
                                  class="team-logo pred-home-team-logo img-fluid"
                                  data-logo-type="AWAY_TEAM_LOGO"
                                  data-team-name="@Model.AwayTeam.Name" data-toggle="tooltip" data-placement="bottom"
-                                 title="@Model.AwayTeam.Name" />
+                                 title="@Model.AwayTeam.Name"
+                                 alt="@Model.AwayTeam.Name"/>
 
                             <a href="#!" data-toggle="tooltip" data-placement="bottom"
                                title="@Model.AwayTeam.Name">
@@ -73,19 +77,37 @@
                         </div>
                     </div>
                     <div class="d-md-none text-muted text-uppercase mb-0 text-center">
-                        <h7><strong>@Model.AwayTeam.Name</strong></h7>
+                        <h7>
+                            <strong>@Model.AwayTeam.Name</strong>
+                        </h7>
                     </div>
                 </div>
             </div>
         </div>
         <div class="card-body mh-200">
 
-            @{if (userBet != null)
+            @{
+                if (userBet != null)
                 {
                     <div class="align-items-center">
-                        <p class="card-text text-center"><span>Your prediction for this match</span></p>
-                        <p class="card-text text-center">Score : <span><b>@(userBet.HomeTeamScore.ToString())</b></span> - <span><b>@(userBet.AwayTeamScore.ToString())</b>  </span></p>
-                        <p class="card-text text-center">Leverage : <span><b>@userBet.Leverage</b></span></p>
+                        <p class="card-text text-center">
+                            <span>Your prediction for this match</span>
+                        </p>
+                        <p class="card-text text-center">
+                            Score :
+                            <span>
+                                <b>@(userBet.HomeTeamScore.ToString())</b>
+                            </span> -
+                            <span>
+                                <b>@(userBet.AwayTeamScore.ToString())</b>
+                            </span>
+                        </p>
+                        <p class="card-text text-center">
+                            Leverage :
+                            <span>
+                                <b>@userBet.Leverage</b>
+                            </span>
+                        </p>
                         @if ((userBet.UserBetPoint ?? 0) == 0)
                         {
                             <p class="card-text text-center">(Your point(s) will be multiplied by <strong>@userBet.Leverage</strong>)</p>
@@ -105,7 +127,7 @@
                                            data-team="@Model.HomeTeam.Id"
                                            data-v-min="0"
                                            placeholder="Home Team Score"
-                                           id='@($"{Model.Id}_0")' value="0" />
+                                           id='@($"{Model.Id}_0")' value="0"/>
                                 }
                                 else
                                 {
@@ -126,7 +148,7 @@
                                            data-team="@Model.AwayTeam.Id"
                                            placeholder="Away Team Score"
                                            data-v-min="0" value="0"
-                                           id='@($"{Model.Id}_1")' />
+                                           id='@($"{Model.Id}_1")'/>
                                 }
                                 else
                                 {
@@ -143,7 +165,9 @@
                 {
                     <div class="row mt-3">
                         <div class="col-lg-12">
-                            <div class="text-center margin-bottom-20"><b>LEVERAGE</b></div>
+                            <div class="text-center margin-bottom-20">
+                                <b>LEVERAGE</b>
+                            </div>
                             <div class="text-center">
                                 <div class="btn-group shadow-0" role="group">
                                     <button type="button" class="btn btn-link rounded-button w-50px h-50px  primary" data-bs-color="dark" data-bet-leverage="2">2x</button>
@@ -154,7 +178,6 @@
                             </div>
                         </div>
                     </div>
-
                 }
             }
         </div>
@@ -163,7 +186,7 @@
         {
             <div class="card-footer h-75">
                 <div class="col-lg-12">
-                    <input type="submit" class="btn  btn-primary btn-100" value="Make Prediction" />
+                    <input type="submit" class="btn  btn-primary btn-100" value="Make Prediction"/>
                 </div>
             </div>
         }
@@ -172,7 +195,7 @@
             if (userBet != null)
             {
                 var point = userBet.UserBetPoint ?? 0;
-                var betClass = "";
+                string betClass;
                 @switch (point)
                 {
                     case < 0:
@@ -196,7 +219,6 @@
                         <button class="btn @betClass btn-100 no-radius" disabled>Result Waiting</button>
                     }
                 </div>
-
             }
         }
     </div>

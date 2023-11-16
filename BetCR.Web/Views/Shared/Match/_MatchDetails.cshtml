@@ -27,18 +27,18 @@
     allEvents.AddRange(Model.MatchEvent?.Events?.HomeTeamEvents?.Select(s => Tuple.Create(-1, s)) ?? Array.Empty<Tuple<int, Event>>());
     allEvents.AddRange(Model.MatchEvent?.Events?.AwayTeamEvents?.Select(s => Tuple.Create(1, s)) ?? Array.Empty<Tuple<int, Event>>());
     var orderedEvents = allEvents.Where(w => validEvents.ContainsKey(w.Item2.EventType ?? "")).OrderBy(o => o.Item2.Elapsed).ToList();
-    var homeLineupGroup = Model.MatchEvent.MatchLineup.HomeTeamLineup.Where(w => w.StartingXI).GroupBy(g => g.Position).ToDictionary(g => g.Key);
-    var awayLineupGroup = Model.MatchEvent.MatchLineup.AwayTeamLineup.Where(w => w.StartingXI).GroupBy(g => g.Position).ToDictionary(g => g.Key);
+    var homeLineupGroup = Model?.MatchEvent?.MatchLineup.HomeTeamLineup.Where(w => w.StartingXI).GroupBy(g => g.Position).ToDictionary(g => g.Key);
+    var awayLineupGroup = Model?.MatchEvent?.MatchLineup.AwayTeamLineup.Where(w => w.StartingXI).GroupBy(g => g.Position).ToDictionary(g => g.Key);
 
 }
 <head>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css"
-          rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css" rel="stylesheet"/>
     <link href="/static/css/site.css"
           rel="stylesheet"/>
     <link href="/static/css/timeline.css"
           rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&amp;display=swap" rel="stylesheet">
+    <title>Match Details</title>
 </head>
 <div class="container">
     <div class="row">
@@ -46,12 +46,12 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="bg-image hover-overlay ripple d-md-none d-lg-block align-items-center" data-bs-ripple-color="light">
-                        <img src='@(Model?.HomeTeam?.TeamLogo)'
+                        <img src="@(Model?.HomeTeam?.TeamLogo)"
                              class="img-fluid"
                              data-team-name="@Model?.HomeTeam?.Name" data-toggle="tooltip" data-placement="bottom"
-                             title="@Model?.HomeTeam?.Name"/>
-                        <a href="#!" data-toggle="tooltip" data-placement="bottom"
-                           title="@Model?.HomeTeam?.Name">
+                             title="@Model?.HomeTeam?.Name"
+                             alt="@Model?.HomeTeam?.Name"/>
+                        <a data-placement="bottom" data-toggle="tooltip" href="#!" title="@Model?.HomeTeam?.Name">
                             <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
                         </a>
                     </div>
@@ -59,10 +59,10 @@
 
                 <div class="col-md-6 text-left d-none d-md-block align-self-center">
                     <p class="text-muted text-uppercase mb-0">
-                        <strong>@Model.HomeTeam.Name</strong>
+                        <strong>@Model?.HomeTeam?.Name</strong>
                     </p>
                     <h6>
-                        <small class="text">@(homeLineupGroup.GetValueOrDefault("DEFENDER")?.Count() ?? 0) - @(homeLineupGroup.GetValueOrDefault("MIDFIELDER")?.Count() ?? 0) - @(homeLineupGroup.GetValueOrDefault("FORWARD")?.Count() ?? 0) </small>
+                        <small class="text">@(homeLineupGroup?.GetValueOrDefault("DEFENDER")?.Count() ?? 0) - @(homeLineupGroup?.GetValueOrDefault("MIDFIELDER")?.Count() ?? 0) - @(homeLineupGroup?.GetValueOrDefault("FORWARD")?.Count() ?? 0) </small>
                     </h6>
                 </div>
             </div>
@@ -72,33 +72,33 @@
 
             <div class="row align-items-top">
 
-                <div class="col-md-6 text-right d-none d-md-block" style="border: solid 1px;border-width: 0px 1px 0px 0px;border-color: #ddd">
-                    <label style="font-size: 12px">@Model.MatchDate.Local.ToShortDateString()</label>
+                <div class="col-md-6 text-right d-none d-md-block" style="border: 0 solid #ddd;border-right-width: 1px;">
+                    <label style="font-size: 12px">@Model?.MatchDate.Local.ToShortDateString()</label>
                 </div>
 
                 <div class="col-md-6 text-left d-none d-md-block">
-                    <label style="font-size: 12px">@Model.MatchDate.Local.ToShortTimeString()</label>
+                    <label style="font-size: 12px">@Model?.MatchDate.Local.ToShortTimeString()</label>
                 </div>
             </div>
 
             <div class="row  align-items-center">
 
                 <div class="col-md-5">
-                    <h1>@Model.MatchEvent.HomeTeamScore</h1>
+                    <h1>@Model?.MatchEvent?.HomeTeamScore</h1>
                 </div>
                 <div class="col-md-2">
                     <h5>:</h5>
                 </div>
                 <div class="col-md-5">
-                    <h1>@Model.MatchEvent.AwayTeamScore</h1>
+                    <h1>@Model?.MatchEvent?.AwayTeamScore</h1>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-5">
                     @{
-                        var homeGoals = Model.MatchEvent.Events?.HomeTeamEvents.Where(w => w.EventType is "GOAL" or "PEN_SCORED");
-                        var awayTeamOwnGoals = Model.MatchEvent.Events?.AwayTeamEvents.Where(w => w.EventType == "OWN_GOAL");
+                        var homeGoals = Model?.MatchEvent?.Events?.HomeTeamEvents?.Where(w => w.EventType is "GOAL" or "PEN_SCORED");
+                        var awayTeamOwnGoals = Model?.MatchEvent?.Events?.AwayTeamEvents?.Where(w => w.EventType == "OWN_GOAL");
                         if (awayTeamOwnGoals != null)
                         {
                             homeGoals = homeGoals?.Concat(awayTeamOwnGoals);
@@ -112,8 +112,8 @@
                 </div>
                 <div class="col-md-5">
                     @{
-                        var awayGoals = Model.MatchEvent.Events?.AwayTeamEvents.Where(w => w.EventType is "GOAL" or "PEN_SCORED");
-                        var homeTeamOwnGoals = Model.MatchEvent.Events?.HomeTeamEvents.Where(w => w.EventType == "OWN_GOAL");
+                        var awayGoals = Model?.MatchEvent?.Events?.AwayTeamEvents?.Where(w => w.EventType is "GOAL" or "PEN_SCORED");
+                        var homeTeamOwnGoals = Model?.MatchEvent?.Events?.HomeTeamEvents?.Where(w => w.EventType == "OWN_GOAL");
                         if (homeTeamOwnGoals != null)
                         {
                             awayGoals = awayGoals?.Concat(homeTeamOwnGoals);
@@ -137,10 +137,11 @@
                 </div>
                 <div class="col-md-6 ">
                     <div class="bg-image hover-overlay ripple d-md-none d-lg-block align-items-center" data-bs-ripple-color="light">
-                        <img src='@(Model?.AwayTeam?.TeamLogo)'
+                        <img src="@(Model?.AwayTeam?.TeamLogo)"
                              class="img-fluid"
                              data-team-name="@Model?.AwayTeam?.Name" data-toggle="tooltip" data-placement="bottom"
-                             title="@Model?.AwayTeam?.Name"/>
+                             title="@Model?.AwayTeam?.Name"
+                             alt="@(Model?.AwayTeam?.Name)"/>
                         <a href="#!" data-toggle="tooltip" data-placement="bottom"
                            title="@Model?.AwayTeam?.Name">
                             <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
@@ -177,9 +178,6 @@
                                        {
                                            "color", homeDomColor1
                                        },
-                                       {
-                                           "CurrentTeamEvents", orderedEvents.Where(w => w.Item1 == -1).Select(s => s.Item2).ToList()
-                                       }
                                    }); }
                         </div>
                     </div>
@@ -199,8 +197,6 @@
                        }
                    }); }
             </div>
-
-
             <div class="d-md-none d-lg-block">
                 @{ await Html.RenderPartialAsync("Match/_MatchTimeline", orderedEvents, new ViewDataDictionary(ViewData)
                    {
@@ -230,11 +226,44 @@
                    }); }
 
             </div>
+            <div class="d-md-block d-lg-none">
+                <div class="card">
+                    <h5 class="card-header text-center" style="background-color: @homeDomColor2; color: @homeDomColor1">
+                        TIMELINE
+                    </h5>
+                    <div class="card-body">
+                        @{ await Html.RenderPartialAsync("Match/_MatchTimeline", orderedEvents, new ViewDataDictionary(ViewData)
+                           {
+                               {
+                                   "home_colors", new List<string>()
+                                   {
+                                       homeDomColor1,
+                                       homeDomColor2
+                                   }
+                               },
+                               {
+                                   "away_colors", new List<string>()
+                                   {
+                                       awayDomColor1,
+                                       awayDomColor2
+                                   }
+                               },
+                               {
+                                   "home_team", Model.HomeTeam
+                               },
+                               {
+                                   "away_team", Model.AwayTeam
+                               },
+                               {
+                                   "valid_events", validEvents
+                               }
+                           }); }
+                    </div>
+                </div>
 
+            </div>
         </div>
         <div class="col-md-2">
-            @{
-            }
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -252,9 +281,6 @@
                                        {
                                            "color", awayDomColor1
                                        },
-                                       {
-                                           "CurrentTeamEvents", orderedEvents.Where(w => w.Item1 == 1).Select(s => s.Item2).ToList()
-                                       }
                                    }
                                    ); }
                         </div>

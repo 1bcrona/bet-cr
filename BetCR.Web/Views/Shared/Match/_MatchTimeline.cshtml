@@ -94,7 +94,7 @@
                                         }
                                         var backgroundColor = item1 < 0 ? homeColors.First() : awayColors.First();
                                         var textColor = item1 < 0 ? homeColors[1] : awayColors[1];
-                                        var teamLogo = item1 < 0 ? homeTeam.TeamLogo : awayTeam.TeamLogo;
+                                        var teamLogo = item1 < 0 ? homeTeam?.TeamLogo : awayTeam?.TeamLogo;
                                         topStep++;
                                         previousItem = item1;
                                         <div class="timeline--inner-pin is-normal" style="top: @currentEventTop; left: @currentStep; background-color: @backgroundColor; color: @textColor)" data-title="@minute">
@@ -105,7 +105,7 @@
                                                             <label class="mb-0">@minute'</label>
                                                         </div>
                                                         <div class="col-md-6 timeline-item d-none d-md-inline-block text-center">
-                                                            <img class="event-team-badge" src="@(teamLogo)">
+                                                            <img class="event-team-badge" src="@(teamLogo)" alt="@(homeTeam?.Name)">
                                                         </div>
                                                     </div>
                                                     <div class="d-block">
@@ -114,7 +114,7 @@
                                                                 <img class="img-@item2.EventType.ToLowerInvariant()"/>
                                                             </div>
                                                             <div class="col-md-8 timeline-item d-none d-md-inline-block text-center">
-                                                                <label class="mb-0" style="transform: translateY(30%);">@validEvents[item2.EventType]</label>
+                                                                <label class="mb-0" style="transform: translateY(30%);">@validEvents?[item2.EventType]</label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -159,8 +159,8 @@
                             }
                         </div>
                     </div>
-                    <div class="timeline-team" style="background-image: url(@homeTeam.TeamLogo);background-color:@homeColors.Last();"></div>
-                    <div class="timeline-team" style="background-image: url(@awayTeam.TeamLogo);background-color:@awayColors.Last();"></div>
+                    <div class="timeline-team" style="background-image: url(@homeTeam?.TeamLogo);background-color:@homeColors.Last();"></div>
+                    <div class="timeline-team" style="background-image: url(@awayTeam?.TeamLogo);background-color:@awayColors.Last();"></div>
                 </div>
             </div>
         </div>
