@@ -1,5 +1,6 @@
 ﻿@using BetCR.Repository.Entity
 @model  List<Tuple<int, BetCR.Repository.ValueObject.Event>>
+
 @{
     var homeTeam = ViewData["home_team"] as Team;
     var awayTeam = ViewData["away_team"] as Team;
@@ -31,22 +32,23 @@
         {
             var team = item.Event.Item1 == -1 ? homeTeam : awayTeam;
             var colors = item.Event.Item1 == -1 ? homeColors : awayColors;
-            <div class="row mb-5 mt-5" style="border:1px solid; border-radius: 1em">
-                <div class="card" style="background-color: @colors.Last()10">
+            <div class="row mb-5 mt-5" style="border:1px solid; border-radius: 1em;">
+                <div class="card" style="background-color: @colors.Last()10;  overflow: hidden;
+                                                                              position: relative; max-height: 175px">
+                    <img src="@team.TeamLogo" style=" opacity: 0.1;
+                                                                                 position: absolute;
+                                                                                 width: 75%;"/>
                     <div class="card-header">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-6">
                                 <img class="img-@item.Event.Item2.EventType.ToLowerInvariant()">
                             </div>
-                            <div class="col-md-4">
-                                <h6 style="transform: translateY(30%);">@validEvents?[item.Event.Item2.EventType]</h6>
-                            </div>
-                            <div class="col-md-4">
-                                <h5>@item.ActualMinute'</h5>
+                            <div class="col-6">
+                                <h7>@item.ActualMinute'</h7>
                             </div>
                         </div>
                     </div>
-                    <div class="card-body" style="background-image: url(@team.TeamLogo); background-position: right; background-size: 5%; background-repeat: no-repeat ">
+                    <div class="card-body">
                         <div class="ml-5 mr-5">
                             <div class="row">
                                 @{
@@ -55,42 +57,42 @@
                                         switch (item.Event.Item2.EventType)
                                         {
                                             case "SUBST":
-                                                <div class="row" style="padding-right: 5%;padding-left: 5%;">
-                                                    <h6 class="btn-success">IN</h6>
+                                                <div class="row">
+                                                    <h8 class="btn-success">IN</h8>
                                                 </div>
                                                 <div class="row ">
-                                                    <h5 class="text-uppercase">@item.Event.Item2.Player2.FullName</h5>
+                                                    <h7 class="text-uppercase">@item.Event.Item2.Player2.FullName</h7>
                                                 </div>
 
-                                                <div class="row" style="padding-right: 5%;padding-left: 5%;">
-                                                    <h6 class="btn-danger">OUT</h6>
+                                                <div class="row">
+                                                    <h8 class="btn-danger">OUT</h8>
                                                 </div>
                                                 <div class="row">
-                                                    <h5 class="text-uppercase">@item.Event.Item2.Player1.FullName</h5>
+                                                    <h7 class="text-uppercase">@item.Event.Item2.Player1.FullName</h7>
                                                 </div>
                                                 break;
 
                                             case "GOAL":
-                                                <div class="row" style="padding-right: 5%;padding-left: 5%;">
-                                                    <h6 class="btn-success">SCORER</h6>
+                                                <div class="row">
+                                                    <h8 class="btn-success">SCORER</h8>
                                                 </div>
                                                 <div class="row ">
-                                                    <h5 class="text-uppercase">@item.Event.Item2.Player1.FullName</h5>
+                                                    <h7 class="text-uppercase">@item.Event.Item2.Player1.FullName</h7>
                                                 </div>
 
-                                                <div class="row" style="padding-right: 5%;padding-left: 5%;">
-                                                    <h6 class="btn-success">ASSISTED BY</h6>
+                                                <div class="row">
+                                                    <h8 class="btn-success">ASSISTED BY</h8>
                                                 </div>
                                                 <div class="row">
-                                                    <h5 class="text-uppercase">@item.Event.Item2.Player2.FullName</h5>
+                                                    <h7 class="text-uppercase">@item.Event.Item2.Player2.FullName</h7>
                                                 </div>
                                                 break;
                                         }
                                     }
                                     else
                                     {
-                                        <div class="col-md-12">
-                                            <h5 class="text-uppercase">@item.Event.Item2.Player1.FullName</h5>
+                                        <div class="col-12">
+                                            <h7 class="text-uppercase">@item.Event.Item2.Player1.FullName</h7>
                                         </div>
                                     }
                                 }
