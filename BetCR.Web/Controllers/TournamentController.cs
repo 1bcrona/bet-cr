@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using BetCR.Caching.Interface;
-using BetCR.Repository.Entity;
 using BetCR.Web.Controllers.Base;
 using BetCR.Web.Handlers.Query.Tournament;
 using MediatR;

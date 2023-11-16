@@ -1,4 +1,4 @@
-﻿using BetCR.Web.Controllers.API.Model;
+﻿using BetCR.Web.Controllers.API.Model.Response;
 using MediatR;
 
 namespace BetCR.Web.Handlers.Query.Tournament

@@ -1,4 +1,4 @@
-﻿using BetCR.Web.Controllers.API.Model;
+﻿using BetCR.Web.Controllers.API.Model.Request;
 using FluentValidation;
 
 namespace BetCR.Web.Controllers.API.Validator

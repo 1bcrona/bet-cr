@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace BetCR.Services
+namespace BetCR.Services.Base
 {
     public interface IUserMatchBetService
     {

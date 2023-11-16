@@ -1,7 +1,7 @@
-﻿using BetCR.Repository.Entity;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using BetCR.Repository.Entity;
 
-namespace BetCR.Web.Controllers.API.Model
+namespace BetCR.Web.Controllers.API.Model.Response
 {
     public class GetUserTournamentResponseModel
     {

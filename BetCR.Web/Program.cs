@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using System.IO;
-using BetCR.Services;
+using BetCR.Repository.Repository;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BetCR.Web
@@ -17,16 +18,18 @@ namespace BetCR.Web
                     webBuilder
                         .UseContentRoot(Directory.GetCurrentDirectory())
                         .UseStartup<Startup>();
-
-
                 });
-
 
 
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
 
+            using (var serviceScope = host.Services.CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<SQLiteDbContext>();
+                context.Database.Migrate();
+            }
 
             host.Run();
         }

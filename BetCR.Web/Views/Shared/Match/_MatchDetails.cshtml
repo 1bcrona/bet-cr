@@ -1,27 +1,43 @@
-﻿@using BetCR.Repository.Entity
-@using Newtonsoft.Json
-@using BetCR.Repository
-@using BetCR.Repository.ValueObject
+﻿@using BetCR.Repository.ValueObject
 @model BetCR.Repository.Entity.Match
 
 @{
-
-    var validEvents = new Dictionary<string, string> { { "R_CARD", "RED CARD" }, { "PEN_SCORED", "PENALTY" }, { "GOAL", "GOAL" }, { "OWN_GOAL", "OWN GOAL" }, { "Y_CARD", "YELLOW CARD" }, { "SUBST", "SUBSTITUTION" } };
+    var validEvents = new Dictionary<string, string>
+    {
+        {
+            "R_CARD", "RED CARD"
+        },
+        {
+            "PEN_SCORED", "PENALTY"
+        },
+        {
+            "GOAL", "GOAL"
+        },
+        {
+            "OWN_GOAL", "OWN GOAL"
+        },
+        {
+            "Y_CARD", "YELLOW CARD"
+        },
+        {
+            "SUBST", "SUBSTITUTION"
+        }
+    };
     var allEvents = new List<Tuple<int, Event>>();
     allEvents.AddRange(Model.MatchEvent?.Events?.HomeTeamEvents?.Select(s => Tuple.Create(-1, s)) ?? Array.Empty<Tuple<int, Event>>());
     allEvents.AddRange(Model.MatchEvent?.Events?.AwayTeamEvents?.Select(s => Tuple.Create(1, s)) ?? Array.Empty<Tuple<int, Event>>());
-    var orderedEvents = allEvents.Where(w => validEvents.ContainsKey(w.Item2.EventType)).OrderBy(o => o.Item2.Elapsed).ToList();
+    var orderedEvents = allEvents.Where(w => validEvents.ContainsKey(w.Item2.EventType ?? "")).OrderBy(o => o.Item2.Elapsed).ToList();
     var homeLineupGroup = Model.MatchEvent.MatchLineup.HomeTeamLineup.Where(w => w.StartingXI).GroupBy(g => g.Position).ToDictionary(g => g.Key);
     var awayLineupGroup = Model.MatchEvent.MatchLineup.AwayTeamLineup.Where(w => w.StartingXI).GroupBy(g => g.Position).ToDictionary(g => g.Key);
 
 }
 <head>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css"
-          rel="stylesheet" />
+          rel="stylesheet"/>
     <link href="/static/css/site.css"
-          rel="stylesheet" />
+          rel="stylesheet"/>
     <link href="/static/css/timeline.css"
-          rel="stylesheet" />
+          rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&amp;display=swap" rel="stylesheet">
 </head>
 <div class="container">
@@ -33,7 +49,7 @@
                         <img src='@(Model?.HomeTeam?.TeamLogo)'
                              class="img-fluid"
                              data-team-name="@Model?.HomeTeam?.Name" data-toggle="tooltip" data-placement="bottom"
-                             title="@Model?.HomeTeam?.Name" />
+                             title="@Model?.HomeTeam?.Name"/>
                         <a href="#!" data-toggle="tooltip" data-placement="bottom"
                            title="@Model?.HomeTeam?.Name">
                             <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
@@ -45,7 +61,9 @@
                     <p class="text-muted text-uppercase mb-0">
                         <strong>@Model.HomeTeam.Name</strong>
                     </p>
-                    <h6><small class="text">@(homeLineupGroup.GetValueOrDefault("DEFENDER")?.Count()??0) - @(homeLineupGroup.GetValueOrDefault("MIDFIELDER")?.Count()??0) - @(homeLineupGroup.GetValueOrDefault("FORWARD")?.Count()??0) </small></h6>
+                    <h6>
+                        <small class="text">@(homeLineupGroup.GetValueOrDefault("DEFENDER")?.Count() ?? 0) - @(homeLineupGroup.GetValueOrDefault("MIDFIELDER")?.Count() ?? 0) - @(homeLineupGroup.GetValueOrDefault("FORWARD")?.Count() ?? 0) </small>
+                    </h6>
                 </div>
             </div>
         </div>
@@ -65,9 +83,44 @@
 
             <div class="row  align-items-center">
 
-                <div class="col-md-5"><h1>@Model.MatchEvent.HomeTeamScore</h1> </div>
-                <div class="col-md-2"><h5>:</h5> </div>
-                <div class="col-md-5"><h1>@Model.MatchEvent.AwayTeamScore</h1> </div>
+                <div class="col-md-5">
+                    <h1>@Model.MatchEvent.HomeTeamScore</h1>
+                </div>
+                <div class="col-md-2">
+                    <h5>:</h5>
+                </div>
+                <div class="col-md-5">
+                    <h1>@Model.MatchEvent.AwayTeamScore</h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-5">
+                    @{
+                        var homeGoals = Model.MatchEvent.Events?.HomeTeamEvents.Where(w => w.EventType is "GOAL" or "PEN_SCORED");
+                        var awayTeamOwnGoals = Model.MatchEvent.Events?.AwayTeamEvents.Where(w => w.EventType == "OWN_GOAL");
+                        if (awayTeamOwnGoals != null)
+                        {
+                            homeGoals = homeGoals?.Concat(awayTeamOwnGoals);
+                        }
+
+                        await Html.RenderPartialAsync("Match/_MatchScores", homeGoals);
+                    }
+                </div>
+                <div class="col-md-2">
+                    <h5></h5>
+                </div>
+                <div class="col-md-5">
+                    @{
+                        var awayGoals = Model.MatchEvent.Events?.AwayTeamEvents.Where(w => w.EventType is "GOAL" or "PEN_SCORED");
+                        var homeTeamOwnGoals = Model.MatchEvent.Events?.HomeTeamEvents.Where(w => w.EventType == "OWN_GOAL");
+                        if (homeTeamOwnGoals != null)
+                        {
+                            awayGoals = awayGoals?.Concat(homeTeamOwnGoals);
+                        }
+                        await Html.RenderPartialAsync("Match/_MatchScores", awayGoals);
+                    }
+                </div>
             </div>
         </div>
 
@@ -78,14 +131,16 @@
                     <p class="text-muted text-uppercase mb-0">
                         <strong>@Model.AwayTeam.Name</strong>
                     </p>
-                    <h6><small class="text">@(awayLineupGroup.GetValueOrDefault("DEFENDER")?.Count()??0) - @(awayLineupGroup.GetValueOrDefault("MIDFIELDER")?.Count()??0) - @(awayLineupGroup.GetValueOrDefault("FORWARD")?.Count()??0) </small></h6>
+                    <h6>
+                        <small class="text">@(awayLineupGroup.GetValueOrDefault("DEFENDER")?.Count() ?? 0) - @(awayLineupGroup.GetValueOrDefault("MIDFIELDER")?.Count() ?? 0) - @(awayLineupGroup.GetValueOrDefault("FORWARD")?.Count() ?? 0) </small>
+                    </h6>
                 </div>
                 <div class="col-md-6 ">
                     <div class="bg-image hover-overlay ripple d-md-none d-lg-block align-items-center" data-bs-ripple-color="light">
                         <img src='@(Model?.AwayTeam?.TeamLogo)'
                              class="img-fluid"
                              data-team-name="@Model?.AwayTeam?.Name" data-toggle="tooltip" data-placement="bottom"
-                             title="@Model?.AwayTeam?.Name" />
+                             title="@Model?.AwayTeam?.Name"/>
                         <a href="#!" data-toggle="tooltip" data-placement="bottom"
                            title="@Model?.AwayTeam?.Name">
                             <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
@@ -95,7 +150,7 @@
             </div>
         </div>
     </div>
-    <hr />
+    <hr/>
     <div class="row">
         <div class="col-md-2">
             @{
@@ -114,9 +169,18 @@
                         </h5>
                         <div class="card-body">
                             @{ await Html.RenderPartialAsync("Match/_TeamLineup", Model.MatchEvent.MatchLineup.HomeTeamLineup.Where(w => !w.StartingXI),
-                                                new ViewDataDictionary(ViewData) { { "background-color", homeDomColor2 },
-                                       { "color", homeDomColor1 },
-                                       { "CurrentTeamEvents", orderedEvents.Where(w => w.Item1 == -1).Select(s => s.Item2).ToList() } });}
+                                   new ViewDataDictionary(ViewData)
+                                   {
+                                       {
+                                           "background-color", homeDomColor2
+                                       },
+                                       {
+                                           "color", homeDomColor1
+                                       },
+                                       {
+                                           "CurrentTeamEvents", orderedEvents.Where(w => w.Item1 == -1).Select(s => s.Item2).ToList()
+                                       }
+                                   }); }
                         </div>
                     </div>
                 </div>
@@ -128,7 +192,12 @@
                 </div>
             </div>
             <div class="row">
-                @{ await Html.RenderPartialAsync("Match/_MatchPitch", Model, new ViewDataDictionary(ViewData) { { "events", allEvents } });}
+                @{ await Html.RenderPartialAsync("Match/_MatchPitch", Model, new ViewDataDictionary(ViewData)
+                   {
+                       {
+                           "events", allEvents
+                       }
+                   }); }
             </div>
 
             @{
@@ -140,9 +209,19 @@
                                 <div class="timeline--inner">
 
                                     @{
-
                                         var matchMaxMinutes = Math.Max(orderedEvents.Max(m => m.Item2.Elapsed), 90) > 90 ? 120 : 90;
-                                        var pinLabels = new Dictionary<string, int>() { { "MS", 0 }, { "HT", 45 }, { "FT", 90 } };
+                                        var pinLabels = new Dictionary<string, int>()
+                                        {
+                                            {
+                                                "MS", 0
+                                            },
+                                            {
+                                                "HT", 45
+                                            },
+                                            {
+                                                "FT", 90
+                                            }
+                                        };
                                         if (matchMaxMinutes > 90)
                                         {
                                             pinLabels.Add("ET", 120);
@@ -165,11 +244,9 @@
 
                                         foreach (var groupedItem in minuteGroupedOrderedItems)
                                         {
-
                                             var i = 0;
                                             foreach (var (item1, item2) in groupedItem)
                                             {
-
                                                 int currentItemLeft;
                                                 while (true)
                                                 {
@@ -183,7 +260,6 @@
                                                         break;
                                                     }
                                                     ndx++;
-
                                                 }
 
                                                 var currentItemTop = item1 * 15 + i * item1 * 15;
@@ -196,7 +272,7 @@
                                                 var firstStep = currentItemLeft + marginStep;
                                                 var maxItemStep = pinDistanceBetweenCurrentAndNext - marginStep - 2;
 
-                                                var currentStep = $"{(int)(firstStep + (double)distanceBetweenCurrentMinuteAndLeftMinute / (double)distanceBetweenCurrentAndNext * maxItemStep)}%";
+                                                var currentStep = $"{(int) (firstStep + (double) distanceBetweenCurrentMinuteAndLeftMinute / (double) distanceBetweenCurrentAndNext * maxItemStep)}%";
                                                 var currentEventTop = $"{currentItemTop}px";
                                                 var minute = groupedItem.Key.ToString();
                                                 if (item2.ElapsedPlus > 0)
@@ -217,7 +293,7 @@
                                                             <div class="d-block">
                                                                 <div class="row">
                                                                     <div class="col-md-4 timeline-item">
-                                                                        <img class="img-@item2.EventType.ToLowerInvariant()" />
+                                                                        <img class="img-@item2.EventType.ToLowerInvariant()"/>
                                                                     </div>
                                                                     <div class="col-md-8 timeline-item d-none d-md-inline-block text-center">
                                                                         <label class="mb-0" style="font-size: 10px; transform: translateY(30%);">@validEvents[item2.EventType]</label>
@@ -233,16 +309,22 @@
                                                                             if (item2.Player2 != null)
                                                                             {
                                                                                 <div class="col-md-6 timeline-item border-right">
-                                                                                    <label class="mb-0" style="font-size: 10px;"><strong>@item2.Player1.FullName</strong></label>
+                                                                                    <label class="mb-0" style="font-size: 10px;">
+                                                                                        <strong>@item2.Player1.FullName</strong>
+                                                                                    </label>
                                                                                 </div>
                                                                                 <div class="col-md-6 timeline-item">
-                                                                                    <label class="mb-0" style="font-size: 10px;"><strong>@item2.Player2.FullName</strong></label>
+                                                                                    <label class="mb-0" style="font-size: 10px;">
+                                                                                        <strong>@item2.Player2.FullName</strong>
+                                                                                    </label>
                                                                                 </div>
                                                                             }
                                                                             else
                                                                             {
                                                                                 <div class="col-md-12">
-                                                                                    <label class="mb-0" style="font-size: 10px;"><strong>@item2.Player1.FullName</strong></label>
+                                                                                    <label class="mb-0" style="font-size: 10px;">
+                                                                                        <strong>@item2.Player1.FullName</strong>
+                                                                                    </label>
                                                                                 </div>
                                                                             }
                                                                         }
@@ -250,7 +332,7 @@
                                                                 }
                                                             }
 
-                                                            <i></i>
+
                                                         </div>
                                                         <div class="timeline-inner-event-type">
                                                             <img class="img-@item2.EventType.ToLowerInvariant()">
@@ -260,7 +342,6 @@
 
                                                 i++;
                                             }
-
                                         }
                                     }
                                 </div>
@@ -281,13 +362,20 @@
                         </h5>
                         <div class="card-body">
                             @{ await Html.RenderPartialAsync("Match/_TeamLineup",
-                                              Model.MatchEvent.MatchLineup.AwayTeamLineup.Where(w => !w.StartingXI),
-                                              new ViewDataDictionary(ViewData) {
-                                              { "background-color", awayDomColor2 },
-                                             { "color", awayDomColor1 },
-                                             { "CurrentTeamEvents", orderedEvents.Where(w => w.Item1 == 1).Select(s => s.Item2).ToList() } }
-                                        );
-                            }
+                                   Model.MatchEvent.MatchLineup.AwayTeamLineup.Where(w => !w.StartingXI),
+                                   new ViewDataDictionary(ViewData)
+                                   {
+                                       {
+                                           "background-color", awayDomColor2
+                                       },
+                                       {
+                                           "color", awayDomColor1
+                                       },
+                                       {
+                                           "CurrentTeamEvents", orderedEvents.Where(w => w.Item1 == 1).Select(s => s.Item2).ToList()
+                                       }
+                                   }
+                                   ); }
                         </div>
                     </div>
                 </div>

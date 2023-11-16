@@ -1,6 +1,6 @@
 ﻿using BetCR.Repository.Entity;
 
-namespace BetCR.Web.Controllers.API.Model
+namespace BetCR.Web.Controllers.API.Model.Response
 {
     public class GetUserTournamentSearchUserResponseModel
     {

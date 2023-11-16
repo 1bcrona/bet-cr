@@ -1,6 +1,6 @@
-﻿using BetCR.Web.Controllers.API.Model;
-using MediatR;
+﻿using MediatR;
 using System.Collections.Generic;
+using BetCR.Web.Controllers.API.Model.Response;
 
 namespace BetCR.Web.Handlers.Query.UserTournament
 {

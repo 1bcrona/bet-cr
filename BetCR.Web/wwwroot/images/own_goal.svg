@@ -22,8 +22,8 @@
             </g>
             <g id="Own-goal" sketch:type="MSLayerGroup" transform="translate(7.000000, 7.000000)">
                 <circle id="Oval-11" stroke-opacity="0.899999976" stroke="#000000" stroke-width="2" fill="#FFFFFF" sketch:type="MSShapeGroup" cx="8" cy="8" r="8"></circle>
-                <text id="OG" fill-opacity="0.899999976" fill="#000000" sketch:type="MSTextLayer" font-family="Roboto 2 DRAFT" font-size="9" font-weight="686">
-                    <tspan x="2" y="11">OG</tspan>
+                <text id="OG" fill-opacity="0.899999976" fill="#000000" sketch:type="MSTextLayer" font-family="Poppins" font-size="9" font-weight="686">
+                    <tspan x="1" y="11">OG</tspan>
                 </text>
             </g>
         </g>

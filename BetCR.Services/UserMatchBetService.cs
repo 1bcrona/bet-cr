@@ -3,6 +3,7 @@ using BetCR.Repository.Repository.Base.Interfaces;
 using BetCR.Repository.ValueObject;
 using System;
 using System.Threading.Tasks;
+using BetCR.Services.Base;
 
 namespace BetCR.Services
 {

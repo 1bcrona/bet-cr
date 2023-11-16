@@ -1,4 +1,4 @@
-﻿namespace BetCR.Web.Controllers.API.Model
+﻿namespace BetCR.Web.Controllers.API.Model.Request
 {
     public class CreateUserMatchBetModel
     {

@@ -1,0 +1,13 @@
+﻿using Newtonsoft.Json;
+
+namespace BetCR.Services.External.APIFootball.Model.MatchEvents
+{
+    public class Coach
+    {
+        [JsonProperty("id")] public int Id { get; set; }
+
+        [JsonProperty("name")] public string Name { get; set; }
+
+        [JsonProperty("photo")] public string Photo { get; set; }
+    }
+}

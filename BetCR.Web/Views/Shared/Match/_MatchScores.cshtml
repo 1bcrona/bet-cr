@@ -1,0 +1,13 @@
+﻿@model IEnumerable<BetCR.Repository.ValueObject.Event>
+@{
+
+    @foreach (var item in Model)
+    {
+        var name = item.EventType == "OWN_GOAL" ? item.Player1.FullName + "(OG)" : item.Player1.FullName;
+        <div class="row">
+            <div class="col-md-12" style="font-size: 0.8vw;!important;  ">
+                @name @item.Elapsed'
+            </div>
+        </div>
+    }
+}

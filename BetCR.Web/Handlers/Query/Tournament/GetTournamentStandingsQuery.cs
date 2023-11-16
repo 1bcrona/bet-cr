@@ -1,12 +1,12 @@
 ﻿using BetCR.Repository.Entity;
 using BetCR.Repository.Repository.Base.Interfaces;
-using BetCR.Web.Models;
 using MediatR;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BetCR.Repository.ValueObject;
+using BetCR.Web.Models.Response;
 
 namespace BetCR.Web.Handlers.Query.Tournament
 {

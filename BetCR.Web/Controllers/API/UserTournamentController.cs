@@ -5,7 +5,6 @@ using BetCR.Web.Controllers.API.Model;
 using BetCR.Web.Controllers.API.Validator;
 using BetCR.Web.Handlers.Command.UserAction;
 using BetCR.Web.Handlers.Command.UserTournament;
-using BetCR.Web.Handlers.Command.UserTournamentRel;
 using BetCR.Web.Handlers.Query.UserTournament;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -16,6 +15,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using BetCR.Web.Controllers.API.Model.Request;
+using BetCR.Web.Controllers.API.Model.Response;
 
 namespace BetCR.Web.Controllers.API
 {

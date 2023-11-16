@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BetCR.Repository.Entity;
+﻿using BetCR.Repository.Entity;
 
-namespace BetCR.Web.Models
+namespace BetCR.Web.Models.Response
 {
     public class TournamentStandingsModel
     {

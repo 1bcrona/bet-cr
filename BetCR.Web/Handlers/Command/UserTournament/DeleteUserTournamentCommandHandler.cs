@@ -1,13 +1,13 @@
-﻿using BetCR.Repository.Entity;
-using BetCR.Repository.Repository.Base.Interfaces;
-using BetCR.Web.Controllers.API.Model;
-using MediatR;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using BetCR.Repository.Entity;
+using BetCR.Repository.Repository.Base.Interfaces;
+using BetCR.Web.Controllers.API.Model;
+using MediatR;
 
-namespace BetCR.Web.Handlers.Command.UserTournamentRel
+namespace BetCR.Web.Handlers.Command.UserTournament
 {
     public class DeleteUserTournamentCommandHandler : IRequestHandler<DeleteUserTournamentCommand, List<Tournament>>
     {

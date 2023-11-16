@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BetCR.Library.Tracking;
 using BetCR.Library.Tracking.Infrastructure;
+using BetCR.Services.External.APIFootball;
 using Hangfire.Dashboard;
 using Console = System.Console;
 
@@ -52,11 +53,12 @@ namespace BetCR.Scheduled
                     Configuration = builder.Build();
                 })
                 .ConfigureServices(InitializeContainer)
-                .Configure(builder => builder.UseHangfireDashboard("/hangfire", new DashboardOptions() { Authorization = new List<IDashboardAuthorizationFilter>() { new DashboardNoAuthorizationFilter() } }))
+                .Configure(builder =>
+                    builder.UseHangfireDashboard("/hangfire", new DashboardOptions() {Authorization = new List<IDashboardAuthorizationFilter>() {new DashboardNoAuthorizationFilter()}}))
                 .UseEnvironment(environment)
 #if DEBUG
                 .UseUrls("http://localhost:5004")
-#endif 
+#endif
                 .Build();
 
             Environment.GetEnvironmentVariable("BETCR_ENVIRONMENT");
@@ -75,7 +77,9 @@ namespace BetCR.Scheduled
             services.AddLogging();
             services.AddDbContext<SQLiteDbContext>();
             services.AddScoped<IUnitOfWork, BaseUnitOfWork>();
-            services.AddScoped<IElenaFetcherService, ElenaFetcherService>();
+            services.AddScoped<ElenaFetcherService>();
+            services.AddScoped<ApiFootballFetcher>();
+
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserMatchBetService, UserMatchBetService>();
             services.AddScoped<DataContext, SQLiteDbContext>();
@@ -85,27 +89,18 @@ namespace BetCR.Scheduled
             services.AddSingleton<ISubscriber, Subscriber>();
 
 
-            services.AddHangfire(configuration =>
-            {
-                configuration.UseSQLiteStorage(Configuration.GetConnectionString("HangfireConnection"));
-
-            });
-            services.AddHangfireServer(options =>
-            {
-                options.ServerName = "BetCR Hangfire";
-
-            });
+            services.AddHangfire(configuration => { configuration.UseSQLiteStorage(Configuration.GetConnectionString("HangfireConnection")); });
+            services.AddHangfireServer(options => { options.ServerName = "BetCR Hangfire"; });
 
 
             JobStorage.Current = new SQLiteStorage(Configuration.GetConnectionString("HangfireConnection"));
 
             RecurringJob.AddOrUpdate<IUserMatchBetService>(s => s.CalculateUserPointsAsync(), Cron.MinuteInterval(5));
-            RecurringJob.AddOrUpdate<IElenaFetcherService>(s => s.GetFixturesAsync(), Cron.HourInterval(12));
-            RecurringJob.AddOrUpdate<IElenaFetcherService>(s => s.GetStandingsAsync(), Cron.HourInterval(12));
-            RecurringJob.AddOrUpdate<IElenaFetcherService>(s => s.GetFixtureResultsAsync(), Cron.HourInterval(1));
+            RecurringJob.AddOrUpdate<ApiFootballFetcher>(s => s.GetFixturesAsync(), Cron.HourInterval(12));
+            RecurringJob.AddOrUpdate<ApiFootballFetcher>(s => s.GetStandingsAsync(), Cron.HourInterval(12));
+            RecurringJob.AddOrUpdate<ApiFootballFetcher>(s => s.GetFixtureResultsAsync(), Cron.HourInterval(1));
 
             services.AddHostedService<TrackingService>();
-
         }
 
         #endregion Private Methods

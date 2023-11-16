@@ -10,13 +10,18 @@ namespace BetCR.Services.External.Elenasport
     {
         #region Public Methods
 
-        public static string GetColorsOfTeam(TeamResult team)
+        public static string GetColorsOfLogo(string uri)
         {
-            if (team.BadgeURL == null) return String.Join(";", "blue", "yellow");
+            if (string.IsNullOrEmpty(uri)) return String.Join(";", "blue", "white");
             var colorThief = new ColorThief();
-            var image = GetImage(team.BadgeURL);
+            var image = GetImage(uri);
             var color = colorThief.GetPalette(image, 8);
             return string.Join(";", color.Take(2).Select(s => s.Color.ToHexString()));
+        }
+
+        public static string GetColorsOfTeam(TeamResult team)
+        {
+            return team.BadgeURL == null ? String.Join(";", "blue", "white") : GetColorsOfLogo((team.BadgeURL));
         }
 
         #endregion Public Methods

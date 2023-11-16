@@ -1,9 +1,9 @@
 ﻿using BetCR.Repository.Repository.Base.Interfaces;
-using BetCR.Web.Controllers.API.Model;
 using MediatR;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using BetCR.Web.Controllers.API.Model.Response;
 
 namespace BetCR.Web.Handlers.Query.Tournament
 {

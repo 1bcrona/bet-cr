@@ -1,8 +1,8 @@
-﻿using BetCR.Repository.Entity;
+﻿using System.Collections.Generic;
+using BetCR.Repository.Entity;
 using MediatR;
-using System.Collections.Generic;
 
-namespace BetCR.Web.Handlers.Command.UserTournamentRel
+namespace BetCR.Web.Handlers.Command.UserTournament
 {
     public class DeleteUserTournamentCommand : IRequest<List<Tournament>>
     {

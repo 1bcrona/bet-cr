@@ -1,6 +1,7 @@
-﻿using FluentValidation;
+﻿using BetCR.Web.Controllers.API.Model.Request;
+using FluentValidation;
 
-namespace BetCR.Web.Controllers.API.Model
+namespace BetCR.Web.Controllers.API.Validator
 {
     public class RespondUserTournamentModelValidator : AbstractValidator<RespondUserTournamentModel>
     {
