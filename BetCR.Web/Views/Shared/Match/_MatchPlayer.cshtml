@@ -1,0 +1,7 @@
+﻿@model BetCR.Repository.ValueObject.Lineup
+<div class="player-view">
+    <div class="player" style="background-color: @ViewData["background-color"].ToString(); border-color: @ViewData["color"].ToString();">
+        <div class="number" style="color: @ViewData["color"].ToString();">@Model.Number</div>
+        <div class="name  d-none d-lg-block text-uppercase">@Model.Player.Name</div>
+    </div>
+</div>

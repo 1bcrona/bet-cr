@@ -5,22 +5,22 @@
     var validEvents = new Dictionary<string, string>
     {
         {
-            "R_CARD", "RED CARD"
+            "R_CARD", "Red Card"
         },
         {
-            "PEN_SCORED", "PENALTY"
+            "PEN_SCORED", "Penalty Scored"
         },
         {
-            "GOAL", "GOAL"
+            "GOAL", "Goal"
         },
         {
-            "OWN_GOAL", "OWN GOAL"
+            "OWN_GOAL", "Own Goal"
         },
         {
-            "Y_CARD", "YELLOW CARD"
+            "Y_CARD", "Yellow Card"
         },
         {
-            "SUBST", "SUBSTITUTION"
+            "SUBST", "Substitution"
         }
     };
     var allEvents = new List<Tuple<int, Event>>();
@@ -41,117 +41,148 @@
     <title>Match Details</title>
 </head>
 <div class="container">
+
     <div class="row">
-        <div class="col-md-4 align-self-center">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="bg-image hover-overlay ripple d-md-none d-lg-block align-items-center" data-bs-ripple-color="light">
-                        <img src="@(Model?.HomeTeam?.TeamLogo)"
-                             class="img-fluid"
-                             data-team-name="@Model?.HomeTeam?.Name" data-toggle="tooltip" data-placement="bottom"
-                             title="@Model?.HomeTeam?.Name"
-                             alt="@Model?.HomeTeam?.Name"/>
-                        <a data-placement="bottom" data-toggle="tooltip" href="#!" title="@Model?.HomeTeam?.Name">
-                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
-                        </a>
+        <div class="card margin-bottom-20">
+            <div class="card-header">
+                <div class="row text-left">
+                    <div class="col-6 text-right" style="border: 0 solid #ddd;border-right-width: 1px;">
+                        <h5>@Model?.MatchDate.Local.ToShortDateString()</h5>
+                    </div>
+                    <div class="col-6 text-left">
+                        <h5 >@Model?.MatchDate.Local.ToShortTimeString()</h5>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-4 align-self-center">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="bg-image hover-overlay ripple d-md-none d-lg-block align-items-center" data-bs-ripple-color="light">
+                                    <img src="@(Model?.HomeTeam?.TeamLogo)"
+                                         class="img-fluid"
+                                         data-team-name="@Model?.HomeTeam?.Name" data-toggle="tooltip" data-placement="bottom"
+                                         title="@Model?.HomeTeam?.Name"
+                                         alt="@Model?.HomeTeam?.Name"/>
+                                    <a data-placement="bottom" data-toggle="tooltip" href="#!" title="@Model?.HomeTeam?.Name">
+                                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
+                                    </a>
+                                </div>
+                            </div>
 
-                <div class="col-md-6 text-left d-none d-md-block align-self-center">
-                    <p class="text-muted text-uppercase mb-0">
-                        <strong>@Model?.HomeTeam?.Name</strong>
-                    </p>
-                    <h6>
-                        <small class="text">@(homeLineupGroup?.GetValueOrDefault("DEFENDER")?.Count() ?? 0) - @(homeLineupGroup?.GetValueOrDefault("MIDFIELDER")?.Count() ?? 0) - @(homeLineupGroup?.GetValueOrDefault("FORWARD")?.Count() ?? 0) </small>
-                    </h6>
+                            <div class="col-md-6 text-left d-none d-md-block align-self-center">
+                                <p class="text-muted text-uppercase mb-0">
+                                    <strong>@Model?.HomeTeam?.Name</strong>
+                                </p>
+                                <h6>
+                                    <small class="text">@(homeLineupGroup?.GetValueOrDefault("DEFENDER")?.Count() ?? 0) - @(homeLineupGroup?.GetValueOrDefault("MIDFIELDER")?.Count() ?? 0) - @(homeLineupGroup?.GetValueOrDefault("FORWARD")?.Count() ?? 0) </small>
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 align-self-center">
+
+                        <div class="row  align-items-center">
+
+                            <div class="col-4">
+                                <h1>@Model?.MatchEvent?.HomeTeamScore</h1>
+                            </div>
+                            <div class="col-4">
+                                <h5>:</h5>
+                            </div>
+                            <div class="col-4">
+                                <h1>@Model?.MatchEvent?.AwayTeamScore</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 align-self-center">
+                        <div class="row">
+                            <div class="col-md-6 text-right d-none d-md-block align-self-center">
+                                <p class="text-muted text-uppercase mb-0">
+                                    <strong>@Model.AwayTeam.Name</strong>
+                                </p>
+                                <h6>
+                                    <small class="text">@(awayLineupGroup.GetValueOrDefault("DEFENDER")?.Count() ?? 0) - @(awayLineupGroup.GetValueOrDefault("MIDFIELDER")?.Count() ?? 0) - @(awayLineupGroup.GetValueOrDefault("FORWARD")?.Count() ?? 0) </small>
+                                </h6>
+                            </div>
+                            <div class="col-md-6 ">
+                                <div class="bg-image hover-overlay ripple d-md-none d-lg-block align-items-center" data-bs-ripple-color="light">
+                                    <img src="@(Model?.AwayTeam?.TeamLogo)"
+                                         class="img-fluid"
+                                         data-team-name="@Model?.AwayTeam?.Name" data-toggle="tooltip" data-placement="bottom"
+                                         title="@Model?.AwayTeam?.Name"
+                                         alt="@(Model?.AwayTeam?.Name)"/>
+                                    <a href="#!" data-toggle="tooltip" data-placement="bottom"
+                                       title="@Model?.AwayTeam?.Name">
+                                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        @{
+                            var homeGoals = Model?.MatchEvent?.Events?.HomeTeamEvents?.Where(w => w.EventType is "GOAL" or "PEN_SCORED");
+                            var awayTeamOwnGoals = Model?.MatchEvent?.Events?.AwayTeamEvents?.Where(w => w.EventType == "OWN_GOAL");
+                            if (awayTeamOwnGoals != null)
+                            {
+                                homeGoals = homeGoals?.Concat(awayTeamOwnGoals);
+                            }
+                            var orderedHomeGoals = homeGoals.OrderBy(s =>
+                            {
+                                var minute = s.Elapsed + s.ElapsedPlus;
+                                return minute;
+                            }).Select(s => new
+                            {
+                                Event = s,
+                                ActualMinute = s.ElapsedPlus == 0 ? $"{s.Elapsed}" : $"{s.Elapsed}+{s.ElapsedPlus}"
+                            }).ToList();
 
-        <div class="col-md-4 align-self-center">
 
-            <div class="row align-items-top">
-
-                <div class="col-md-6 text-right d-none d-md-block" style="border: 0 solid #ddd;border-right-width: 1px;">
-                    <label style="font-size: 12px">@Model?.MatchDate.Local.ToShortDateString()</label>
-                </div>
-
-                <div class="col-md-6 text-left d-none d-md-block">
-                    <label style="font-size: 12px">@Model?.MatchDate.Local.ToShortTimeString()</label>
-                </div>
-            </div>
-
-            <div class="row  align-items-center">
-
-                <div class="col-md-5">
-                    <h1>@Model?.MatchEvent?.HomeTeamScore</h1>
-                </div>
-                <div class="col-md-2">
-                    <h5>:</h5>
-                </div>
-                <div class="col-md-5">
-                    <h1>@Model?.MatchEvent?.AwayTeamScore</h1>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-5">
-                    @{
-                        var homeGoals = Model?.MatchEvent?.Events?.HomeTeamEvents?.Where(w => w.EventType is "GOAL" or "PEN_SCORED");
-                        var awayTeamOwnGoals = Model?.MatchEvent?.Events?.AwayTeamEvents?.Where(w => w.EventType == "OWN_GOAL");
-                        if (awayTeamOwnGoals != null)
-                        {
-                            homeGoals = homeGoals?.Concat(awayTeamOwnGoals);
+                            foreach (var item in orderedHomeGoals)
+                            {
+                                var name = item.Event.EventType == "OWN_GOAL" ? item.Event.Player1.FullName + "(OG)" : item.Event.Player1.FullName;
+                                <div class="text-left text-uppercase">
+                                    <h8>@name @item.ActualMinute'</h8>
+                                </div>
+                            }
                         }
+                    </div>
+                    <div class="col-6">
+                        @{
+                            var awayGoals = Model?.MatchEvent?.Events?.AwayTeamEvents?.Where(w => w.EventType is "GOAL" or "PEN_SCORED");
+                            var homeTeamOwnGoals = Model?.MatchEvent?.Events?.HomeTeamEvents?.Where(w => w.EventType == "OWN_GOAL");
+                            if (homeTeamOwnGoals != null)
+                            {
+                                awayGoals = awayGoals?.Concat(homeTeamOwnGoals);
+                            }
+                            var orderedAwayGoals = awayGoals.OrderBy(s =>
+                            {
+                                var minute = s.Elapsed + s.ElapsedPlus;
+                                return minute;
+                            }).Select(s => new
+                            {
+                                Event = s,
+                                ActualMinute = s.ElapsedPlus == 0 ? $"{s.Elapsed}" : $"{s.Elapsed}+{s.ElapsedPlus}"
+                            }).ToList();
 
-                        await Html.RenderPartialAsync("Match/_MatchScores", homeGoals);
-                    }
-                </div>
-                <div class="col-md-2">
-                    <h5></h5>
-                </div>
-                <div class="col-md-5">
-                    @{
-                        var awayGoals = Model?.MatchEvent?.Events?.AwayTeamEvents?.Where(w => w.EventType is "GOAL" or "PEN_SCORED");
-                        var homeTeamOwnGoals = Model?.MatchEvent?.Events?.HomeTeamEvents?.Where(w => w.EventType == "OWN_GOAL");
-                        if (homeTeamOwnGoals != null)
-                        {
-                            awayGoals = awayGoals?.Concat(homeTeamOwnGoals);
+
+                            foreach (var item in orderedAwayGoals)
+                            {
+                                var name = item.Event.EventType == "OWN_GOAL" ? item.Event.Player1.FullName + "(OG)" : item.Event.Player1.FullName;
+                                <div class="text-right text-uppercase">
+                                    <h8>@name @item.ActualMinute'</h8>
+                                </div>
+                            }
                         }
-                        await Html.RenderPartialAsync("Match/_MatchScores", awayGoals);
-                    }
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 align-self-center">
-            <div class="row">
-
-                <div class="col-md-6 text-right d-none d-md-block align-self-center">
-                    <p class="text-muted text-uppercase mb-0">
-                        <strong>@Model.AwayTeam.Name</strong>
-                    </p>
-                    <h6>
-                        <small class="text">@(awayLineupGroup.GetValueOrDefault("DEFENDER")?.Count() ?? 0) - @(awayLineupGroup.GetValueOrDefault("MIDFIELDER")?.Count() ?? 0) - @(awayLineupGroup.GetValueOrDefault("FORWARD")?.Count() ?? 0) </small>
-                    </h6>
-                </div>
-                <div class="col-md-6 ">
-                    <div class="bg-image hover-overlay ripple d-md-none d-lg-block align-items-center" data-bs-ripple-color="light">
-                        <img src="@(Model?.AwayTeam?.TeamLogo)"
-                             class="img-fluid"
-                             data-team-name="@Model?.AwayTeam?.Name" data-toggle="tooltip" data-placement="bottom"
-                             title="@Model?.AwayTeam?.Name"
-                             alt="@(Model?.AwayTeam?.Name)"/>
-                        <a href="#!" data-toggle="tooltip" data-placement="bottom"
-                           title="@Model?.AwayTeam?.Name">
-                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
-                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <hr/>
     <div class="row">
         <div class="col-md-2">
             @{
@@ -197,7 +228,7 @@
                        }
                    }); }
             </div>
-            <div class="d-md-none d-lg-block">
+            <div class="d-none  d-lg-block">
                 @{ await Html.RenderPartialAsync("Match/_MatchTimeline", orderedEvents, new ViewDataDictionary(ViewData)
                    {
                        {
@@ -226,42 +257,35 @@
                    }); }
 
             </div>
-            <div class="d-md-block d-lg-none">
-                <div class="card">
-                    <h5 class="card-header text-center" style="background-color: @homeDomColor2; color: @homeDomColor1">
-                        TIMELINE
-                    </h5>
-                    <div class="card-body">
-                        @{ await Html.RenderPartialAsync("Match/_MatchTimeline", orderedEvents, new ViewDataDictionary(ViewData)
+            <div class="d-block d-lg-none">
+                @{ await Html.RenderPartialAsync("Match/_MatchTimelineVertical", orderedEvents, new ViewDataDictionary(ViewData)
+                   {
+                       {
+                           "home_colors", new List<string>()
                            {
-                               {
-                                   "home_colors", new List<string>()
-                                   {
-                                       homeDomColor1,
-                                       homeDomColor2
-                                   }
-                               },
-                               {
-                                   "away_colors", new List<string>()
-                                   {
-                                       awayDomColor1,
-                                       awayDomColor2
-                                   }
-                               },
-                               {
-                                   "home_team", Model.HomeTeam
-                               },
-                               {
-                                   "away_team", Model.AwayTeam
-                               },
-                               {
-                                   "valid_events", validEvents
-                               }
-                           }); }
-                    </div>
-                </div>
-
+                               homeDomColor1,
+                               homeDomColor2
+                           }
+                       },
+                       {
+                           "away_colors", new List<string>()
+                           {
+                               awayDomColor1,
+                               awayDomColor2
+                           }
+                       },
+                       {
+                           "home_team", Model.HomeTeam
+                       },
+                       {
+                           "away_team", Model.AwayTeam
+                       },
+                       {
+                           "valid_events", validEvents
+                       }
+                   }); }
             </div>
+
         </div>
         <div class="col-md-2">
             <div class="row">

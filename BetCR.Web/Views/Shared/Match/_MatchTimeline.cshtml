@@ -14,7 +14,6 @@
         "#fff",
     };
 
-    var validEvents = ViewData["valid_events"] as Dictionary<string, string>;
     if (Model.Any())
     {
         <div class="col-md-12">
@@ -110,11 +109,8 @@
                                                     </div>
                                                     <div class="d-block">
                                                         <div class="row">
-                                                            <div class="col-md-4 timeline-item">
+                                                            <div class="col-md-12 timeline-item">
                                                                 <img class="img-@item2.EventType.ToLowerInvariant()"/>
-                                                            </div>
-                                                            <div class="col-md-8 timeline-item d-none d-md-inline-block text-center">
-                                                                <label class="mb-0" style="transform: translateY(30%);">@validEvents?[item2.EventType]</label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -123,16 +119,16 @@
                                                         {
                                                             <div class="row">
                                                                 @{
-                                                                    if (item2.Player2 != null)
+                                                                    if (item2.Player2 != null && !String.IsNullOrEmpty(item2.Player2.FullName))
                                                                     {
                                                                         <div class="col-md-6 timeline-item border-right">
                                                                             <label class="mb-0">
-                                                                                <strong>@item2.Player1.FullName</strong>
+                                                                                <strong class="text-uppercase">@item2.Player1.FullName</strong>
                                                                             </label>
                                                                         </div>
                                                                         <div class="col-md-6 timeline-item">
                                                                             <label class="mb-0">
-                                                                                <strong>@item2.Player2.FullName</strong>
+                                                                                <strong class="text-uppercase">@item2.Player2.FullName</strong>
                                                                             </label>
                                                                         </div>
                                                                     }
@@ -140,7 +136,7 @@
                                                                     {
                                                                         <div class="col-md-12">
                                                                             <label class="mb-0">
-                                                                                <strong>@item2.Player1.FullName</strong>
+                                                                                <strong class="text-uppercase">@item2.Player1.FullName</strong>
                                                                             </label>
                                                                         </div>
                                                                     }

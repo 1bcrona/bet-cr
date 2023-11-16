@@ -11,12 +11,7 @@
 <div class="goalkeeper">
     @{
         var goalKeeper = Model.FirstOrDefault(w => w.Position == "GOALKEEPER");
-        <div class="player-view">
-            <div class="player" style="background-color: @ViewData["background-color"].ToString(); border-color: @ViewData["color"].ToString();">
-                <div class="number" style="color: @ViewData["color"].ToString();">@goalKeeper?.Number</div>
-                <div class="name  d-none d-lg-block">@goalKeeper?.Player.Name</div>
-            </div>
-        </div>
+        await Html.RenderPartialAsync("Match/_MatchPlayer", goalKeeper);
     }
 </div>
 
@@ -27,12 +22,7 @@
 
             foreach (var player in defenders)
             {
-                <div class="player-view">
-                    <div class="player" style="background-color: @ViewData["background-color"].ToString(); border-color: @ViewData["color"].ToString();">
-                        <div class="number" style="color: @ViewData["color"].ToString();">@player.Number</div>
-                        <div class="name  d-none d-lg-block">@player.Player.Name</div>
-                    </div>
-                </div>
+                await Html.RenderPartialAsync("Match/_MatchPlayer", player);
             }
         }
     </div>
@@ -41,12 +31,7 @@
             var midfielders = Model.Where(w => w.Position == "MIDFIELDER").ToList();
             foreach (var player in midfielders)
             {
-                <div class="player-view">
-                    <div class="player" style="background-color: @ViewData["background-color"].ToString(); border-color: @ViewData["color"].ToString();">
-                        <div class="number" style="color: @ViewData["color"].ToString();">@player.Number</div>
-                        <div class="name  d-none d-lg-block">@player.Player.Name</div>
-                    </div>
-                </div>
+                await Html.RenderPartialAsync("Match/_MatchPlayer", player);
             }
         }
     </div>
@@ -55,12 +40,7 @@
             var forwards = Model.Where(w => w.Position == "FORWARD").ToList();
             foreach (var player in forwards)
             {
-                <div class="player-view">
-                    <div class="player" style="background-color: @ViewData["background-color"].ToString(); border-color: @ViewData["color"].ToString();">
-                        <div class="number" style="color: @ViewData["color"].ToString();">@player.Number</div>
-                        <div class="name  d-none d-lg-block">@player.Player.Name</div>
-                    </div>
-                </div>
+                await Html.RenderPartialAsync("Match/_MatchPlayer", player);
             }
         }
     </div>

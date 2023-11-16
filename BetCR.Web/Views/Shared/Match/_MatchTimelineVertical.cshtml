@@ -1,0 +1,108 @@
+﻿@using BetCR.Repository.Entity
+@model  List<Tuple<int, BetCR.Repository.ValueObject.Event>>
+@{
+    var homeTeam = ViewData["home_team"] as Team;
+    var awayTeam = ViewData["away_team"] as Team;
+    var homeColors = ViewData["home_colors"] as List<string> ?? new List<string>()
+    {
+        "#fff",
+        "#000"
+    };
+    var awayColors = ViewData["away_colors"] as List<string> ?? new List<string>()
+    {
+        "#000",
+        "#fff",
+    };
+
+    var validEvents = ViewData["valid_events"] as Dictionary<string, string>;
+    if (Model.Any())
+    {
+        var reverseOrder = Model.OrderByDescending(s =>
+        {
+            var minute = s.Item2.Elapsed + s.Item2.ElapsedPlus;
+            return minute;
+        }).Select(s => new
+        {
+            Event = s,
+            ActualMinute = s.Item2.ElapsedPlus == 0 ? $"{s.Item2.Elapsed}" : $"{s.Item2.Elapsed}+{s.Item2.ElapsedPlus}"
+        }).ToList();
+
+        foreach (var item in reverseOrder)
+        {
+            var team = item.Event.Item1 == -1 ? homeTeam : awayTeam;
+            var colors = item.Event.Item1 == -1 ? homeColors : awayColors;
+            <div class="row mb-5 mt-5" style="border:1px solid; border-radius: 1em">
+                <div class="card" style="background-color: @colors.Last()10">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img class="img-@item.Event.Item2.EventType.ToLowerInvariant()">
+                            </div>
+                            <div class="col-md-4">
+                                <h6 style="transform: translateY(30%);">@validEvents?[item.Event.Item2.EventType]</h6>
+                            </div>
+                            <div class="col-md-4">
+                                <h5>@item.ActualMinute'</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body" style="background-image: url(@team.TeamLogo); background-position: right; background-size: 5%; background-repeat: no-repeat ">
+                        <div class="ml-5 mr-5">
+                            <div class="row">
+                                @{
+                                    if (item.Event.Item2.Player2 != null && !String.IsNullOrEmpty(item.Event.Item2.Player2.FullName))
+                                    {
+                                        switch (item.Event.Item2.EventType)
+                                        {
+                                            case "SUBST":
+                                                <div class="row" style="padding-right: 5%;padding-left: 5%;">
+                                                    <h6 class="btn-success">IN</h6>
+                                                </div>
+                                                <div class="row ">
+                                                    <h5 class="text-uppercase">@item.Event.Item2.Player2.FullName</h5>
+                                                </div>
+
+                                                <div class="row" style="padding-right: 5%;padding-left: 5%;">
+                                                    <h6 class="btn-danger">OUT</h6>
+                                                </div>
+                                                <div class="row">
+                                                    <h5 class="text-uppercase">@item.Event.Item2.Player1.FullName</h5>
+                                                </div>
+                                                break;
+
+                                            case "GOAL":
+                                                <div class="row" style="padding-right: 5%;padding-left: 5%;">
+                                                    <h6 class="btn-success">SCORER</h6>
+                                                </div>
+                                                <div class="row ">
+                                                    <h5 class="text-uppercase">@item.Event.Item2.Player1.FullName</h5>
+                                                </div>
+
+                                                <div class="row" style="padding-right: 5%;padding-left: 5%;">
+                                                    <h6 class="btn-success">ASSISTED BY</h6>
+                                                </div>
+                                                <div class="row">
+                                                    <h5 class="text-uppercase">@item.Event.Item2.Player2.FullName</h5>
+                                                </div>
+                                                break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="col-md-12">
+                                            <h5 class="text-uppercase">@item.Event.Item2.Player1.FullName</h5>
+                                        </div>
+                                    }
+                                }
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        }
+    }
+}

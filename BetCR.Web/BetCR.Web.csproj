@@ -236,6 +236,12 @@
     <_ContentIncludedByDefault Remove="wwwroot\js\site.js" />
     <_ContentIncludedByDefault Remove="wwwroot\js\vendor\ajax-bootstrap-select.js" />
     <_ContentIncludedByDefault Remove="wwwroot\js\vendor\jbvalidator.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\static\css\vendor\soccerfield\fifa_soccer_field_1.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\static\css\vendor\soccerfield\soccerfield.3d.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\static\css\vendor\soccerfield\soccerfield.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\static\css\vendor\soccerfield\soccerfield.default.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\static\css\vendor\soccerfield\soccerfield_green.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\static\css\vendor\soccerfield\soccerfield_new.jpg" />
   </ItemGroup>
 
 </Project>
