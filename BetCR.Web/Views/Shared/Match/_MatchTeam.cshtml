@@ -2,19 +2,12 @@
 @model IEnumerable<BetCR.Repository.ValueObject.Lineup>
 
 <head>
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css"
           rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/football/player.css" type="text/css"/>
 </head>
 
-@{
-    var events = ViewData["events"] as IEnumerable<Tuple<int, Event>>;
-
-    var ownGoalCount = 0;
-    var goalCount = 0;
-}
 
 <div class="goalkeeper">
     @{
@@ -30,7 +23,6 @@
 
 <div class="lines">
     <div class="line">
-
         @{
             var defenders = Model.Where(w => w.Position == "DEFENDER").ToList();
 
@@ -46,10 +38,8 @@
         }
     </div>
     <div class="line">
-
         @{
             var midfielders = Model.Where(w => w.Position == "MIDFIELDER").ToList();
-
             foreach (var player in midfielders)
             {
                 <div class="player-view">
@@ -62,10 +52,8 @@
         }
     </div>
     <div class="line">
-
         @{
             var forwards = Model.Where(w => w.Position == "FORWARD").ToList();
-
             foreach (var player in forwards)
             {
                 <div class="player-view">

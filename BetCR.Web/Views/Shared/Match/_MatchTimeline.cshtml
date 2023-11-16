@@ -1,0 +1,168 @@
+﻿@using BetCR.Repository.Entity
+@model  List<Tuple<int, BetCR.Repository.ValueObject.Event>>
+@{
+    var homeTeam = ViewData["home_team"] as Team;
+    var awayTeam = ViewData["away_team"] as Team;
+    var homeColors = ViewData["home_colors"] as List<string> ?? new List<string>()
+    {
+        "#fff",
+        "#000"
+    };
+    var awayColors = ViewData["away_colors"] as List<string> ?? new List<string>()
+    {
+        "#000",
+        "#fff",
+    };
+
+    var validEvents = ViewData["valid_events"] as Dictionary<string, string>;
+    if (Model.Any())
+    {
+        <div class="col-md-12">
+            <div class="row mb-5">
+                <div class="mt-5 mb-5">
+                    <div class="timeline">
+                        <div class="timeline--inner">
+                            @{
+                                var matchMaxMinutes = Math.Max(Model.Max(m => m.Item2.Elapsed), 90) > 90 ? 120 : 90;
+                                var pinLabels = new Dictionary<string, int>()
+                                {
+                                    {
+                                        "MS", 0
+                                    },
+                                    {
+                                        "HT", 45
+                                    },
+                                    {
+                                        "FT", 90
+                                    }
+                                };
+                                if (matchMaxMinutes > 90)
+                                {
+                                    pinLabels.Add("ET", 120);
+                                }
+
+                                var lefts = new List<int>();
+
+                                foreach (var pin in pinLabels)
+                                {
+                                    var left = pin.Value * 100 / matchMaxMinutes;
+                                    <div class="timeline--inner-pin is-featured text-center d-flex align-items-center justify-content-center" data-title="Featured Pin" style="left: @left%; background-color: #495057; color: #EEEEEE">
+                                        <label>@pin.Key</label>
+                                    </div>
+                                    lefts.Add(left);
+                                }
+
+                                var ndx = 0;
+                                var minuteGroupedOrderedItems = Model.GroupBy(g => g.Item2.Elapsed);
+                                foreach (var groupedItem in minuteGroupedOrderedItems)
+                                {
+                                    var topStep = 0;
+                                    var orderedGroupItem = groupedItem.OrderBy(o => o.Item1).ToList();
+                                    var previousItem = 0;
+                                    foreach (var (item1, item2) in orderedGroupItem)
+                                    {
+                                        if (item1 != previousItem)
+                                            topStep = 0;
+                                        int currentItemLeft;
+                                        while (true)
+                                        {
+                                            var currentPinValue = pinLabels.ElementAt(ndx).Value;
+                                            var isLeftFound = Math.Max(groupedItem.Key, currentPinValue) <= currentPinValue;
+
+                                            if (isLeftFound)
+                                            {
+                                                ndx--;
+                                                currentItemLeft = lefts[ndx];
+                                                break;
+                                            }
+                                            ndx++;
+                                        }
+
+                                        var currentItemTop = item1 * 15 + topStep * item1 * 15;
+                                        var distanceBetweenCurrentAndNext = pinLabels.ElementAt(ndx + 1).Value - pinLabels.ElementAt(ndx).Value;
+                                        var pinDistanceBetweenCurrentAndNext = lefts[ndx + 1] - lefts[ndx];
+                                        var distanceBetweenCurrentMinuteAndLeftMinute = groupedItem.Key - pinLabels.ElementAt(ndx).Value;
+                                        var marginStep = 5;
+                                        var firstStep = currentItemLeft + marginStep;
+                                        var maxItemStep = pinDistanceBetweenCurrentAndNext - marginStep - 2;
+                                        var currentStep = $"{(int) (firstStep + distanceBetweenCurrentMinuteAndLeftMinute / (double) distanceBetweenCurrentAndNext * maxItemStep)}%";
+                                        var currentEventTop = $"{currentItemTop}px";
+                                        var minute = groupedItem.Key.ToString();
+                                        if (item2.ElapsedPlus > 0)
+                                        {
+                                            minute = $"{minute}+{item2.ElapsedPlus}";
+                                        }
+                                        var backgroundColor = item1 < 0 ? homeColors.First() : awayColors.First();
+                                        var textColor = item1 < 0 ? homeColors[1] : awayColors[1];
+                                        var teamLogo = item1 < 0 ? homeTeam.TeamLogo : awayTeam.TeamLogo;
+                                        topStep++;
+                                        previousItem = item1;
+                                        <div class="timeline--inner-pin is-normal" style="top: @currentEventTop; left: @currentStep; background-color: @backgroundColor; color: @textColor)" data-title="@minute">
+                                            <div class="tooltip text-center" style="color: @textColor); ">
+                                                <div class="bottom">
+                                                    <div class="row">
+                                                        <div class="col-md-6 timeline-item border-right">
+                                                            <label class="mb-0">@minute'</label>
+                                                        </div>
+                                                        <div class="col-md-6 timeline-item d-none d-md-inline-block text-center">
+                                                            <img class="event-team-badge" src="@(teamLogo)">
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-block">
+                                                        <div class="row">
+                                                            <div class="col-md-4 timeline-item">
+                                                                <img class="img-@item2.EventType.ToLowerInvariant()"/>
+                                                            </div>
+                                                            <div class="col-md-8 timeline-item d-none d-md-inline-block text-center">
+                                                                <label class="mb-0" style="transform: translateY(30%);">@validEvents[item2.EventType]</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @{
+                                                        if (item2.Player1 != null)
+                                                        {
+                                                            <div class="row">
+                                                                @{
+                                                                    if (item2.Player2 != null)
+                                                                    {
+                                                                        <div class="col-md-6 timeline-item border-right">
+                                                                            <label class="mb-0">
+                                                                                <strong>@item2.Player1.FullName</strong>
+                                                                            </label>
+                                                                        </div>
+                                                                        <div class="col-md-6 timeline-item">
+                                                                            <label class="mb-0">
+                                                                                <strong>@item2.Player2.FullName</strong>
+                                                                            </label>
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="col-md-12">
+                                                                            <label class="mb-0">
+                                                                                <strong>@item2.Player1.FullName</strong>
+                                                                            </label>
+                                                                        </div>
+                                                                    }
+                                                                }
+                                                            </div>
+                                                        }
+                                                    }
+                                                </div>
+                                                <div class="timeline-inner-event-type">
+                                                    <img class="img-@item2.EventType.ToLowerInvariant()">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="timeline-team" style="background-image: url(@homeTeam.TeamLogo);background-color:@homeColors.Last();"></div>
+                    <div class="timeline-team" style="background-image: url(@awayTeam.TeamLogo);background-color:@awayColors.Last();"></div>
+                </div>
+            </div>
+        </div>
+    }
+}

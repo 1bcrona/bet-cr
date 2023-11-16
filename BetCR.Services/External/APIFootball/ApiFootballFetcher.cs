@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
 using BetCR.Caching.Interface;
@@ -11,7 +10,6 @@ using BetCR.Repository.Repository.Base.Interfaces;
 using BetCR.Repository.ValueObject;
 using BetCR.Services.External.APIFootball.Model.Fixtures;
 using BetCR.Services.External.Elenasport;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using StandingResult = BetCR.Services.External.APIFootball.Model.Standings.StandingResult;

@@ -1,5 +1,4 @@
-﻿using BetCR.Repository.Repository.Base;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace BetCR.Repository
 {

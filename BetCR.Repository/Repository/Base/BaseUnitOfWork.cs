@@ -4,10 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using BetCR.Library.Tracking.Infrastructure;
-using BetCR.Repository.Entity;
 
 namespace BetCR.Repository.Repository.Base
 {
